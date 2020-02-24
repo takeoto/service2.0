@@ -7,32 +7,14 @@ class Controller
         $srv = new SomeService();
 
         // Making conditions list
-        $conditions = ConditionsManager::makeList(
-            ConditionsManager::makeOne(SomeService::FIRST_PARAM_NAME, 'value123', MakeRule::arrayOf([
-                'value1',
-                'value2',
-            ])),
-            ConditionsManager::makeOne(SomeService::SECOND_PARAM_NAME, 123, MakeRule::chain(
-                MakeRule::int(),
-                MakeRule::moreThen(10)
-            )),
-            ConditionsManager::makeOne(SomeService::SECOND_PARAM_NAME, 123456, MakeRule::entityExists(
-                '{entityManager}',
-                '{className}'
-            ))
-            //, ... condition
-        );
+        $conditions = SomeServiceConditions::base(12345)
+            ->add(SomeServiceConditions::makeSecondCondition(123))
+            ->add(SomeServiceConditions::makeThirdCondition('value123'));
 
         $dynamicParams = [1,2,3,4,5,6];
 
         foreach ($dynamicParams as $newParam) {
-            $conditions->replace(
-                ConditionsManager::makeOne(
-                    SomeService::FOURTH_PARAM_NAME,
-                    $newParam,
-                    MakeRule::int()
-                )
-            );
+            $conditions->replace(SomeServiceConditions::makeFourthCondition($newParam));
 
             if (!ConditionsManager::isListCanBeUsed($conditions)) {
                 $errors = ConditionsManager::getListErrors($conditions);
