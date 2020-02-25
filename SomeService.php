@@ -3,7 +3,7 @@
 class SomeService extends AbstractService
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected function acceptParams(): array
     {
@@ -16,7 +16,7 @@ class SomeService extends AbstractService
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected function exec(ConditionsInterface $conditions): ServiceResultInterface
     {

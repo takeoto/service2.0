@@ -21,18 +21,14 @@ class EntityExistRule implements RuleInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function isPassed($value): bool
+    public function pass($value): RuleResultInterface
     {
-        return (bool)$this->entityManager->find($this->className, $value);
-    }
+        $errors = [];
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getErrors(): array
-    {
-        return ["Entity \"{$this->value}\" not exists!"];
+        !$this->entityManager->find($this->className, $value) && $errors[] = "Entity \"{$this->value}\" not exists!";
+
+        return new SimpleRuleResult($errors);
     }
 }

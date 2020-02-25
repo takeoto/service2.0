@@ -18,18 +18,18 @@ class ArrayOfRule implements RuleInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function isPassed($value): bool
+    public function pass($value): RuleResultInterface
     {
-        return in_array($value, $this->values, $this->strict);
-    }
+        $errors = [];
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getErrors(): array
-    {
-        return ['Value must be one of items: ' . implode(',', $this->values)];
+        !in_array(
+            $value,
+            $this->values,
+            $this->strict
+        ) && $errors[] = 'Value must be one of items: ' . implode(',', $this->values);
+
+        return new SimpleRuleResult($errors);
     }
 }

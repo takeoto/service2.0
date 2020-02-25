@@ -3,20 +3,14 @@
 class IntRule implements RuleInterface
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function isPassed($value): bool
+    public function pass($value): RuleResultInterface
     {
-        return is_int($value);
-    }
+        $errors = [];
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getErrors(): array
-    {
-        return [
-            'Value must be integer',
-        ];
+        !is_int($value) && $errors[] = 'Value must be integer';
+
+        return new SimpleRuleResult($errors);
     }
 }

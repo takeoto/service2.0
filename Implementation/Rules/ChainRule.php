@@ -18,30 +18,22 @@ class ChainRule implements RuleInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function isPassed($value): bool
+    public function pass($value): RuleResultInterface
     {
-        $isPassed = true;
-
         /** @var RuleInterface $rule */
         foreach ($this->rules as $rule) {
-            if ($isPassed &= $rule->isPassed($value)) {
+            $ruleResult = $rule->pass($value);
+
+            if ($ruleResult->isPassed()) {
                 continue;
             }
 
-            array_push($this->errors, ...$rule->getErrors());
+            array_push($this->errors, ...$ruleResult->getErrors());
             break;
         }
 
-        return (bool)$isPassed;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getErrors(): array
-    {
-        return $this->errors;
+        return new SimpleRuleResult($this->errors);
     }
 }

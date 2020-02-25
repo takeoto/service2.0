@@ -19,18 +19,14 @@ class MoreThen implements RuleInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function isPassed($value): bool
+    public function pass($value): RuleResultInterface
     {
-        return $this->moreThen < $this->value = $value;
-    }
+        $errors = [];
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getErrors(): array
-    {
-        return ["Value \"{$this->value}\" less then \"$this->moreThen\"!"];
+        $this->moreThen >= $value && $errors[] = "Value \"$value\" less then \"$this->moreThen\"!";
+
+        return new SimpleRuleResult($errors);
     }
 }

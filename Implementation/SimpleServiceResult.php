@@ -23,7 +23,7 @@ class SimpleServiceResult implements ServiceResultInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getConditions(): ConditionsInterface
     {
@@ -31,7 +31,7 @@ class SimpleServiceResult implements ServiceResultInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getErrors(): array
     {
@@ -39,7 +39,7 @@ class SimpleServiceResult implements ServiceResultInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getData()
     {

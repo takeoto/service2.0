@@ -3,7 +3,7 @@
 abstract class AbstractService implements ServiceInterface
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function handle(ConditionsInterface $conditions): ServiceResultInterface
     {

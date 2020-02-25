@@ -18,6 +18,11 @@ class SimpleCondition implements ConditionInterface
     private $rule;
 
     /**
+     * @var RuleResultInterface|null
+     */
+    private $ruleResult;
+
+    /**
      * SimpleCondition constructor.
      * @param string $name
      * @param $value
@@ -31,7 +36,7 @@ class SimpleCondition implements ConditionInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getName(): string
     {
@@ -39,7 +44,7 @@ class SimpleCondition implements ConditionInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getValue()
     {
@@ -47,10 +52,12 @@ class SimpleCondition implements ConditionInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function getRule(): RuleInterface
+    public function passTheRule(): RuleResultInterface
     {
-        return $this->rule;
+        return $this->ruleResult
+            ? $this->ruleResult
+            : $this->ruleResult = $this->rule->pass($this->getValue());
     }
 }

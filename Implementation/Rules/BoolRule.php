@@ -3,20 +3,14 @@
 class BoolRule implements RuleInterface
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function isPassed($value): bool
+    public function pass($value): RuleResultInterface
     {
-        return is_bool($value);
-    }
+        $errors = [];
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getErrors(): array
-    {
-        return [
-            'Value must be boolean!',
-        ];
+        !is_bool($value) && $errors[] = 'Value must be boolean!';
+
+        return new SimpleRuleResult($errors);
     }
 }

@@ -19,7 +19,7 @@ class Conditions implements ConditionsInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function add(ConditionInterface $condition): ConditionsInterface
     {
@@ -35,7 +35,7 @@ class Conditions implements ConditionsInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function find(string $id): ConditionInterface
     {
@@ -47,7 +47,7 @@ class Conditions implements ConditionsInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function remove(ConditionInterface $condition): void
     {
@@ -55,7 +55,7 @@ class Conditions implements ConditionsInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function replace(ConditionInterface $condition): ConditionsInterface
     {
@@ -65,7 +65,7 @@ class Conditions implements ConditionsInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function has(string $id): bool
     {
@@ -73,7 +73,7 @@ class Conditions implements ConditionsInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function filter(callable $fn, bool $immutable = false): ConditionsInterface
     {
@@ -81,7 +81,7 @@ class Conditions implements ConditionsInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function each(callable $fn): ConditionsInterface
     {

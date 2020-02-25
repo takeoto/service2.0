@@ -13,18 +13,12 @@ class ZendValidatorAdapter implements RuleInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function isPassed($value): bool
+    public function pass($value): RuleResultInterface
     {
-        return $this->validator->isValid($value);
-    }
+        $this->validator->isValid($value);
 
-    /**
-     * {@inheritDoc}
-     */
-    public function getErrors(): array
-    {
-        return $this->validator->getMessages();
+        return new SimpleRuleResult($this->validator->getMessages());
     }
 }
