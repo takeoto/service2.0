@@ -32,10 +32,19 @@ class ConditionsManager
 
         $conditions->each(function ($item) use (&$result) {
             /** @var ConditionInterface $item */
-            $result &= $item->getRule()->isPassed($item->getValue());
+            $result &= ConditionsManager::isCanBeUsed($item);
         });
 
         return $result;
+    }
+
+    /**
+     * @param ConditionInterface $condition
+     * @return bool
+     */
+    public static function isCanBeUsed(ConditionInterface $condition): bool
+    {
+        return $condition->getRule()->isPassed($condition->getValue());
     }
 
     /**

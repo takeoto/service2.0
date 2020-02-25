@@ -11,6 +11,14 @@ class MakeRule
     }
 
     /**
+     * @return RuleInterface
+     */
+    public static function bool(): RuleInterface
+    {
+        return new BoolRule();
+    }
+
+    /**
      * @param $entityManager
      * @param string $className
      * @return RuleInterface
