@@ -21,7 +21,7 @@ class SomeService extends AbstractService
     protected function exec(ConditionsInterface $conditions): ServiceResultInterface
     {
         if ($conditions->has(SomeServiceConditions::SECOND_PARAM_NAME)) {
-            $conditions->find(SomeServiceConditions::SECOND_PARAM_NAME)->getName();
+            $conditions->find(SomeServiceConditions::SECOND_PARAM_NAME)->getValue();
             // some logic
         }
 
