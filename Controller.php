@@ -13,12 +13,16 @@ class Controller
 
         $dynamicParams = [1,2,3,4,5,6];
 
-        foreach ($dynamicParams as $newParam) {
-            $conditions->replace(SomeServiceConditions::makeFourthCondition($newParam));
+        if (!ConditionsManager::isListCanBeUsed($conditions)) {
+            $errors = ConditionsManager::getListErrors($conditions);
+            // Some logic ...
+            return;
+        }
 
-            if (!ConditionsManager::isListCanBeUsed($conditions)) {
-                $errors = ConditionsManager::getListErrors($conditions);
-                // Some logic ...
+        foreach ($dynamicParams as $newParam) {
+            $conditions->replace($newCondition = SomeServiceConditions::makeFourthCondition($newParam));
+
+            if (!ConditionsManager::isCanBeUsed($newCondition)) {
                 continue;
             }
 
