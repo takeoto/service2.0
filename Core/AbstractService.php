@@ -9,14 +9,22 @@ abstract class AbstractService implements ServiceInterface
     {
         return $this->exec(
             $conditions
+                // Get only conditions for service
                 ->filter(function ($item) {
                     /** @var ConditionInterface $item */
                     return in_array($item->getName(), $this->acceptParams());
                 }, true)
+                // Check all
                 ->each(function ($item) {
                     /** @var ConditionInterface $item */
-                    if (!$item->getRule()->isPassed($item->getValue())) {
-                        throw new \Exception('You can\'t use not correct values!');
+                    $ruleResult = $item->passRule();
+
+                    if (!$ruleResult->isPassed()) {
+                        throw new \Exception(
+                            'You can\'t use not correct values!'
+                            . PHP_EOL
+                            . 'Errors: ' . implode(',', $ruleResult->getErrors())
+                        );
                     }
                 })
         );

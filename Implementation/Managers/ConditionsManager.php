@@ -44,7 +44,7 @@ class ConditionsManager
      */
     public static function isCanBeUsed(ConditionInterface $condition): bool
     {
-        return $condition->passTheRule()->isPassed();
+        return $condition->passRule()->isPassed();
     }
 
     /**
@@ -57,7 +57,7 @@ class ConditionsManager
 
         $conditions->each(function ($item) use (&$result) {
             /** @var ConditionInterface $item */
-            $result[$item->getName()] = $item->passTheRule()->getErrors();
+            $result[$item->getName()] = $item->passRule()->getErrors();
         });
 
         return $result;

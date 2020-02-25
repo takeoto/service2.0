@@ -54,7 +54,7 @@ class SimpleCondition implements ConditionInterface
     /**
      * @inheritDoc
      */
-    public function passTheRule(): RuleResultInterface
+    public function passRule(): RuleResultInterface
     {
         return $this->ruleResult
             ? $this->ruleResult
