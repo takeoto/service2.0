@@ -11,6 +11,11 @@ class ArrayOfRule implements RuleInterface
      */
     private $strict;
 
+    /**
+     * @var array
+     */
+    private $errors = [];
+
     public function __construct(array $values, bool $strict = false)
     {
         $this->values = $values;
@@ -22,7 +27,13 @@ class ArrayOfRule implements RuleInterface
      */
     public function isPassed($value): bool
     {
-        return in_array($value, $this->values, $this->strict);
+        $this->errors = [];
+
+        if (!$isPassed = in_array($value, $this->values, $this->strict)) {
+            $this->errors[] = 'Value must be one of items: ' . implode(',', $this->values);
+        }
+
+        return $isPassed;
     }
 
     /**
@@ -30,6 +41,6 @@ class ArrayOfRule implements RuleInterface
      */
     public function getErrors(): array
     {
-        return ['Value must be one of items: ' . implode(',', $this->values)];
+        return $this->errors;
     }
 }

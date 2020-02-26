@@ -9,9 +9,9 @@ class MoreThen implements RuleInterface
     private $moreThen;
 
     /**
-     * @var mixed
+     * @var array
      */
-    private $value;
+    private $errors = [];
 
     public function __construct(float $moreThen)
     {
@@ -23,7 +23,13 @@ class MoreThen implements RuleInterface
      */
     public function isPassed($value): bool
     {
-        return $this->moreThen < $this->value = $value;
+        $this->errors = [];
+
+        if (!$isPassed = $this->moreThen < $value) {
+            $this->errors[] = "Value \"{$value}\" less then \"$this->moreThen\"!";
+        }
+
+        return $isPassed;
     }
 
     /**
@@ -31,6 +37,6 @@ class MoreThen implements RuleInterface
      */
     public function getErrors(): array
     {
-        return ["Value \"{$this->value}\" less then \"$this->moreThen\"!"];
+        return $this->errors;
     }
 }

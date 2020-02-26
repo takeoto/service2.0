@@ -22,6 +22,7 @@ class ChainRule implements RuleInterface
      */
     public function isPassed($value): bool
     {
+        $this->errors = [];
         $isPassed = true;
 
         /** @var RuleInterface $rule */

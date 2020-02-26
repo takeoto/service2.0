@@ -5,14 +5,14 @@ class EntityExistRule implements RuleInterface
     private $entityManager;
 
     /**
-     * @var
-     */
-    private $value;
-
-    /**
      * @var string
      */
     private $className;
+
+    /**
+     * @var array
+     */
+    private $errors = [];
 
     public function __construct($entityManager, string $className)
     {
@@ -25,7 +25,14 @@ class EntityExistRule implements RuleInterface
      */
     public function isPassed($value): bool
     {
-        return (bool)$this->entityManager->find($this->className, $value);
+        $this->errors = [];
+
+        if (!$isPassed = $this->entityManager->find($this->className, $value)) {
+            $this->errors[] = "Entity \"{$value}\" not exists!";
+        }
+
+
+        return $isPassed;
     }
 
     /**
@@ -33,6 +40,6 @@ class EntityExistRule implements RuleInterface
      */
     public function getErrors(): array
     {
-        return ["Entity \"{$this->value}\" not exists!"];
+        return $this->errors;
     }
 }

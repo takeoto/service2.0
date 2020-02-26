@@ -3,11 +3,22 @@
 class IntRule implements RuleInterface
 {
     /**
+     * @var array
+     */
+    private $errors = [];
+
+    /**
      * {@inheritDoc}
      */
     public function isPassed($value): bool
     {
-        return is_int($value);
+        $this->errors = [];
+
+        if (!$isPassed = is_int($value)) {
+            $this->errors[] = 'Value must be integer!';
+        }
+
+        return $isPassed;
     }
 
     /**
@@ -15,8 +26,6 @@ class IntRule implements RuleInterface
      */
     public function getErrors(): array
     {
-        return [
-            'Value must be integer',
-        ];
+        return $this->errors;
     }
 }

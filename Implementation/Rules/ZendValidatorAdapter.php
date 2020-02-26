@@ -7,6 +7,11 @@ class ZendValidatorAdapter implements RuleInterface
      */
     private $validator;
 
+    /**
+     * @var array
+     */
+    private $errors = [];
+
     public function __construct(Zend_Validate_Interface $validator)
     {
         $this->validator = $validator;
@@ -17,7 +22,13 @@ class ZendValidatorAdapter implements RuleInterface
      */
     public function isPassed($value): bool
     {
-        return $this->validator->isValid($value);
+        $this->errors = [];
+
+        if (!$isPassed = $this->validator->isValid($value)) {
+            $this->errors = $this->validator->getMessages();
+        }
+
+        return $isPassed;
     }
 
     /**
@@ -25,6 +36,6 @@ class ZendValidatorAdapter implements RuleInterface
      */
     public function getErrors(): array
     {
-        return $this->validator->getMessages();
+        return $this->errors;
     }
 }

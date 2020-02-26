@@ -3,11 +3,22 @@
 class BoolRule implements RuleInterface
 {
     /**
+     * @var array
+     */
+    private $errors = [];
+
+    /**
      * {@inheritDoc}
      */
     public function isPassed($value): bool
     {
-        return is_bool($value);
+        $this->errors = [];
+
+        if (!$isPassed = is_bool($value)) {
+            $this->errors[] = 'Value must be boolean!';
+        }
+
+        return $isPassed;
     }
 
     /**
@@ -15,8 +26,6 @@ class BoolRule implements RuleInterface
      */
     public function getErrors(): array
     {
-        return [
-            'Value must be boolean!',
-        ];
+        return $this->errors;
     }
 }
