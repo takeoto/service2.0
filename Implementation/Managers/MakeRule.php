@@ -52,6 +52,6 @@ class MakeRule
      */
     public static function moreThen(float $value): RuleInterface
     {
-        return new MoreThen($value);
+        return new MoreThenRule($value);
     }
 }

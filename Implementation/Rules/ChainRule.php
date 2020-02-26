@@ -32,6 +32,6 @@ class ChainRule implements RuleInterface
             break;
         }
 
-        return new SimpleRuleResult($isPassed, $errors);
+        return new SimpleRuleResult((bool)$isPassed, $errors);
     }
 }

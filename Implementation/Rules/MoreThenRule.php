@@ -1,17 +1,12 @@
 <?php
 
-
-class MoreThen implements RuleInterface
+class MoreThenRule implements RuleInterface
 {
     /**
      * @var float
      */
     private $moreThen;
 
-    /**
-     * @var mixed
-     */
-    private $value;
 
     public function __construct(float $moreThen)
     {
