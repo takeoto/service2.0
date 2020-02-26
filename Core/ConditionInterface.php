@@ -15,6 +15,7 @@ interface ConditionInterface
     public function getValue();
 
     /**
+     * Pass the rule
      * @return RuleResultInterface
      */
     public function followRule(): RuleResultInterface;

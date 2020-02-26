@@ -24,9 +24,7 @@ class Conditions implements ConditionsInterface
     public function add(ConditionInterface $condition): ConditionsInterface
     {
         if ($this->has($condition->getName())) {
-            throw new \Exception(
-                "Condition \"{$condition->getName()}\" already exists, please use \"replace\" method!"
-            );
+            throw new \Exception("Condition \"{$condition->getName()}\" already exists!");
         }
 
         $this->conditions[$condition->getName()] = $condition;

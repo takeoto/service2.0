@@ -5,7 +5,7 @@ class SomeService extends AbstractService
     /**
      * @inheritDoc
      */
-    protected function acceptParams(): array
+    protected function acceptConditions(): array
     {
         return [
             SomeServiceConditions::FIRST_PARAM_NAME,
@@ -20,13 +20,16 @@ class SomeService extends AbstractService
      */
     protected function exec(ConditionsInterface $conditions): ServiceResultInterface
     {
+        // Not require condition
         if ($conditions->has(SomeServiceConditions::SECOND_PARAM_NAME)) {
             $conditions->find(SomeServiceConditions::SECOND_PARAM_NAME)->getValue();
-            // some logic
+            // Some logic ...
         }
 
-        // Throw exception if item not exists
+        // Require condition (throw exception if the item not exists)
         $value = $conditions->find(SomeServiceConditions::FIRST_PARAM_NAME)->getValue();
+
+        // Some logic ...
 
         return new SimpleServiceResult(
             $conditions,

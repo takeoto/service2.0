@@ -12,7 +12,7 @@ abstract class AbstractService implements ServiceInterface
                 // Get only conditions for service
                 ->filter(function ($item) {
                     /** @var ConditionInterface $item */
-                    return in_array($item->getName(), $this->acceptParams());
+                    return in_array($item->getName(), $this->acceptConditions());
                 }, true)
                 // Valid guarantee
                 ->each(function ($item) {
@@ -31,10 +31,10 @@ abstract class AbstractService implements ServiceInterface
     }
 
     /**
-     * Get array of accept params
+     * Get array of accept conditions
      * @return array
      */
-    abstract protected function acceptParams(): array;
+    abstract protected function acceptConditions(): array;
 
     /**
      * Execute service logic
