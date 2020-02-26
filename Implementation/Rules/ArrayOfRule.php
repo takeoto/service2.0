@@ -22,14 +22,13 @@ class ArrayOfRule implements RuleInterface
      */
     public function pass($value): RuleResultInterface
     {
-        $errors = [];
-
-        !in_array(
-            $value,
-            $this->values,
-            $this->strict
-        ) && $errors[] = 'Value must be one of items: ' . implode(',', $this->values);
-
-        return new SimpleRuleResult($errors);
+        return new TrueOrErrorRuleResult(
+            in_array(
+                $value,
+                $this->values,
+                $this->strict
+            ),
+            'Value must be one of items: ' . implode(',', $this->values)
+        );
     }
 }

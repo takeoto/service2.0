@@ -17,5 +17,5 @@ interface ConditionInterface
     /**
      * @return RuleResultInterface
      */
-    public function passRule(): RuleResultInterface;
+    public function followRule(): RuleResultInterface;
 }

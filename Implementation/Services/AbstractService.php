@@ -17,7 +17,7 @@ abstract class AbstractService implements ServiceInterface
                 // Check all
                 ->each(function ($item) {
                     /** @var ConditionInterface $item */
-                    $ruleResult = $item->passRule();
+                    $ruleResult = $item->followRule();
 
                     if (!$ruleResult->isPassed()) {
                         throw new \Exception(

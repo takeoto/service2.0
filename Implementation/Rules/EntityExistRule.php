@@ -25,10 +25,9 @@ class EntityExistRule implements RuleInterface
      */
     public function pass($value): RuleResultInterface
     {
-        $errors = [];
-
-        !$this->entityManager->find($this->className, $value) && $errors[] = "Entity \"{$this->value}\" not exists!";
-
-        return new SimpleRuleResult($errors);
+        return new TrueOrErrorRuleResult(
+            !is_null($this->entityManager->find($this->className, $value)),
+            "Entity \"$value\" not exists!"
+        );
     }
 }

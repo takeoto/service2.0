@@ -7,10 +7,9 @@ class BoolRule implements RuleInterface
      */
     public function pass($value): RuleResultInterface
     {
-        $errors = [];
-
-        !is_bool($value) && $errors[] = 'Value must be boolean!';
-
-        return new SimpleRuleResult($errors);
+        return new TrueOrErrorRuleResult(
+            is_bool($value),
+            'Value must be boolean!'
+        );
     }
 }

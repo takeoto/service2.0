@@ -17,8 +17,9 @@ class ZendValidatorAdapter implements RuleInterface
      */
     public function pass($value): RuleResultInterface
     {
-        $this->validator->isValid($value);
-
-        return new SimpleRuleResult($this->validator->getMessages());
+        return new SimpleRuleResult(
+            $this->validator->isValid($value),
+            $this->validator->getMessages()
+        );
     }
 }

@@ -5,10 +5,16 @@ class SimpleRuleResult implements RuleResultInterface
     /**
      * @var array
      */
-    private $errors;
+    private $errors = [];
 
-    public function __construct(array $errors = [])
+    /**
+     * @var bool
+     */
+    private $isPassed;
+
+    public function __construct(bool $passed, array $errors)
     {
+        $this->isPassed = $passed;
         $this->errors = $errors;
     }
     
@@ -17,7 +23,7 @@ class SimpleRuleResult implements RuleResultInterface
      */
     public function isPassed(): bool
     {
-        return (bool)$this->errors;
+        return $this->isPassed;
     }
 
     /**

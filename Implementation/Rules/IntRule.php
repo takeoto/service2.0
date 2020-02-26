@@ -7,10 +7,9 @@ class IntRule implements RuleInterface
      */
     public function pass($value): RuleResultInterface
     {
-        $errors = [];
-
-        !is_int($value) && $errors[] = 'Value must be integer';
-
-        return new SimpleRuleResult($errors);
+        return new TrueOrErrorRuleResult(
+            is_int($value),
+            'Value must be integer!'
+        );
     }
 }

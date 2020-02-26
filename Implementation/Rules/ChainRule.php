@@ -7,11 +7,6 @@ class ChainRule implements RuleInterface
      */
     private $rules;
 
-    /**
-     * @var array
-     */
-    private $errors = [];
-
     public function __construct(RuleInterface ...$rules)
     {
         $this->rules = $rules;
@@ -22,18 +17,21 @@ class ChainRule implements RuleInterface
      */
     public function pass($value): RuleResultInterface
     {
+        $isPassed = true;
+        $errors = [];
+
         /** @var RuleInterface $rule */
         foreach ($this->rules as $rule) {
             $ruleResult = $rule->pass($value);
 
-            if ($ruleResult->isPassed()) {
+            if ($isPassed &= $ruleResult->isPassed()) {
                 continue;
             }
 
-            array_push($this->errors, ...$ruleResult->getErrors());
+            array_push($errors, ...$ruleResult->getErrors());
             break;
         }
 
-        return new SimpleRuleResult($this->errors);
+        return new SimpleRuleResult($isPassed, $errors);
     }
 }
