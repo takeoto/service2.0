@@ -13,17 +13,14 @@ class Controller
 
         $dynamicParams = [1,2,3,4,5,6];
 
-        if (!ConditionsManager::isListCanBeUsed($conditions)) {
-            $errors = ConditionsManager::getListErrors($conditions);
-            // Some logic ...
-            return;
-        }
-
         foreach ($dynamicParams as $newParam) {
-            $conditions->replace($newCondition = SomeServiceConditions::makeFourthCondition($newParam));
+            $conditions->replace(SomeServiceConditions::makeFourthCondition($newParam));
 
-            if (!ConditionsManager::isCanBeUsed($newCondition)) {
-                continue;
+            // Or check single condition `ConditionsManager::isCanBeUsed({newCondition})`
+            if (!ConditionsManager::isListCanBeUsed($conditions)) {
+                $errors = ConditionsManager::getListErrors($conditions);
+                // Some logic ...
+                return;
             }
 
             $result = $srv->handle($conditions);
