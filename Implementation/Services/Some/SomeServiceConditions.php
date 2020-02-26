@@ -2,13 +2,14 @@
 
 class SomeServiceConditions
 {
+    // Some condition names
     public const FIRST_PARAM_NAME = 'first.param';
     public const SECOND_PARAM_NAME = 'second.param';
     public const THIRD_PARAM_NAME = 'third.param';
     public const FOURTH_PARAM_NAME = 'fourth.param';
 
     /**
-     * Make base conditions for "Some service"
+     * Make base conditions for "SomeService"
      * @param $firstValue
      * @return ConditionsInterface
      */

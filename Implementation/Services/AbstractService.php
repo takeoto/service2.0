@@ -14,7 +14,7 @@ abstract class AbstractService implements ServiceInterface
                     /** @var ConditionInterface $item */
                     return in_array($item->getName(), $this->acceptParams());
                 }, true)
-                // Check all
+                // Valid guarantee
                 ->each(function ($item) {
                     /** @var ConditionInterface $item */
                     $ruleResult = $item->followRule();

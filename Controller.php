@@ -20,7 +20,7 @@ class Controller
             if (!ConditionsManager::isListCanBeUsed($conditions)) {
                 $errors = ConditionsManager::getListErrors($conditions);
                 // Some logic ...
-                return;
+                continue;
             }
 
             $result = $srv->handle($conditions);
