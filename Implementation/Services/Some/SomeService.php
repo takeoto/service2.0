@@ -22,12 +22,12 @@ class SomeService extends AbstractService
     {
         // Not required condition
         if ($conditions->has(SomeServiceConditions::SECOND_PARAM_NAME)) {
-            $conditions->find(SomeServiceConditions::SECOND_PARAM_NAME)->getValue();
+            $secondValue = $conditions->find(SomeServiceConditions::SECOND_PARAM_NAME)->getValue();
             // Some logic ...
         }
 
         // Required condition (throw exception if the item not exists)
-        $value = $conditions->find(SomeServiceConditions::FIRST_PARAM_NAME)->getValue();
+        $firstValue = $conditions->find(SomeServiceConditions::FIRST_PARAM_NAME)->getValue();
 
         // Some logic ...
 

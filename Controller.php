@@ -4,7 +4,7 @@ class Controller
 {
     public function action()
     {
-        $srv = new SomeService();
+        $service = new SomeService();
 
         // Making conditions list
         $conditions = SomeServiceConditions::base(12345)
@@ -23,7 +23,7 @@ class Controller
                 continue;
             }
 
-            $result = $srv->handle($conditions);
+            $result = $service->handle($conditions);
 
             // Runtime errors
             $result->getErrors();
