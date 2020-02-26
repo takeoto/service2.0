@@ -9,7 +9,7 @@ class SomeServiceConditions
     public const FOURTH_PARAM_NAME = 'fourth.param';
 
     /**
-     * Make base conditions for "SomeService"
+     * Make base, required conditions for "SomeService"
      * @param $firstValue
      * @return ConditionsInterface
      */

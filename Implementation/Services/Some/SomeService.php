@@ -20,13 +20,13 @@ class SomeService extends AbstractService
      */
     protected function exec(ConditionsInterface $conditions): ServiceResultInterface
     {
-        // Not require condition
+        // Not required condition
         if ($conditions->has(SomeServiceConditions::SECOND_PARAM_NAME)) {
             $conditions->find(SomeServiceConditions::SECOND_PARAM_NAME)->getValue();
             // Some logic ...
         }
 
-        // Require condition (throw exception if the item not exists)
+        // Required condition (throw exception if the item not exists)
         $value = $conditions->find(SomeServiceConditions::FIRST_PARAM_NAME)->getValue();
 
         // Some logic ...
