@@ -35,7 +35,7 @@ class ConditionsManager
             $result &= ConditionsManager::isCanBeUsed($item);
         });
 
-        return $result;
+        return (bool)$result;
     }
 
     /**
