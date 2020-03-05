@@ -8,7 +8,7 @@ class ConditionsManager
      */
     public static function makeList(ConditionInterface ...$conditions): ConditionsInterface
     {
-        return new Conditions(...$conditions);
+        return new SimpleConditions(...$conditions);
     }
 
     /**

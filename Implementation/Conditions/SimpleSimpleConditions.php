@@ -1,6 +1,6 @@
 <?php
 
-class Conditions implements ConditionsInterface
+class SimpleConditions implements ConditionsInterface
 {
     /**
      * @var ConditionInterface[]

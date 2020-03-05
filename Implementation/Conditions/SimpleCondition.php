@@ -26,9 +26,9 @@ class SimpleCondition implements ConditionInterface
      * SimpleCondition constructor.
      * @param string $name
      * @param $value
-     * @param RuleInterface|null $rule
+     * @param RuleInterface$rule
      */
-    public function __construct(string $name, $value, ?RuleInterface $rule = null)
+    public function __construct(string $name, $value, RuleInterface $rule)
     {
         $this->name = $name;
         $this->value = $value;

@@ -32,9 +32,9 @@ class MakeRule
      * @param array $values
      * @return RuleInterface
      */
-    public static function arrayOf(array $values): RuleInterface
+    public static function oneOf(array $values): RuleInterface
     {
-        return new ArrayOfRule($values);
+        return new OneOfRule($values);
     }
 
     /**

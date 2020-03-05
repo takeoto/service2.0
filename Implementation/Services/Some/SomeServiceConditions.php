@@ -54,7 +54,7 @@ class SomeServiceConditions
         return ConditionsManager::makeOne(
             self::THIRD_PARAM_NAME,
             $value,
-            MakeRule::arrayOf([
+            MakeRule::oneOf([
                 'value1',
                 'value2',
             ])

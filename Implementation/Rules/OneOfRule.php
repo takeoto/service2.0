@@ -1,6 +1,6 @@
 <?php
 
-class ArrayOfRule implements RuleInterface
+class OneOfRule implements RuleInterface
 {
     /**
      * @var array
