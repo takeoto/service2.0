@@ -18,21 +18,20 @@ class SomeService extends AbstractService
     /**
      * @inheritDoc
      */
-    protected function exec(ConditionsInterface $conditions): ServiceResultInterface
+    protected function exec(ServiceConditions $conditions): ServiceResult
     {
         // Not required condition
         if ($conditions->has(SomeServiceConditions::SECOND_PARAM_NAME)) {
-            $secondValue = $conditions->find(SomeServiceConditions::SECOND_PARAM_NAME)->getValue();
+            $secondValue = $conditions->getValue(SomeServiceConditions::SECOND_PARAM_NAME)->asInt();
             // Some logic ...
         }
 
         // Required condition (throw exception if the item not exists)
-        $firstValue = $conditions->find(SomeServiceConditions::FIRST_PARAM_NAME)->getValue();
+        $firstValue = $conditions->getValue(SomeServiceConditions::FIRST_PARAM_NAME)->asString();
 
         // Some logic ...
 
-        return new SimpleServiceResult(
-            $conditions,
+        return new ServiceResult(
             ['{result data}'],
             ['{runtime errors}']
         );

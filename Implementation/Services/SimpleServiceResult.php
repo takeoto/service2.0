@@ -15,7 +15,7 @@ class SimpleServiceResult implements ServiceResultInterface
      */
     private $conditions;
 
-    public function __construct(ConditionsInterface $conditions, array $data, array $errors = [])
+    public function __construct(ConditionsInterface $conditions, $data, array $errors = [])
     {
         $this->data = $data;
         $this->errors = $errors;

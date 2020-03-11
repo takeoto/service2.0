@@ -71,4 +71,13 @@ class ConditionsManager
 
         return $result;
     }
+
+    /**
+     * @param $value
+     * @return FormlessValue
+     */
+    public static function formlessValue($value): FormlessValue
+    {
+        return new FormlessValue($value);
+    }
 }
