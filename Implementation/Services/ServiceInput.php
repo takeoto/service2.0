@@ -1,6 +1,6 @@
 <?php
 
-class ServiceConditions
+class ServiceInput
 {
     /**
      * @var ConditionsInterface

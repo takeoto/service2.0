@@ -1,7 +1,6 @@
 <?php
 
-
-class ServiceResult
+class ServiceOutput
 {
     /**
      * @var mixed

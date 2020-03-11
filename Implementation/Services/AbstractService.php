@@ -7,6 +7,7 @@ abstract class AbstractService implements ServiceInterface
      */
     public function handle(ConditionsInterface $conditions): ServiceResultInterface
     {
+        // Preparing service conditions
         $conditions = $conditions
             // Get only conditions for service
             ->filter(function ($item) {
@@ -27,7 +28,8 @@ abstract class AbstractService implements ServiceInterface
                 }
             });
 
-        $result = $this->exec(new ServiceConditions($conditions));
+        // Executing service logic
+        $result = $this->exec(new ServiceInput($conditions));
 
         return new SimpleServiceResult(
             $conditions,
@@ -44,8 +46,8 @@ abstract class AbstractService implements ServiceInterface
 
     /**
      * Execute service logic
-     * @param ServiceConditions $conditions
-     * @return ServiceResult
+     * @param ServiceInput $conditions
+     * @return ServiceOutput
      */
-    abstract protected function exec(ServiceConditions $conditions): ServiceResult;
+    abstract protected function exec(ServiceInput $conditions): ServiceOutput;
 }

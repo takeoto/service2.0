@@ -18,7 +18,7 @@ class SomeService extends AbstractService
     /**
      * @inheritDoc
      */
-    protected function exec(ServiceConditions $conditions): ServiceResult
+    protected function exec(ServiceInput $conditions): ServiceOutput
     {
         // Not required condition
         if ($conditions->has(SomeServiceConditions::SECOND_PARAM_NAME)) {
@@ -31,7 +31,7 @@ class SomeService extends AbstractService
 
         // Some logic ...
 
-        return new ServiceResult(
+        return new ServiceOutput(
             ['{result data}'],
             ['{runtime errors}']
         );
