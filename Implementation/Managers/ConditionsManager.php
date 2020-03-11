@@ -48,6 +48,15 @@ class ConditionsManager
     }
 
     /**
+     * @param ConditionInterface $condition
+     * @return array
+     */
+    public static function getErrors(ConditionInterface $condition): array
+    {
+        return $condition->followRule()->getErrors();
+    }
+
+    /**
      * @param ConditionsInterface $conditions
      * @return array
      */
@@ -57,7 +66,7 @@ class ConditionsManager
 
         $conditions->each(function ($item) use (&$result) {
             /** @var ConditionInterface $item */
-            $result[$item->getName()] = $item->followRule()->getErrors();
+            $result[$item->getName()] = ConditionsManager::getErrors($item);
         });
 
         return $result;
