@@ -120,7 +120,7 @@ class Conditions implements ConditionsInterface
     {
         $this->each(function ($item) use ($fn) {
             /** @var ConditionInterface $item */
-            $fn($item) && $this->remove($item);
+            !$fn($item) && $this->remove($item);
         });
 
         return $this;
