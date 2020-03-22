@@ -29,11 +29,11 @@ class Controller
             $result->getErrors();
 
             // Result data
-            $formlessValue = ConditionsManager::formlessValue($result->getData());
+            $data = ConditionsManager::strictValue($result->getData());
 
-            if ($formlessValue->asBool()) {
+            if ($data->asBool()) {
                 /** @var {className} $object */
-                $object = $formlessValue->asInstanceOf('{className}');
+                $object = $data->asInstanceOf('{className}');
              }
         }
     }

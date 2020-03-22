@@ -74,10 +74,10 @@ class ConditionsManager
 
     /**
      * @param $value
-     * @return FormlessValue
+     * @return StrictValue
      */
-    public static function formlessValue($value): FormlessValue
+    public static function strictValue($value): StrictValue
     {
-        return new FormlessValue($value);
+        return new StrictValue($value);
     }
 }

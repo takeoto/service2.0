@@ -1,11 +1,11 @@
 <?php
 
-class FormlessValue
+class StrictValue
 {
     private $value;
 
     /**
-     * FormlessValue constructor.
+     * StrictValue constructor.
      * @param mixed $value
      */
     public function __construct($value)

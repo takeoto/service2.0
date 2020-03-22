@@ -18,15 +18,15 @@ class ServiceInput
      */
     public function has(string $name): bool
     {
-        return $this->has($name);
+        return $this->conditions->has($name);
     }
 
     /**
      * @param string $name
-     * @return FormlessValue
+     * @return StrictValue
      */
-    public function getValue(string $name): FormlessValue
+    public function getValue(string $name): StrictValue
     {
-        return ConditionsManager::formlessValue($this->conditions->find($name)->getValue());
+        return ConditionsManager::strictValue($this->conditions->find($name)->getValue());
     }
 }

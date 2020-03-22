@@ -29,12 +29,12 @@ abstract class AbstractService implements ServiceInterface
             });
 
         // Executing service logic
-        $result = $this->exec(new ServiceInput($conditions));
+        $output = $this->exec(new ServiceInput($conditions));
 
         return new SimpleServiceResult(
             $conditions,
-            $result->getData(),
-            $result->getErrors()
+            $output->getData(),
+            $output->getErrors()
         );
     }
 
