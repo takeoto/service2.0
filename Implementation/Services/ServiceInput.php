@@ -25,8 +25,16 @@ class ServiceInput
      * @param string $name
      * @return StrictValue
      */
-    public function getValue(string $name): StrictValue
+    public function get(string $name): StrictValue
     {
-        return ConditionsManager::strictValue($this->conditions->find($name)->getValue());
+        return ConditionsManager::strictValue($this->conditions()->find($name)->getValue());
+    }
+
+    /**
+     * @return ConditionsInterface
+     */
+    public function conditions(): ConditionsInterface
+    {
+        return $this->conditions;
     }
 }

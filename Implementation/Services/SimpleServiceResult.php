@@ -1,25 +1,26 @@
 <?php
 
-class SimpleServiceResult implements ServiceResultInterface
+class SimpleServiceResult implements ResultInterface
 {
     /**
-     * @var array
+     * @var ServiceInput
      */
-    private $data;
-    /**
-     * @var array
-     */
-    private $errors;
-    /**
-     * @var ConditionsInterface
-     */
-    private $conditions;
+    private ServiceInput $input;
 
-    public function __construct(ConditionsInterface $conditions, $data, array $errors = [])
+    /**
+     * @var ServiceOutput
+     */
+    private ServiceOutput $output;
+
+    /**
+     * ServiceResult constructor.
+     * @param ServiceInput $input
+     * @param ServiceOutput $output
+     */
+    public function __construct(ServiceInput $input, ServiceOutput $output)
     {
-        $this->data = $data;
-        $this->errors = $errors;
-        $this->conditions = $conditions;
+        $this->input = $input;
+        $this->output = $output;
     }
 
     /**
@@ -27,7 +28,7 @@ class SimpleServiceResult implements ServiceResultInterface
      */
     public function getConditions(): ConditionsInterface
     {
-        return $this->conditions;
+        return $this->input->conditions();
     }
 
     /**
@@ -35,14 +36,14 @@ class SimpleServiceResult implements ServiceResultInterface
      */
     public function getErrors(): array
     {
-        return $this->errors;
+        return $this->output->getErrors();
     }
 
     /**
-     * @inheritDoc
+     * @return StrictValue
      */
-    public function getData()
+    public function getData(): StrictValue
     {
-        return $this->data;
+        return ConditionsManager::strictValue($this->output->getData());
     }
 }

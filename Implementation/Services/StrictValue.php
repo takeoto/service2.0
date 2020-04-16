@@ -46,6 +46,14 @@ class StrictValue
     }
 
     /**
+     * @return mixed
+     */
+    public function original()
+    {
+        return $this->value;
+    }
+
+    /**
      * @param string $class
      * @return {$class}
      * @throws Exception

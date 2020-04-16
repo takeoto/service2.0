@@ -5,16 +5,23 @@ class Controller
     public function action()
     {
         $service = new SomeService();
+        $manager = new ConditionsProvider(
+            new SomeConditionsProvider(),
+            new SomeConditionsProvider(),
+            new SomeConditionsProvider(),
+        );
 
         // Making conditions list
-        $conditions = SomeServiceConditions::base(12345)
-            ->add(SomeServiceConditions::makeSecondCondition(123))
-            ->add(SomeServiceConditions::makeThirdCondition('value123'));
+        $conditions = ConditionsManager::makeList(
+            $manager->make(SomeConditionsProvider::FIRST_PARAM_NAME, 123),
+            $manager->make(SomeConditionsProvider::SECOND_PARAM_NAME, 123),
+            $manager->make(SomeConditionsProvider::THIRD_PARAM_NAME, 'value123'),
+        );
 
-        $dynamicParams = [1,2,3,4,5,6];
+        $dynamicParams = [1, 2, 3, 4, 5, 6];
 
         foreach ($dynamicParams as $newParam) {
-            $conditions->replace(SomeServiceConditions::makeFourthCondition($newParam));
+            $conditions->replace($manager->make(SomeConditionsProvider::FOURTH_PARAM_NAME, $newParam));
 
             // Or check single condition `ConditionsManager::isCanBeUsed({newCondition})`
             if (!ConditionsManager::isListCanBeUsed($conditions)) {
@@ -29,12 +36,10 @@ class Controller
             $result->getErrors();
 
             // Result data
-            $data = ConditionsManager::strictValue($result->getData());
-
-            if ($data->asBool()) {
+            if ($result->getData()->asBool()) {
                 /** @var {className} $object */
-                $object = $data->asInstanceOf('{className}');
-             }
+                $object = $result->getData()->asInstanceOf('{className}');
+            }
         }
     }
 }

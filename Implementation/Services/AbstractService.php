@@ -3,39 +3,110 @@
 abstract class AbstractService implements ServiceInterface
 {
     /**
+     * @var ServiceInput
+     */
+    private ServiceInput $in;
+
+    /**
+     * @var ServiceOutput
+     */
+    private ServiceOutput $out;
+
+    /**
      * @inheritDoc
      */
-    public function handle(ConditionsInterface $conditions): ServiceResultInterface
+    public function handle(ConditionsInterface $conditions): ResultInterface
     {
-        // Preparing service conditions
-        $conditions = $conditions
-            // Get only conditions for service
-            ->filter(function ($item) {
-                /** @var ConditionInterface $item */
-                return in_array($item->getName(), $this->acceptConditions());
-            }, true)
-            // Valid guarantee
-            ->each(function ($item) {
-                /** @var ConditionInterface $item */
-                $ruleResult = $item->followRule();
+        $this->init($conditions);
+        $this->beforeExecute();
+        $result = $this->execute();
+        $this->afterExcute();
 
-                if (!$ruleResult->isPassed()) {
-                    throw new \Exception(
-                        'You can\'t use not correct values!'
-                        . PHP_EOL
-                        . 'Errors: ' . implode(',', $ruleResult->getErrors())
-                    );
-                }
-            });
+        return $this->executionResult($result);
+    }
 
-        // Executing service logic
-        $output = $this->exec(new ServiceInput($conditions));
+    /**
+     * @param ConditionsInterface $conditions
+     */
+    private function init(ConditionsInterface $conditions): void
+    {
+        $conditions = $conditions->filter(function ($item) {
+            /** @var ConditionInterface $item */
+            return in_array($item->getName(), $this->acceptConditions());
+        }, true);
 
-        return new SimpleServiceResult(
-            $conditions,
-            $output->getData(),
-            $output->getErrors()
-        );
+        $this->setInput(new ServiceInput($conditions));
+        $this->setOutput(new ServiceOutput());
+    }
+
+    /**
+     * @param mixed $result
+     * @return ResultInterface
+     */
+    protected function executionResult($result): ResultInterface
+    {
+        if (!is_subclass_of($result, ResultInterface::class)) {
+            $result = new SimpleServiceResult(
+                $this->input(),
+                $result === null
+                    ? $this->output()
+                    : $this->output()->put($result)
+            );
+        }
+
+        return $result;
+    }
+
+    protected function beforeExecute(): void
+    {
+        // Valid guarantee
+        $this->in->conditions()->each(function ($item) {
+            /** @var ConditionInterface $item */
+            $ruleResult = $item->followRule();
+
+            if (!$ruleResult->isPassed()) {
+                throw new \Exception(
+                    'You can\'t use not correct values!'
+                    . PHP_EOL
+                    . 'Errors: ' . implode(',', $ruleResult->getErrors())
+                );
+            }
+        });
+    }
+
+    protected function afterExcute(): void {}
+
+    /**
+     * @return ServiceInput
+     */
+    protected function input(): ServiceInput
+    {
+        return $this->in;
+    }
+
+    /**
+     * @return ServiceOutput
+     */
+    protected function output(): ServiceOutput
+    {
+        return $this->out;
+    }
+
+    /**
+     * @param ServiceInput $in
+     */
+    protected function setInput(ServiceInput $in)
+    {
+        $this->in = $in;
+    }
+
+    /**
+     * @param ServiceOutput $out
+     * @return ServiceOutput
+     */
+    protected function setOutput(ServiceOutput $out)
+    {
+        return $this->out = $out;
     }
 
     /**
@@ -46,8 +117,7 @@ abstract class AbstractService implements ServiceInterface
 
     /**
      * Execute service logic
-     * @param ServiceInput $conditions
-     * @return ServiceOutput
+     * @return mixed
      */
-    abstract protected function exec(ServiceInput $conditions): ServiceOutput;
+    abstract protected function execute();
 }

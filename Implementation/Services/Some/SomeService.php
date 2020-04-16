@@ -8,32 +8,35 @@ class SomeService extends AbstractService
     protected function acceptConditions(): array
     {
         return [
-            SomeServiceConditions::FIRST_PARAM_NAME,
-            SomeServiceConditions::SECOND_PARAM_NAME,
-            SomeServiceConditions::THIRD_PARAM_NAME,
-            SomeServiceConditions::FOURTH_PARAM_NAME,
+            SomeConditionsProvider::FIRST_PARAM_NAME,
+            SomeConditionsProvider::SECOND_PARAM_NAME,
+            SomeConditionsProvider::THIRD_PARAM_NAME,
+            SomeConditionsProvider::FOURTH_PARAM_NAME,
         ];
     }
 
     /**
      * @inheritDoc
      */
-    protected function exec(ServiceInput $conditions): ServiceOutput
+    protected function execute()
     {
         // Not required condition
-        if ($conditions->has(SomeServiceConditions::SECOND_PARAM_NAME)) {
-            $secondValue = $conditions->getValue(SomeServiceConditions::SECOND_PARAM_NAME)->asInt();
+        if ($this->input()->has(SomeConditionsProvider::SECOND_PARAM_NAME)) {
+            $secondValue = $this->input()->get(SomeConditionsProvider::SECOND_PARAM_NAME)->asInt();
+            $this->output()->put(123, 'key0');
             // Some logic ...
         }
 
         // Required condition (throw exception if the item not exists)
-        $firstValue = $conditions->getValue(SomeServiceConditions::FIRST_PARAM_NAME)->asString();
+        $firstValue = $this->input()->get(SomeConditionsProvider::FIRST_PARAM_NAME)->asString();
+
+        $this->output()->error('Some error!');
 
         // Some logic ...
 
-        return new ServiceOutput(
-            ['{result data}'],
-            ['{runtime errors}']
-        );
+        $this->output()->put([
+            'key0' => 'some result 0',
+            'key1' => 'some result 1',
+        ]);
     }
 }
