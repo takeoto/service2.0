@@ -19,13 +19,13 @@ class ConditionsProvider implements ConditionsProviderInterface
      */
     public function __construct(ConditionsProviderInterface ...$providers)
     {
-        $conditionNameToProvider = [];
+        $prepared = [];
 
         foreach ($providers as $provider) {
-            $conditionNameToProvider[] = array_fill_keys($provider->getNames(), $provider);
+            $prepared[] = array_fill_keys($provider->getNames(), $provider);
         }
 
-        $this->providers = array_merge(...$conditionNameToProvider);
+        $this->providers = array_merge(...$prepared);
         $this->names = array_keys($this->providers);
     }
 
@@ -35,7 +35,7 @@ class ConditionsProvider implements ConditionsProviderInterface
     public function make(string $name, $value): ConditionInterface
     {
         if (!isset($this->providers[$name])) {
-            throw new \Exception();
+            throw new \Exception("Condition with \"$name\" name not exists!");
         }
 
         return $this->providers[$name]->make($name, $value);
