@@ -19,13 +19,13 @@ class ConditionsProvider implements ConditionsProviderInterface
      */
     public function __construct(ConditionsProviderInterface ...$providers)
     {
-        $prepared = [];
+        $conditionNameToProvider = [];
 
-        foreach ($providers as $pack) {
-            $prepared[] = array_fill_keys($pack->getNames(), $pack);
+        foreach ($providers as $provider) {
+            $conditionNameToProvider[] = array_fill_keys($provider->getNames(), $provider);
         }
 
-        $this->providers = array_merge(...$prepared);
+        $this->providers = array_merge(...$conditionNameToProvider);
         $this->names = array_keys($this->providers);
     }
 

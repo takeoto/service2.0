@@ -27,7 +27,7 @@ class SomeConditionsProvider implements ConditionsProviderInterface
                 $condition = $this->makeFourthCondition($value);
                 break;
             default:
-                throw new \Exception();
+                throw new \Exception("Condition with \"$name\" name not exists!");
         }
 
         return $condition;

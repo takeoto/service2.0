@@ -60,21 +60,26 @@ abstract class AbstractService implements ServiceInterface
     protected function beforeExecute(): void
     {
         // Valid guarantee
-        $this->input()->conditions()->each(function ($item) {
-            /** @var ConditionInterface $item */
-            $ruleResult = $item->followRule();
+        $this
+            ->input()
+            ->conditions()
+            ->each(function ($item) {
+                /** @var ConditionInterface $item */
+                $ruleResult = $item->followRule();
 
-            if (!$ruleResult->isPassed()) {
-                throw new \Exception(
-                    'You can\'t use not correct values!'
-                    . PHP_EOL
-                    . 'Errors: ' . implode(',', $ruleResult->getErrors())
-                );
-            }
-        });
+                if (!$ruleResult->isPassed()) {
+                    throw new \Exception(
+                        'You can\'t use not correct values!'
+                        . PHP_EOL
+                        . 'Errors: ' . implode(',', $ruleResult->getErrors())
+                    );
+                }
+            });
     }
 
-    protected function afterExecute(): void {}
+    protected function afterExecute(): void
+    {
+    }
 
     /**
      * @return ServiceInput
@@ -93,20 +98,20 @@ abstract class AbstractService implements ServiceInterface
     }
 
     /**
-     * @param ServiceInput $in
+     * @param ServiceInput $input
      */
-    protected function setInput(ServiceInput $in)
+    protected function setInput(ServiceInput $input)
     {
-        $this->scopeInput = $in;
+        $this->scopeInput = $input;
     }
 
     /**
-     * @param ServiceOutput $out
+     * @param ServiceOutput $output
      * @return ServiceOutput
      */
-    protected function setOutput(ServiceOutput $out)
+    protected function setOutput(ServiceOutput $output)
     {
-        return $this->scopeOutput = $out;
+        return $this->scopeOutput = $output;
     }
 
     /**
