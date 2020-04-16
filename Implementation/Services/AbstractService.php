@@ -5,12 +5,12 @@ abstract class AbstractService implements ServiceInterface
     /**
      * @var ServiceInput
      */
-    private ServiceInput $in;
+    private ServiceInput $scopeInput;
 
     /**
      * @var ServiceOutput
      */
-    private ServiceOutput $out;
+    private ServiceOutput $scopeOutput;
 
     /**
      * @inheritDoc
@@ -20,7 +20,7 @@ abstract class AbstractService implements ServiceInterface
         $this->init($conditions);
         $this->beforeExecute();
         $result = $this->execute();
-        $this->afterExcute();
+        $this->afterExecute();
 
         return $this->executionResult($result);
     }
@@ -60,7 +60,7 @@ abstract class AbstractService implements ServiceInterface
     protected function beforeExecute(): void
     {
         // Valid guarantee
-        $this->in->conditions()->each(function ($item) {
+        $this->input()->conditions()->each(function ($item) {
             /** @var ConditionInterface $item */
             $ruleResult = $item->followRule();
 
@@ -74,14 +74,14 @@ abstract class AbstractService implements ServiceInterface
         });
     }
 
-    protected function afterExcute(): void {}
+    protected function afterExecute(): void {}
 
     /**
      * @return ServiceInput
      */
     protected function input(): ServiceInput
     {
-        return $this->in;
+        return $this->scopeInput;
     }
 
     /**
@@ -89,7 +89,7 @@ abstract class AbstractService implements ServiceInterface
      */
     protected function output(): ServiceOutput
     {
-        return $this->out;
+        return $this->scopeOutput;
     }
 
     /**
@@ -97,7 +97,7 @@ abstract class AbstractService implements ServiceInterface
      */
     protected function setInput(ServiceInput $in)
     {
-        $this->in = $in;
+        $this->scopeInput = $in;
     }
 
     /**
@@ -106,7 +106,7 @@ abstract class AbstractService implements ServiceInterface
      */
     protected function setOutput(ServiceOutput $out)
     {
-        return $this->out = $out;
+        return $this->scopeOutput = $out;
     }
 
     /**
