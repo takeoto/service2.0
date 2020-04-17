@@ -9,6 +9,8 @@ use Implementation\Rules\ChainRule;
 use Implementation\Rules\EntityExistRule;
 use Implementation\Rules\IntRule;
 use Implementation\Rules\MoreThen;
+use Implementation\Rules\MoreThenRule;
+use Implementation\Rules\OneOfRule;
 
 class MakeRule
 {

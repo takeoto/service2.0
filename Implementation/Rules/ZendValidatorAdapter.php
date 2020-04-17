@@ -3,6 +3,8 @@
 namespace Implementation\Rules;
 
 use Core\RuleInterface;
+use Core\RuleResultInterface;
+use Implementation\Rules\Results\SimpleRuleResult;
 
 class ZendValidatorAdapter implements RuleInterface
 {

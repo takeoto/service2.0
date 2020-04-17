@@ -2,6 +2,8 @@
 
 namespace Implementation\Rules\Results;
 
+use Core\RuleResultInterface;
+
 class TrueOrErrorRuleResult implements RuleResultInterface
 {
     /**
