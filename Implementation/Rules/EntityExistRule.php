@@ -1,5 +1,7 @@
 <?php
 
+namespace Implementation\Rules;
+
 class EntityExistRule implements RuleInterface
 {
     private $entityManager;

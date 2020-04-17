@@ -1,5 +1,7 @@
 <?php
 
+namespace Implementation\Rules;
+
 class IntRule implements RuleInterface
 {
     /**

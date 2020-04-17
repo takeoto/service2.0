@@ -1,5 +1,7 @@
 <?php
 
+namespace Implementation\Services\Some;
+
 class SomeServiceConditions
 {
     // Some condition names

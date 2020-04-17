@@ -1,5 +1,7 @@
 <?php
 
+namespace Implementation\Rules;
+
 class ZendValidatorAdapter implements RuleInterface
 {
     /**
