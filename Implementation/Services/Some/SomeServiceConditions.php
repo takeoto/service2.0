@@ -2,6 +2,11 @@
 
 namespace Implementation\Services\Some;
 
+use Core\ConditionInterface;
+use Core\ConditionsInterface;
+use Implementation\Managers\ConditionsManager;
+use Implementation\Managers\MakeRule;
+
 class SomeServiceConditions
 {
     // Some condition names

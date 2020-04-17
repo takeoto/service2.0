@@ -2,6 +2,9 @@
 
 namespace Implementation\Conditions;
 
+use Core\ConditionInterface;
+use Core\RuleInterface;
+
 class SimpleCondition implements ConditionInterface
 {
     /**

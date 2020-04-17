@@ -1,5 +1,10 @@
 <?php
 
+namespace Implementation\Conditions;
+
+use Core\ConditionInterface;
+use Core\ConditionsInterface;
+
 class SimpleConditions implements ConditionsInterface
 {
     /**
@@ -38,7 +43,7 @@ class SimpleConditions implements ConditionsInterface
     public function find(string $id): ConditionInterface
     {
         if (!$this->has($id)) {
-            throw new \ReqConditionException("Condition \"$id\" not exists!");
+            throw new ReqConditionException("Condition \"$id\" not exists!");
         }
 
         return $this->conditions[$id];
