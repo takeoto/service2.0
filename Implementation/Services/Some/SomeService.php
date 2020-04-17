@@ -2,6 +2,10 @@
 
 namespace Implementation\Services\Some;
 
+use Core\ConditionsInterface;
+use Implementation\Services\AbstractService;
+use Implementation\Services\SimpleServiceResult;
+
 class SomeService extends AbstractService
 {
     /**

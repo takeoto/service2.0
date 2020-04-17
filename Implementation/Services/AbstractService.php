@@ -2,6 +2,10 @@
 
 namespace Implementation\Services;
 
+use Core\ConditionsInterface;
+use Core\ServiceInterface;
+use Core\ServiceResultInterface;
+
 abstract class AbstractService implements ServiceInterface
 {
     /**
@@ -12,11 +16,11 @@ abstract class AbstractService implements ServiceInterface
         return $this->exec(
             $conditions
                 ->filter(function ($item) {
-                    /** @var ConditionInterface $item */
+                    /** @var \Core\ConditionInterface $item */
                     return in_array($item->getName(), $this->acceptParams());
                 }, true)
                 ->each(function ($item) {
-                    /** @var ConditionInterface $item */
+                    /** @var \Core\ConditionInterface $item */
                     if (!$item->getRule()->isPassed($item->getValue())) {
                         throw new \Exception('You can\'t use not correct values!');
                     }

@@ -1,5 +1,9 @@
 <?php
 
+use Implementation\Managers\ConditionsManager;
+use Implementation\Services\Some\SomeService;
+use Implementation\Services\Some\SomeServiceConditions;
+
 class Controller
 {
     public function action()

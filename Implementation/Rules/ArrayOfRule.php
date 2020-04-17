@@ -2,6 +2,8 @@
 
 namespace Implementation\Rules;
 
+use Core\RuleInterface;
+
 class ArrayOfRule implements RuleInterface
 {
     /**
