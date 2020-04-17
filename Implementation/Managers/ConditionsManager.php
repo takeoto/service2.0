@@ -1,5 +1,12 @@
 <?php
 
+namespace Implementation\Managers;
+
+use Core\ConditionInterface;
+use Core\ConditionsInterface;
+use Core\RuleInterface;
+use Implementation\Conditions\SimpleCondition;
+
 class ConditionsManager
 {
     /**

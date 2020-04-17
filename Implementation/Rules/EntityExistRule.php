@@ -1,13 +1,14 @@
 <?php
 
+namespace Implementation\Rules;
+
+use Core\RuleInterface;
+use Core\RuleResultInterface;
+use Implementation\Rules\Results\TrueOrErrorRuleResult;
+
 class EntityExistRule implements RuleInterface
 {
     private $entityManager;
-
-    /**
-     * @var
-     */
-    private $value;
 
     /**
      * @var string

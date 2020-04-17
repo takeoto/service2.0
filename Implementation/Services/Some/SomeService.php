@@ -1,5 +1,12 @@
 <?php
 
+namespace Implementation\Services\Some;
+
+use Core\ConditionsInterface;
+use Core\ServiceResultInterface;
+use Implementation\Services\AbstractService;
+use Implementation\Services\SimpleServiceResult;
+
 class SomeService extends AbstractService
 {
     /**

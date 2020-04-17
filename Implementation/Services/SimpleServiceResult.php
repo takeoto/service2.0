@@ -1,5 +1,10 @@
 <?php
 
+namespace Implementation\Services;
+
+use Core\ConditionsInterface;
+use Core\ServiceResultInterface;
+
 class SimpleServiceResult implements ServiceResultInterface
 {
     /**
