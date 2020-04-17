@@ -6,6 +6,7 @@ use Core\ConditionInterface;
 use Core\ConditionsInterface;
 use Core\RuleInterface;
 use Implementation\Conditions\SimpleCondition;
+use Implementation\Conditions\SimpleConditions;
 
 class ConditionsManager
 {
@@ -15,7 +16,7 @@ class ConditionsManager
      */
     public static function makeList(ConditionInterface ...$conditions): ConditionsInterface
     {
-        return new Conditions(...$conditions);
+        return new SimpleConditions(...$conditions);
     }
 
     /**

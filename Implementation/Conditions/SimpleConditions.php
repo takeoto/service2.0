@@ -5,7 +5,7 @@ namespace Implementation\Conditions;
 use Core\ConditionInterface;
 use Core\ConditionsInterface;
 
-class Conditions implements ConditionsInterface
+class SimpleConditions implements ConditionsInterface
 {
     /**
      * @var ConditionInterface[]
