@@ -1,8 +1,11 @@
 <?php
 
+use Core\ConditionsInterface;
 use Implementation\Managers\ConditionsManager;
+use Implementation\Services\ResultInterface;
 use Implementation\Services\ServiceInput;
 use Implementation\Services\ServiceOutput;
+use Implementation\Services\StrictValue;
 
 class SimpleServiceResult implements ResultInterface
 {

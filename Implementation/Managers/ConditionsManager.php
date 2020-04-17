@@ -8,7 +8,7 @@ use Core\RuleInterface;
 use Implementation\Conditions\Providers\ConditionsProviderInterface;
 use Implementation\Conditions\SimpleCondition;
 use Implementation\Conditions\SimpleConditions;
-use StrictValue;
+use Implementation\Services\StrictValue;
 
 class ConditionsManager
 {
