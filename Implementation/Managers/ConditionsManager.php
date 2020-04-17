@@ -6,6 +6,7 @@ use Core\ConditionInterface;
 use Core\ConditionsInterface;
 use Core\RuleInterface;
 use Implementation\Conditions\SimpleCondition;
+use Implementation\Conditions\SimpleConditions;
 
 class ConditionsManager
 {
