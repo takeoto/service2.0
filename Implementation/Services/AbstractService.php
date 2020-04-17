@@ -1,5 +1,11 @@
 <?php
 
+namespace Implementation\Services;
+
+use Core\ConditionsInterface;
+use Core\ServiceInterface;
+use Core\ServiceResultInterface;
+
 abstract class AbstractService implements ServiceInterface
 {
     /**

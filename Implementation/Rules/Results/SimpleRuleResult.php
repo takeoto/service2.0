@@ -1,5 +1,9 @@
 <?php
 
+namespace Implementation\Rules\Results;
+
+use Core\RuleResultInterface;
+
 class SimpleRuleResult implements RuleResultInterface
 {
     /**

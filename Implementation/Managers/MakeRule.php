@@ -1,5 +1,17 @@
 <?php
 
+namespace Implementation\Managers;
+
+use Core\RuleInterface;
+use Implementation\Rules\ArrayOfRule;
+use Implementation\Rules\BoolRule;
+use Implementation\Rules\ChainRule;
+use Implementation\Rules\EntityExistRule;
+use Implementation\Rules\IntRule;
+use Implementation\Rules\MoreThen;
+use Implementation\Rules\MoreThenRule;
+use Implementation\Rules\OneOfRule;
+
 class MakeRule
 {
     /**
