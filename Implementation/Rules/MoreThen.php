@@ -1,5 +1,6 @@
 <?php
 
+namespace Implementation\Rules;
 
 class MoreThen implements RuleInterface
 {

@@ -1,5 +1,7 @@
 <?php
 
+namespace Implementation\Managers;
+
 class MakeRule
 {
     /**

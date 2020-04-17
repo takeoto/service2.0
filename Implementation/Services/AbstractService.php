@@ -1,5 +1,7 @@
 <?php
 
+namespace Implementation\Services;
+
 abstract class AbstractService implements ServiceInterface
 {
     /**

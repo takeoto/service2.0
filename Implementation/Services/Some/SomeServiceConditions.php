@@ -1,5 +1,7 @@
 <?php
 
+namespace Implementation\Services\Some;
+
 class SomeServiceConditions
 {
     public const FIRST_PARAM_NAME = 'first.param';

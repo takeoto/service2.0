@@ -1,5 +1,7 @@
 <?php
 
+namespace Implementation\Conditions;
+
 class SimpleCondition implements ConditionInterface
 {
     /**
