@@ -1,5 +1,7 @@
 <?php
 
+namespace Implementation\Services;
+
 class StrictValue
 {
     private $value;
@@ -56,7 +58,7 @@ class StrictValue
     /**
      * @param string $class
      * @return {$class}
-     * @throws Exception
+     * @throws \Exception
      */
     public function asInstanceOf(string $class)
     {

@@ -5,8 +5,10 @@ namespace Implementation\Managers;
 use Core\ConditionInterface;
 use Core\ConditionsInterface;
 use Core\RuleInterface;
+use Implementation\Conditions\Providers\ConditionsProviderInterface;
 use Implementation\Conditions\SimpleCondition;
 use Implementation\Conditions\SimpleConditions;
+use StrictValue;
 
 class ConditionsManager
 {

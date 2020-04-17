@@ -4,7 +4,7 @@ namespace Implementation\Services;
 
 use Core\ConditionsInterface;
 use Core\ServiceInterface;
-use Core\ServiceResultInterface;
+use SimpleServiceResult;
 
 abstract class AbstractService implements ServiceInterface
 {

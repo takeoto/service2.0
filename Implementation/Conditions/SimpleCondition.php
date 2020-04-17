@@ -4,6 +4,7 @@ namespace Implementation\Conditions;
 
 use Core\ConditionInterface;
 use Core\RuleInterface;
+use Core\RuleResultInterface;
 
 class SimpleCondition implements ConditionInterface
 {

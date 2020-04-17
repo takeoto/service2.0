@@ -1,5 +1,8 @@
 <?php
 
+namespace Implementation\Conditions\Providers;
+
+use Core\ConditionInterface;
 
 interface ConditionsProviderInterface
 {

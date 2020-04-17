@@ -1,5 +1,9 @@
 <?php
 
+namespace Implementation\Services;
+
+use Core\ConditionsInterface;
+
 class ServiceInput
 {
     /**

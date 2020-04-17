@@ -1,5 +1,10 @@
 <?php
 
+use Core\ConditionInterface;
+use Implementation\Conditions\Providers\ConditionsProviderInterface;
+use Implementation\Managers\ConditionsManager;
+use Implementation\Managers\MakeRule;
+
 class SomeConditionsProvider implements ConditionsProviderInterface
 {
     // Some condition names

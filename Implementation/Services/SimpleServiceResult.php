@@ -1,5 +1,9 @@
 <?php
 
+use Implementation\Managers\ConditionsManager;
+use Implementation\Services\ServiceInput;
+use Implementation\Services\ServiceOutput;
+
 class SimpleServiceResult implements ResultInterface
 {
     /**
