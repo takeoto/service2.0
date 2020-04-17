@@ -18,6 +18,22 @@ class Controller
             $manager->make(SomeConditionsProvider::THIRD_PARAM_NAME, 'value123'),
         );
 
+        /* Make conditions by array
+        $conditions = ConditionsManager::makeListByArray($manager, [
+            SomeConditionsProvider::FIRST_PARAM_NAME => 123,
+            SomeConditionsProvider::SECOND_PARAM_NAME => 123,
+            SomeConditionsProvider::THIRD_PARAM_NAME => 'qwe123',
+        ]);
+         */
+
+        /* Make conditions by array with values
+        $conditions = ConditionsManager::makeListByArray($manager, $_POST, [
+            SomeConditionsProvider::FIRST_PARAM_NAME,
+            SomeConditionsProvider::SECOND_PARAM_NAME,
+            SomeConditionsProvider::THIRD_PARAM_NAME,
+        ]);
+        */
+
         $dynamicParams = [1, 2, 3, 4, 5, 6];
 
         foreach ($dynamicParams as $newParam) {

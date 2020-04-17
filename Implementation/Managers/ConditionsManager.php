@@ -12,6 +12,30 @@ class ConditionsManager
     }
 
     /**
+     * @param ConditionsProviderInterface $provider
+     * @param array $values
+     * @param array|null $names
+     * @return ConditionsInterface
+     */
+    public static function makeListByArray(
+        ConditionsProviderInterface $provider,
+        array $values,
+        ?array $names = null
+    ): ConditionsInterface {
+        $list = self::makeList();
+
+        if ($names === null) {
+            $names = array_keys($values);
+        }
+
+        foreach ($names as $name) {
+            $list->add($provider->make($name, $values[$name] ?? null));
+        }
+
+        return $list;
+    }
+
+    /**
      * @param string $name
      * @param $value
      * @param RuleInterface $rule
