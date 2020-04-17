@@ -17,12 +17,12 @@ abstract class AbstractService implements ServiceInterface
         $conditions = $conditions
             // Get only conditions for service
             ->filter(function ($item) {
-                /** @var ConditionInterface $item */
+                /** @var \Core\ConditionInterface $item */
                 return in_array($item->getName(), $this->acceptConditions());
             }, true)
             // Valid guarantee
             ->each(function ($item) {
-                /** @var ConditionInterface $item */
+                /** @var \Core\ConditionInterface $item */
                 $ruleResult = $item->followRule();
 
                 if (!$ruleResult->isPassed()) {

@@ -1,4 +1,8 @@
 <?php
+namespace Implementation\Services;
+
+use Core\ConditionsInterface;
+use Implementation\Managers\ConditionsManager;
 
 class ServiceInput
 {
