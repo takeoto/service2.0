@@ -37,7 +37,7 @@ abstract class AbstractService implements ServiceInterface
     private function init(ConditionsInterface $conditions): void
     {
         $conditions = $conditions->filter(function ($item) {
-            /** @var ConditionInterface $item */
+            /** @var \Core\ConditionInterface $item */
             return in_array($item->getName(), $this->acceptConditions());
         }, true);
 
@@ -70,7 +70,7 @@ abstract class AbstractService implements ServiceInterface
             ->input()
             ->conditions()
             ->each(function ($item) {
-                /** @var ConditionInterface $item */
+                /** @var \Core\ConditionInterface $item */
                 $ruleResult = $item->followRule();
 
                 if (!$ruleResult->isPassed()) {

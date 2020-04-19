@@ -1,61 +1,23 @@
 <?php
 
 use Core\ConditionInterface;
-use Implementation\Conditions\Providers\ConditionsProviderInterface;
+use Implementation\Conditions\Providers\AbstractConditionsProvider;
 use Implementation\Managers\ConditionsManager;
 use Implementation\Managers\MakeRule;
 
-class SomeConditionsProvider implements ConditionsProviderInterface
+class SomeConditionsProvider extends AbstractConditionsProvider
 {
     // Some condition names
-    public const FIRST_PARAM_NAME = 'first.param';
-    public const SECOND_PARAM_NAME = 'second.param';
-    public const THIRD_PARAM_NAME = 'third.param';
-    public const FOURTH_PARAM_NAME = 'fourth.param';
-
-    /**
-     * @inheritDoc
-     */
-    public function make(string $name, $value): ConditionInterface
-    {
-        switch ($name) {
-            case self::FIRST_PARAM_NAME:
-                $condition = $this->makeFirstCondition($value);
-                break;
-            case self::SECOND_PARAM_NAME:
-                $condition = $this->makeSecondCondition($value);
-                break;
-            case self::THIRD_PARAM_NAME:
-                $condition = $this->makeThirdCondition($value);
-                break;
-            case self::FOURTH_PARAM_NAME:
-                $condition = $this->makeFourthCondition($value);
-                break;
-            default:
-                throw new \Exception("Condition with \"$name\" name not exists!");
-        }
-
-        return $condition;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getNames(): array
-    {
-        return [
-            self::FIRST_PARAM_NAME,
-            self::SECOND_PARAM_NAME,
-            self::THIRD_PARAM_NAME,
-            self::FOURTH_PARAM_NAME,
-        ];
-    }
+    public const FIRST_PARAM_NAME = 'some.first';
+    public const SECOND_PARAM_NAME = 'some.second';
+    public const THIRD_PARAM_NAME = 'some.third';
+    public const FOURTH_PARAM_NAME = 'some.fourth';
 
     /**
      * @param $firstValue
      * @return ConditionInterface
      */
-    public function makeFirstCondition($firstValue): ConditionInterface
+    public function makeFirst($firstValue): ConditionInterface
     {
         return ConditionsManager::makeOne(
             self::FIRST_PARAM_NAME,
@@ -72,7 +34,7 @@ class SomeConditionsProvider implements ConditionsProviderInterface
      * @param $value
      * @return ConditionInterface
      */
-    public function makeSecondCondition($value): ConditionInterface
+    public function makeSecond($value): ConditionInterface
     {
         return ConditionsManager::makeOne(
             self::SECOND_PARAM_NAME,
@@ -89,7 +51,7 @@ class SomeConditionsProvider implements ConditionsProviderInterface
      * @param $value
      * @return ConditionInterface
      */
-    public function makeThirdCondition($value): ConditionInterface
+    public function makeThird($value): ConditionInterface
     {
         return ConditionsManager::makeOne(
             self::THIRD_PARAM_NAME,
@@ -106,7 +68,7 @@ class SomeConditionsProvider implements ConditionsProviderInterface
      * @param $value
      * @return ConditionInterface
      */
-    public function makeFourthCondition($value): ConditionInterface
+    public function makeFourth($value): ConditionInterface
     {
         return ConditionsManager::makeOne(
             self::FOURTH_PARAM_NAME,
