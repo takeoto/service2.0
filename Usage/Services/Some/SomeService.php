@@ -1,6 +1,6 @@
 <?php
 
-namespace Implementation\Services\Some;
+namespace Usage\Services\Some;
 
 use Implementation\Services\AbstractService;
 use SomeConditionsProvider;
