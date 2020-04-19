@@ -2,7 +2,8 @@
 
 use Implementation\Conditions\Providers\ConditionsProvider;
 use Implementation\Managers\ConditionsManager;
-use Implementation\Services\Some\SomeService;
+use Usage\Conditions\Providers\SomeConditionsProvider;
+use Usage\Services\Some\SomeService;
 
 class Controller
 {
