@@ -1,6 +1,6 @@
 <?php
 
-namespace Implementation\Services\Some;
+namespace Usage\Services\Some;
 
 use Core\ConditionInterface;
 use Core\ConditionsInterface;
