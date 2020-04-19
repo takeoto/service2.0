@@ -53,10 +53,10 @@ abstract class AbstractConditionsProvider implements ConditionsProviderInterface
         $reflectionClass = new \ReflectionClass(static::class);
         self::$cachedNames[self::class] = array_filter(
             $reflectionClass->getConstants(),
-            function ($name) {
-                return $this->endsWith($name, '_NAME');
+            function ($name, $value) {
+                return $this->isConditionNameConstant($name, $value);
             },
-            ARRAY_FILTER_USE_KEY
+            ARRAY_FILTER_USE_BOTH
         );
 
         return self::$cachedNames[self::class];
@@ -66,7 +66,7 @@ abstract class AbstractConditionsProvider implements ConditionsProviderInterface
      * @param string $name
      * @return string
      */
-    private function makeMethodName(string $name): string
+    protected function makeMethodName(string $name): string
     {
         $pos = strrpos($name, '.');
 
@@ -74,7 +74,19 @@ abstract class AbstractConditionsProvider implements ConditionsProviderInterface
             $name = substr($name, $pos);
         }
 
-        return 'make' . ucfirst($name);
+        $name = str_replace(['-', '_'], ' ', $name);
+
+        return 'make' . str_replace(' ', '', ucwords($name));
+    }
+
+    /**
+     * @param string $name
+     * @param $value
+     * @return bool
+     */
+    protected function isConditionNameConstant(string $name, $value): bool
+    {
+        return $this->endsWith($name, '_NAME');
     }
 
     /**
