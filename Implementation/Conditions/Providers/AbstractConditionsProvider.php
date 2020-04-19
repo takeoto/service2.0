@@ -86,31 +86,15 @@ abstract class AbstractConditionsProvider implements ConditionsProviderInterface
      */
     protected function isConditionNameConstant(string $name, $value): bool
     {
-        return $this->endsWith($name, '_NAME');
+        return true;
     }
 
     /**
      * @param string $name
      * @return bool
      */
-    private function hasCondition(string $name): bool
+    protected function hasCondition(string $name): bool
     {
         return in_array($name, $this->getNames());
-    }
-
-    /**
-     * @param string $haystack
-     * @param string $needle
-     * @return bool
-     */
-    private function endsWith(string $haystack, string $needle): bool
-    {
-        $length = strlen($needle);
-
-        if ($length == 0) {
-            return true;
-        }
-
-        return substr($haystack, -$length) === $needle;
     }
 }
