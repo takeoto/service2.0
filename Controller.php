@@ -1,8 +1,8 @@
 <?php
 
+use Implementation\Conditions\Providers\ConditionsProvider;
 use Implementation\Managers\ConditionsManager;
 use Implementation\Services\Some\SomeService;
-use Implementation\Services\Some\SomeServiceConditions;
 
 class Controller
 {
