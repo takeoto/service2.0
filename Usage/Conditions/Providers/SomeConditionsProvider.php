@@ -16,14 +16,14 @@ class SomeConditionsProvider extends AbstractConditionsProvider
     public const FOURTH_PARAM_NAME = 'some.fourth';
 
     /**
-     * @param $firstValue
+     * @param $value
      * @return ConditionInterface
      */
-    public function makeFirst($firstValue): ConditionInterface
+    public function makeFirst($value): ConditionInterface
     {
         return ConditionsManager::makeOne(
             self::FIRST_PARAM_NAME,
-            $firstValue,
+            $value,
             MakeRule::entityExists(
                 '{entityManager}',
                 '{className}'

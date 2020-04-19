@@ -11,6 +11,8 @@ abstract class AbstractConditionsProvider implements ConditionsProviderInterface
      */
     private static $cachedNames = [];
 
+    protected $methodPrefix = 'make';
+
     /**
      * @inheritDoc
      */
@@ -76,7 +78,7 @@ abstract class AbstractConditionsProvider implements ConditionsProviderInterface
 
         $name = str_replace(['-', '_'], ' ', $name);
 
-        return 'make' . str_replace(' ', '', ucwords($name));
+        return $this->methodPrefix . str_replace(' ', '', ucwords($name));
     }
 
     /**
