@@ -1,5 +1,7 @@
 <?php
 
+namespace Usage\Conditions\Providers;
+
 use Core\ConditionInterface;
 use Implementation\Conditions\Providers\AbstractConditionsProvider;
 use Implementation\Managers\ConditionsManager;
