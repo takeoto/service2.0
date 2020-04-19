@@ -1,8 +1,9 @@
 <?php
 
-namespace Implementation\Services\Some;
+namespace Usage\Services\Some;
 
 use Core\ConditionsInterface;
+use Core\ServiceResultInterface;
 use Implementation\Services\AbstractService;
 use Implementation\Services\SimpleServiceResult;
 
