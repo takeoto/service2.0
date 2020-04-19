@@ -3,7 +3,7 @@
 namespace Usage\Services\Some;
 
 use Implementation\Services\AbstractService;
-use SomeConditionsProvider;
+use Usage\Conditions\Providers\SomeConditionsProvider;
 
 class SomeService extends AbstractService
 {
