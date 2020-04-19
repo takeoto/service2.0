@@ -26,7 +26,7 @@ abstract class AbstractService implements ServiceInterface
         $this->init($conditions);
         $this->beforeExecute();
         $result = $this->execute();
-        $this->afterExecute();
+        $this->afterExecute($result);
 
         return $this->executionResult($result);
     }
@@ -41,8 +41,8 @@ abstract class AbstractService implements ServiceInterface
             return in_array($item->getName(), $this->acceptConditions());
         }, true);
 
-        $this->setInput(new ServiceInput($conditions));
-        $this->setOutput(new ServiceOutput());
+        $this->scopeInput = new ServiceInput($conditions);
+        $this->scopeOutput = new ServiceOutput();
     }
 
     /**
@@ -63,6 +63,9 @@ abstract class AbstractService implements ServiceInterface
         return $result;
     }
 
+    /**
+     * Before execution
+     */
     protected function beforeExecute(): void
     {
         // Valid guarantee
@@ -83,7 +86,11 @@ abstract class AbstractService implements ServiceInterface
             });
     }
 
-    protected function afterExecute(): void
+    /**
+     * After execution
+     * @param mixed $result
+     */
+    protected function afterExecute($result): void
     {
     }
 
