@@ -5,12 +5,6 @@ namespace Core;
 interface ServiceResultInterface
 {
     /**
-     * Input conditions
-     * @return ConditionsInterface
-     */
-    public function getConditions(): ConditionsInterface;
-
-    /**
      * Output (result) data
      * @return mixed
      */

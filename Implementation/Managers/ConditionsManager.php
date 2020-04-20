@@ -9,6 +9,7 @@ use Implementation\Conditions\Providers\ConditionsProviderInterface;
 use Implementation\Conditions\SimpleCondition;
 use Implementation\Conditions\SimpleConditions;
 use Implementation\Services\StrictValue;
+use Implementation\Services\StrictValueInterface;
 
 class ConditionsManager
 {
@@ -108,9 +109,9 @@ class ConditionsManager
 
     /**
      * @param $value
-     * @return StrictValue
+     * @return StrictValueInterface
      */
-    public static function strictValue($value): StrictValue
+    public static function strictValue($value): StrictValueInterface
     {
         return new StrictValue($value);
     }

@@ -2,7 +2,7 @@
 
 namespace Implementation\Services;
 
-class StrictValue
+class StrictValue implements StrictValueInterface
 {
     private $value;
 

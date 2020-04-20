@@ -2,7 +2,7 @@
 
 namespace Implementation\Services;
 
-class ServiceOutput
+class ServiceOutput implements OutputInterface
 {
     /**
      * @var array

@@ -4,37 +4,24 @@ namespace Implementation\Services;
 
 use Core\ConditionsInterface;
 use Core\ServiceInterface;
-use SimpleServiceResult;
+use ServiceResult;
 
 abstract class AbstractService implements ServiceInterface
 {
     /**
-     * @var ServiceInput
+     * @var InputInterface
      */
-    private ServiceInput $scopeInput;
+    private InputInterface $scopeInput;
 
     /**
-     * @var ServiceOutput
+     * @var OutputInterface
      */
-    private ServiceOutput $scopeOutput;
+    private OutputInterface $scopeOutput;
 
     /**
      * @inheritDoc
      */
-    public function handle(ConditionsInterface $conditions): ResultInterface
-    {
-        $this->init($conditions);
-        $this->beforeExecute();
-        $result = $this->execute();
-        $this->afterExecute($result);
-
-        return $this->executionResult($result);
-    }
-
-    /**
-     * @param ConditionsInterface $conditions
-     */
-    private function init(ConditionsInterface $conditions): void
+    final public function handle(ConditionsInterface $conditions): ResultInterface
     {
         $conditions = $conditions->filter(function ($item) {
             /** @var \Core\ConditionInterface $item */
@@ -43,6 +30,12 @@ abstract class AbstractService implements ServiceInterface
 
         $this->scopeInput = new ServiceInput($conditions);
         $this->scopeOutput = new ServiceOutput();
+
+        $this->beforeExecute($conditions);
+        $result = $this->execute();
+        $this->afterExecute($result);
+
+        return $this->executionResult($result);
     }
 
     /**
@@ -52,7 +45,7 @@ abstract class AbstractService implements ServiceInterface
     protected function executionResult($result): ResultInterface
     {
         if (!is_subclass_of($result, ResultInterface::class)) {
-            $result = new SimpleServiceResult(
+            $result = new ServiceResult(
                 $this->input(),
                 $result === null
                     ? $this->output()
@@ -65,25 +58,23 @@ abstract class AbstractService implements ServiceInterface
 
     /**
      * Before execution
+     * @param ConditionsInterface $conditions
      */
-    protected function beforeExecute(): void
+    protected function beforeExecute(ConditionsInterface $conditions): void
     {
         // Valid guarantee
-        $this
-            ->input()
-            ->conditions()
-            ->each(function ($item) {
-                /** @var \Core\ConditionInterface $item */
-                $ruleResult = $item->followRule();
+        $conditions->each(function ($item) {
+            /** @var \Core\ConditionInterface $item */
+            $ruleResult = $item->followRule();
 
-                if (!$ruleResult->isPassed()) {
-                    throw new \Exception(
-                        'You can\'t use not correct values!'
-                        . PHP_EOL
-                        . 'Errors: ' . implode(',', $ruleResult->getErrors())
-                    );
-                }
-            });
+            if (!$ruleResult->isPassed()) {
+                throw new \Exception(
+                    'You can\'t use not correct values!'
+                    . PHP_EOL
+                    . 'Errors: ' . implode(',', $ruleResult->getErrors())
+                );
+            }
+        });
     }
 
     /**
@@ -95,34 +86,34 @@ abstract class AbstractService implements ServiceInterface
     }
 
     /**
-     * @return ServiceInput
+     * @return InputInterface
      */
-    protected function input(): ServiceInput
+    protected function input(): InputInterface
     {
         return $this->scopeInput;
     }
 
     /**
-     * @return ServiceOutput
+     * @return OutputInterface
      */
-    protected function output(): ServiceOutput
+    protected function output(): OutputInterface
     {
         return $this->scopeOutput;
     }
 
     /**
-     * @param ServiceInput $input
+     * @param InputInterface $input
      */
-    protected function setInput(ServiceInput $input)
+    protected function setInput(InputInterface $input)
     {
         $this->scopeInput = $input;
     }
 
     /**
-     * @param ServiceOutput $output
-     * @return ServiceOutput
+     * @param OutputInterface $output
+     * @return OutputInterface
      */
-    protected function setOutput(ServiceOutput $output)
+    protected function setOutput(OutputInterface $output)
     {
         return $this->scopeOutput = $output;
     }

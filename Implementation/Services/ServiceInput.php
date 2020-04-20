@@ -5,7 +5,7 @@ namespace Implementation\Services;
 use Core\ConditionsInterface;
 use Implementation\Managers\ConditionsManager;
 
-class ServiceInput
+class ServiceInput implements InputInterface
 {
     /**
      * @var ConditionsInterface
@@ -28,18 +28,10 @@ class ServiceInput
 
     /**
      * @param string $name
-     * @return StrictValue
+     * @return StrictValueInterface
      */
-    public function get(string $name): StrictValue
+    public function get(string $name): StrictValueInterface
     {
-        return ConditionsManager::strictValue($this->conditions()->find($name)->getValue());
-    }
-
-    /**
-     * @return ConditionsInterface
-     */
-    public function conditions(): ConditionsInterface
-    {
-        return $this->conditions;
+        return ConditionsManager::strictValue($this->conditions->find($name)->getValue());
     }
 }
