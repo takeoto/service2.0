@@ -5,9 +5,9 @@ namespace Implementation\Services;
 class ServiceOutput implements OutputInterface
 {
     /**
-     * @var array
+     * @var mixed
      */
-    private $data = [];
+    private $data = null;
 
     /**
      * @var array
@@ -35,12 +35,15 @@ class ServiceOutput implements OutputInterface
      */
     public function put($data, string $key = null): self
     {
-        if (is_array($data)) {
-            $this->data = array_merge($this->data, $data);
-        } else {
-            $key === null
-                ? $this->data[] = $data
-                : $this->data[$key] = $data;
+        switch (true) {
+            case is_null($this->data):
+                $this->data = $key === null ? $data : [$key => $data];
+                break;
+            case is_array($this->data):
+                $key === null ? $this->data[] = $data : $this->data[$key] = $data;
+                break;
+            default:
+                $this->data = $key === null ? [$this->data, $data] : [$this->data, $key => $data];
         }
 
         return $this;
@@ -51,11 +54,7 @@ class ServiceOutput implements OutputInterface
      */
     public function getData()
     {
-        if (empty($this->data)) {
-            return null;
-        }
-
-        return count($this->data) === 1 && key($this->data) === 0 ? reset($this->data) : $this->data;
+        return $this->data;
     }
 
     /**

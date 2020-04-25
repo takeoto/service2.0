@@ -39,9 +39,11 @@ class SomeService extends AbstractService
 
         // Some logic ...
 
-        $this->output()->put([
-            'key0' => 'some result 0',
-            'key1' => 'some result 1',
-        ]);
+        $this->output()
+            ->put(321, 'key0')
+            ->put([
+                'some result 0',
+                'some result 1',
+            ]);
     }
 }

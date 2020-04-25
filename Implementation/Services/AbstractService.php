@@ -44,16 +44,7 @@ abstract class AbstractService implements ServiceInterface
      */
     protected function executionResult($result): ResultInterface
     {
-        if (!is_subclass_of($result, ResultInterface::class)) {
-            $result = new ServiceResult(
-                $this->input(),
-                $result === null
-                    ? $this->output()
-                    : $this->output()->put($result)
-            );
-        }
-
-        return $result;
+        return $result instanceof ResultInterface ? $result : new ServiceResult($this->input(), $this->output());
     }
 
     /**
@@ -83,6 +74,9 @@ abstract class AbstractService implements ServiceInterface
      */
     protected function afterExecute($result): void
     {
+        if ($result !== null) {
+            $this->output()->put($result);
+        }
     }
 
     /**
