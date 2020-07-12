@@ -2,7 +2,9 @@
 
 namespace Implementation\Services\Business;
 
-interface InputInterface extends \Implementation\Services\InputInterface
+use Implementation\Services\InputInterface as BaseInputInterface;
+
+interface InputInterface extends BaseInputInterface
 {
     /**
      * @param string $name
