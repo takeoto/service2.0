@@ -3,8 +3,8 @@
 namespace Implementation\Rules;
 
 use Core\RuleInterface;
-use Core\RuleResultInterface;
-use Implementation\Rules\Results\SimpleRuleResult;
+use Core\RuleStateInterface;
+use Implementation\Rules\Results\SimpleRuleState;
 
 class ZendValidatorAdapter implements RuleInterface
 {
@@ -21,9 +21,9 @@ class ZendValidatorAdapter implements RuleInterface
     /**
      * @inheritDoc
      */
-    public function pass($value): RuleResultInterface
+    public function pass($value): RuleStateInterface
     {
-        return new SimpleRuleResult(
+        return new SimpleRuleState(
             $this->validator->isValid($value),
             $this->validator->getMessages()
         );

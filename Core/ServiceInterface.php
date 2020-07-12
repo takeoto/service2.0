@@ -6,7 +6,7 @@ interface ServiceInterface
 {
     /**
      * @param ConditionsInterface $conditions
-     * @return ServiceResultInterface
+     * @return mixed
      */
-    public function handle(ConditionsInterface $conditions): ServiceResultInterface;
+    public function handle(ConditionsInterface $conditions);
 }

@@ -13,7 +13,7 @@ interface InputInterface
 
     /**
      * @param string $name
-     * @return StrictValueInterface
+     * @return mixed
      */
-    public function get(string $name): StrictValueInterface;
+    public function get(string $name);
 }

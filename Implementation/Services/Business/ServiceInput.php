@@ -1,6 +1,6 @@
 <?php
 
-namespace Implementation\Services;
+namespace Implementation\Services\Business;
 
 use Core\ConditionsInterface;
 use Implementation\Managers\ConditionsManager;

@@ -8,8 +8,8 @@ use Core\RuleInterface;
 use Implementation\Conditions\Providers\ConditionsProviderInterface;
 use Implementation\Conditions\SimpleCondition;
 use Implementation\Conditions\SimpleConditions;
-use Implementation\Services\StrictValue;
-use Implementation\Services\StrictValueInterface;
+use Implementation\Services\Business\StrictValue;
+use Implementation\Services\Business\StrictValueInterface;
 
 class ConditionsManager
 {

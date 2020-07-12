@@ -2,24 +2,11 @@
 
 namespace Usage\Services\Some;
 
-use Implementation\Services\AbstractService;
+use Implementation\Services\Business\AbstractBusinessService;
 use Usage\Conditions\Providers\SomeConditionsProvider;
 
-class SomeService extends AbstractService
+class SomeService extends AbstractBusinessService
 {
-    /**
-     * @inheritDoc
-     */
-    protected function acceptConditions(): array
-    {
-        return [
-            SomeConditionsProvider::FIRST_PARAM_NAME,
-            SomeConditionsProvider::SECOND_PARAM_NAME,
-            SomeConditionsProvider::THIRD_PARAM_NAME,
-            SomeConditionsProvider::FOURTH_PARAM_NAME,
-        ];
-    }
-
     /**
      * @inheritDoc
      */

@@ -4,7 +4,7 @@ namespace Implementation\Conditions;
 
 use Core\ConditionInterface;
 use Core\RuleInterface;
-use Core\RuleResultInterface;
+use Core\RuleStateInterface;
 
 class SimpleCondition implements ConditionInterface
 {
@@ -24,7 +24,7 @@ class SimpleCondition implements ConditionInterface
     private $rule;
 
     /**
-     * @var RuleResultInterface|null
+     * @var RuleStateInterface|null
      */
     private $ruleResult;
 
@@ -60,7 +60,7 @@ class SimpleCondition implements ConditionInterface
     /**
      * @inheritDoc
      */
-    public function followRule(): RuleResultInterface
+    public function followRule(): RuleStateInterface
     {
         return $this->ruleResult ?: $this->ruleResult = $this->rule->pass($this->getValue());
     }
