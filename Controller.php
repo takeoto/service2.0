@@ -1,7 +1,7 @@
 <?php
 
 use Implementation\Conditions\Providers\ConditionsProvider;
-use Implementation\Managers\ConditionsManager;
+use Implementation\Tools\ConditionsManager;
 use Usage\Conditions\Providers\SomeConditionsProvider;
 use Usage\Services\Some\SomeService;
 
@@ -30,14 +30,6 @@ class Controller
             SomeConditionsProvider::THIRD_PARAM_NAME => 'qwe123',
         ]);
          */
-
-        /* Make conditions by array with values
-        $conditions = ConditionsManager::makeListByArray($manager, $_POST, [
-            SomeConditionsProvider::FIRST_PARAM_NAME,
-            SomeConditionsProvider::SECOND_PARAM_NAME,
-            SomeConditionsProvider::THIRD_PARAM_NAME,
-        ]);
-        */
 
         $dynamicParams = [1, 2, 3, 4, 5, 6];
 

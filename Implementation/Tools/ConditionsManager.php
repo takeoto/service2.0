@@ -1,6 +1,6 @@
 <?php
 
-namespace Implementation\Managers;
+namespace Implementation\Tools;
 
 use Core\ConditionInterface;
 use Core\ConditionsInterface;
@@ -25,22 +25,14 @@ class ConditionsManager
     /**
      * @param ConditionsProviderInterface $provider
      * @param array $values
-     * @param array|null $names
      * @return ConditionsInterface
      */
-    public static function makeListByArray(
-        ConditionsProviderInterface $provider,
-        array $values,
-        ?array $names = null
-    ): ConditionsInterface {
+    public static function makeListByArray(ConditionsProviderInterface $provider, array $values): ConditionsInterface
+    {
         $list = self::makeList();
-
-        if ($names === null) {
-            $names = array_keys($values);
-        }
-
-        foreach ($names as $name) {
-            $list->add($provider->make($name, $values[$name] ?? null));
+        
+        foreach ($values as $name => $value) {
+            $list->add($provider->make($name, $value));
         }
 
         return $list;
@@ -105,14 +97,5 @@ class ConditionsManager
         });
 
         return $result;
-    }
-
-    /**
-     * @param $value
-     * @return StrictValueInterface
-     */
-    public static function strictValue($value): StrictValueInterface
-    {
-        return new StrictValue($value);
     }
 }

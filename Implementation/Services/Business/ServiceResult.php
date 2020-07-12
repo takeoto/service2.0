@@ -1,7 +1,8 @@
 <?php
 namespace Implementation\Services\Business;
 
-use Implementation\Managers\ConditionsManager;
+use Implementation\Tools\ConditionsManager;
+use Implementation\Tools\Pikachu;
 
 class ServiceResult implements ResultInterface
 {
@@ -32,6 +33,6 @@ class ServiceResult implements ResultInterface
      */
     public function getData(): StrictValueInterface
     {
-        return ConditionsManager::strictValue($this->data);
+        return Pikachu::strictValue($this->data);
     }
 }

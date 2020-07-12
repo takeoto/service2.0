@@ -4,8 +4,8 @@ namespace Usage\Conditions\Providers;
 
 use Core\ConditionInterface;
 use Implementation\Conditions\Providers\AbstractConditionsProvider;
-use Implementation\Managers\ConditionsManager;
-use Implementation\Managers\MakeRule;
+use Implementation\Tools\ConditionsManager;
+use Implementation\Tools\MakeRule;
 
 class SomeConditionsProvider extends AbstractConditionsProvider
 {

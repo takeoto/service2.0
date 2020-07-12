@@ -3,7 +3,7 @@
 namespace Implementation\Services\Business;
 
 use Core\ConditionsInterface;
-use Implementation\Managers\ConditionsManager;
+use Implementation\Tools\Pikachu;
 
 class ServiceInput implements InputInterface
 {
@@ -32,6 +32,6 @@ class ServiceInput implements InputInterface
      */
     public function get(string $name): StrictValueInterface
     {
-        return ConditionsManager::strictValue($this->conditions->find($name)->getValue());
+        return Pikachu::strictValue($this->conditions->find($name)->getValue());
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Implementation\Managers;
+namespace Implementation\Tools;
 
 use Core\RuleInterface;
 use Implementation\Rules\BoolRule;
