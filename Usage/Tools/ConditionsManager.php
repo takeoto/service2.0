@@ -1,6 +1,6 @@
 <?php
 
-namespace Implementation\Tools;
+namespace Usage\Tools;
 
 use Core\ConditionInterface;
 use Core\ConditionsInterface;
@@ -8,8 +8,6 @@ use Core\RuleInterface;
 use Implementation\Conditions\Providers\ConditionsProviderInterface;
 use Implementation\Conditions\SimpleCondition;
 use Implementation\Conditions\SimpleConditions;
-use Implementation\Services\Business\StrictValue;
-use Implementation\Services\Business\StrictValueInterface;
 
 class ConditionsManager
 {

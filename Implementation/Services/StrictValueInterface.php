@@ -1,6 +1,6 @@
 <?php
 
-namespace Implementation\Services\Business;
+namespace Implementation\Services;
 
 interface StrictValueInterface
 {

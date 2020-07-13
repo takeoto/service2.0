@@ -1,9 +1,9 @@
 <?php
 
-namespace Implementation\Services\Business;
+namespace Implementation\Services;
 
 use Core\ConditionsInterface;
-use Implementation\Tools\Pikachu;
+use Usage\Tools\Pikachu;
 
 class ServiceInput implements InputInterface
 {
@@ -32,6 +32,6 @@ class ServiceInput implements InputInterface
      */
     public function get(string $name): StrictValueInterface
     {
-        return Pikachu::strictValue($this->conditions->find($name)->getValue());
+        return new StrictValue($this->conditions->find($name)->getValue());
     }
 }

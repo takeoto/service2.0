@@ -1,13 +1,13 @@
 <?php
 
-namespace Implementation\Services\Business;
+namespace Implementation\Services;
 
 use Core\ConditionInterface;
 use Core\ConditionsInterface;
 use Core\ServiceInterface;
 use Implementation\Services\InputInterface;
 
-abstract class AbstractBusinessService implements ServiceInterface
+abstract class AbstractService implements ServiceInterface
 {
     private $input;
     
@@ -15,9 +15,9 @@ abstract class AbstractBusinessService implements ServiceInterface
 
     /**
      * @param ConditionsInterface $conditions
-     * @return ResultInterface
+     * @return StrictValueInterface
      */
-    public function handle(ConditionsInterface $conditions): ResultInterface
+    public function handle(ConditionsInterface $conditions): StrictValueInterface
     {
         $this->beforeExecute($conditions->filter(fn ($item) => $this->isConditionAcceptable($item), true));
         
@@ -36,22 +36,15 @@ abstract class AbstractBusinessService implements ServiceInterface
 
     /**
      * @param mixed $result
-     * @return ResultInterface
+     * @return StrictValueInterface
      */
-    protected function processResult($result): ResultInterface
+    protected function processResult($result): StrictValueInterface
     {
-        if ($result instanceof ResultInterface) {
-            return $result;
-        }
-
         if ($result !== null) {
             $this->output()->put($result);
         }
         
-        return new ServiceResult(
-            $this->output()->getData(),
-            $this->output()->getErrors()
-        );
+        return new StrictValue($this->output()->getData());
     }
 
     /**

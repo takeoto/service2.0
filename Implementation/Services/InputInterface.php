@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Implementation\Services;
 
 interface InputInterface
@@ -13,7 +12,7 @@ interface InputInterface
 
     /**
      * @param string $name
-     * @return mixed
+     * @return StrictValueInterface
      */
-    public function get(string $name);
+    public function get(string $name): StrictValueInterface;
 }

@@ -2,10 +2,10 @@
 
 namespace Usage\Services\Some;
 
-use Implementation\Services\Business\AbstractBusinessService;
+use Implementation\Services\AbstractService;
 use Usage\Conditions\Providers\SomeConditionsProvider;
 
-class SomeService extends AbstractBusinessService
+class SomeService extends AbstractService
 {
     /**
      * @inheritDoc

@@ -7,7 +7,12 @@ interface OutputInterface
     /**
      * @param $data
      * @param string|null $key
-     * @return $this
+     * @return self
      */
     public function put($data, string $key = null): self;
+    
+    /**
+     * @return mixed
+     */
+    public function getData();
 }

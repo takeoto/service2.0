@@ -1,5 +1,5 @@
 <?php
-namespace Implementation\Services\Business;
+namespace Implementation\Services;
 
 class ServiceOutput implements OutputInterface
 {

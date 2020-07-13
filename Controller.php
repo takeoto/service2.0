@@ -1,7 +1,7 @@
 <?php
 
 use Implementation\Conditions\Providers\ConditionsProvider;
-use Implementation\Tools\ConditionsManager;
+use Usage\Tools\ConditionsManager;
 use Usage\Conditions\Providers\SomeConditionsProvider;
 use Usage\Services\Some\SomeService;
 

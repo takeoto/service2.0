@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Implementation\Tools;
+namespace Usage\Tools;
 
-use Implementation\Services\Business\StrictValue;
-use Implementation\Services\Business\StrictValueInterface;
+use Implementation\Services\StrictValue;
+use Implementation\Services\StrictValueInterface;
 
 class Pikachu
 {
