@@ -9,25 +9,6 @@ class ServiceOutput implements OutputInterface
     private $data = null;
 
     /**
-     * @var array
-     */
-    private $errors;
-
-    /**
-     * @param string $message
-     * @param string|null $key
-     * @return self
-     */
-    public function error(string $message, string $key = null): self
-    {
-        $key === null
-            ? $this->errors[] = $message
-            : $this->errors[$key] = $message;
-
-        return $this;
-    }
-
-    /**
      * @param $data
      * @param string $key
      * @return $this
@@ -54,13 +35,5 @@ class ServiceOutput implements OutputInterface
     public function getData()
     {
         return $this->data;
-    }
-
-    /**
-     * @return array
-     */
-    public function getErrors(): array
-    {
-        return $this->errors;
     }
 }
