@@ -43,15 +43,12 @@ class Controller
                 continue;
             }
 
-            $result = $service->handle($conditions);
-
-            // Runtime errors
-            $result->getErrors();
+            $result = $service->handle($conditions);;
 
             // Result data
-            if ($result->getData()->asBool()) {
+            if ($result->asBool()) {
                 /** @var {className} $object */
-                $object = $result->getData()->asInstanceOf('{className}');
+                $object = $result->asInstanceOf('{className}');
             }
         }
     }

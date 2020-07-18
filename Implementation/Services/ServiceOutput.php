@@ -9,14 +9,12 @@ class ServiceOutput implements OutputInterface
     private $data = null;
 
     /**
-     * @param $data
-     * @param string $key
-     * @return $this
+     * @inheritDoc
      */
     public function put($data, string $key = null): self
     {
         switch (true) {
-            case is_null($this->data):
+            case $this->data === null:
                 $this->data = $key === null ? $data : [$key => $data];
                 break;
             case is_array($this->data):
@@ -30,10 +28,14 @@ class ServiceOutput implements OutputInterface
     }
 
     /**
-     * @return mixed
+     * @inheritDoc
      */
-    public function getData()
+    public function get(?string $key = null, $default = null)
     {
-        return $this->data;
+        if ($key === null) {
+            return $this->data;
+        }
+        
+        return  is_array($this->data) ? $this->data[$key] ?? $default : $default; 
     }
 }

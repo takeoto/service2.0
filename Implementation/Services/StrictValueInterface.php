@@ -10,6 +10,12 @@ interface StrictValueInterface
     public function asInt(): int;
 
     /**
+     * @param int|null $precision
+     * @return float
+     */
+    public function asFloat(?int $precision = null): float;
+
+    /**
      * @return bool
      */
     public function asBool(): bool;

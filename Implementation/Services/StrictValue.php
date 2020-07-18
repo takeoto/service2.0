@@ -68,4 +68,9 @@ class StrictValue implements StrictValueInterface
 
         return $this->value;
     }
+
+    public function asFloat(?int $precision = null): float
+    {
+        // TODO: Implement asFloat() method.
+    }
 }

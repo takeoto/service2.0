@@ -5,7 +5,6 @@ namespace Implementation\Services;
 use Core\ConditionInterface;
 use Core\ConditionsInterface;
 use Core\ServiceInterface;
-use Implementation\Services\InputInterface;
 
 abstract class AbstractService implements ServiceInterface
 {
@@ -44,7 +43,7 @@ abstract class AbstractService implements ServiceInterface
             $this->output()->put($result);
         }
         
-        return new StrictValue($this->output()->getData());
+        return new StrictValue($this->output()->get());
     }
 
     /**
