@@ -3,7 +3,9 @@
 namespace Usage\Services\Some;
 
 use Implementation\Services\AbstractService;
+use Implementation\Services\StrictValueInterface;
 use Usage\Conditions\Providers\SomeConditionsProvider;
+use Usage\Tools\Pikachu;
 
 class SomeService extends AbstractService
 {
@@ -22,15 +24,24 @@ class SomeService extends AbstractService
         // Required condition (throw exception if the item not exists)
         $firstValue = $this->input()->get(SomeConditionsProvider::FIRST_PARAM_NAME)->asString();
 
-        $this->output()->error('Some error!');
-
         // Some logic ...
-
         $this->output()
             ->put(321, 'key0')
             ->put([
                 'some result 0',
                 'some result 1',
             ]);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function result(): StrictValueInterface
+    {
+        if ($this->output()->has('key0')) {
+            return Pikachu::strictValue(true);
+        }
+        
+        return Pikachu::strictValue($this->output()->get(false));
     }
 }

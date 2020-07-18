@@ -18,9 +18,21 @@ abstract class AbstractService implements ServiceInterface
      */
     public function handle(ConditionsInterface $conditions): StrictValueInterface
     {
+        $this->reset();
         $this->beforeExecute($conditions->filter(fn ($item) => $this->isConditionAcceptable($item), true));
+        $result = $this->execute();
+        $this->afterExecute($result);
         
-        return $this->processResult($this->execute());
+        return $this->result();
+    }
+
+    /**
+     * Reset input and output data
+     */
+    private function reset(): void
+    {
+        $this->input = null;
+        $this->output = null;
     }
 
     /**
@@ -34,16 +46,14 @@ abstract class AbstractService implements ServiceInterface
     }
 
     /**
+     * After execution
      * @param mixed $result
-     * @return StrictValueInterface
      */
-    protected function processResult($result): StrictValueInterface
+    protected function afterExecute($result): void
     {
         if ($result !== null) {
             $this->output()->put($result);
         }
-        
-        return new StrictValue($this->output()->get());
     }
 
     /**
@@ -86,7 +96,12 @@ abstract class AbstractService implements ServiceInterface
     {
         return $condition->followRule()->isPassed();
     }
-    
+
+    /**
+     * @return StrictValueInterface
+     */
+    abstract protected function result(): StrictValueInterface;
+
     /**
      * Execute service logic
      * @return mixed

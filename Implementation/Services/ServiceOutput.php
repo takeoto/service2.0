@@ -30,12 +30,25 @@ class ServiceOutput implements OutputInterface
     /**
      * @inheritDoc
      */
-    public function get(?string $key = null, $default = null)
+    public function get($default = null, ?string $key = null)
     {
         if ($key === null) {
-            return $this->data;
+            return $this->data ?? $default;
         }
         
-        return  is_array($this->data) ? $this->data[$key] ?? $default : $default; 
+        return is_array($this->data) ? $this->data[$key] ?? $default : $default; 
+    }
+
+    /**
+     * @param string|null $key
+     * @return bool
+     */
+    public function has(string $key = null): bool
+    {
+        if ($key === null) {
+            return $this->data !== null; 
+        }
+        
+        return is_array($this->data) ? isset($this->data[$key]) : false; 
     }
 }

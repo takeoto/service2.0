@@ -16,5 +16,11 @@ interface OutputInterface
      * @param mixed $default
      * @return mixed
      */
-    public function get(?string $key = null, $default = null);
+    public function get($default = null, ?string $key = null);
+
+    /**
+     * @param string|null $key
+     * @return bool
+     */
+    public function has(string $key = null): bool;
 }
