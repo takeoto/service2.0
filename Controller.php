@@ -37,7 +37,7 @@ class Controller
             $conditions->replace($manager->make(SomeConditionsProvider::FOURTH_PARAM_NAME, $newParam));
 
             // Or check single condition `ConditionsManager::isCanBeUsed({newCondition})`
-            if (!ConditionsManager::isListCanBeUsed($conditions)) {
+            if (!ConditionsManager::isListCorrect($conditions)) {
                 $errors = ConditionsManager::getListErrors($conditions);
                 // Some logic ...
                 continue;

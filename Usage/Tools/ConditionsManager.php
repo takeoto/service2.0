@@ -51,13 +51,13 @@ class ConditionsManager
      * @param ConditionsInterface $conditions
      * @return bool
      */
-    public static function isListCanBeUsed(ConditionsInterface $conditions): bool
+    public static function isListCorrect(ConditionsInterface $conditions): bool
     {
         $result = true;
 
         $conditions->each(function ($item) use (&$result) {
             /** @var ConditionInterface $item */
-            $result &= ConditionsManager::isCanBeUsed($item);
+            $result &= ConditionsManager::isCorrect($item);
         });
 
         return (bool)$result;
@@ -67,7 +67,7 @@ class ConditionsManager
      * @param ConditionInterface $condition
      * @return bool
      */
-    public static function isCanBeUsed(ConditionInterface $condition): bool
+    public static function isCorrect(ConditionInterface $condition): bool
     {
         return $condition->followRule()->isPassed();
     }

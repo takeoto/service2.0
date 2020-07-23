@@ -36,7 +36,7 @@ class SomeService extends AbstractService
     /**
      * @inheritDoc
      */
-    protected function result(): StrictValueInterface
+    protected function result($result): StrictValueInterface
     {
         if ($this->output()->has('key0')) {
             return Pikachu::strictValue(true);
