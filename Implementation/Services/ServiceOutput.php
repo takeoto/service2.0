@@ -30,7 +30,7 @@ class ServiceOutput implements OutputInterface
     /**
      * @inheritDoc
      */
-    public function get($default = null, ?string $key = null)
+    public function get(?string $key = null, $default = null)
     {
         if ($key === null) {
             return $this->data ?? $default;
@@ -43,7 +43,7 @@ class ServiceOutput implements OutputInterface
      * @param string|null $key
      * @return bool
      */
-    public function has(string $key = null): bool
+    public function has(?string $key = null): bool
     {
         if ($key === null) {
             return $this->data !== null; 

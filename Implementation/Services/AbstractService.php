@@ -8,9 +8,9 @@ use Core\ServiceInterface;
 
 abstract class AbstractService implements ServiceInterface
 {
-    private $input;
+    private $inputScope;
     
-    private $output;
+    private $outputScope;
 
     /**
      * @param ConditionsInterface $conditions
@@ -19,11 +19,17 @@ abstract class AbstractService implements ServiceInterface
     public function handle(ConditionsInterface $conditions): StrictValueInterface
     {
         $this->reset();
-        $this->beforeExecute($conditions->filter(fn ($item) => $this->isConditionAcceptable($item), true));
-        $result = $this->execute();
-        $this->afterExecute($result);
+        $result = null;
         
-        return $this->result();
+        try {
+            $this->beforeExecute($conditions->filter(fn ($item) => $this->isConditionAcceptable($item), true));
+            $result = $this->execute();
+            $this->afterExecute($result);
+        } catch (\Exception $e) {
+            $this->onError($e);
+        }
+        
+        return $this->result($result);
     }
 
     /**
@@ -31,8 +37,8 @@ abstract class AbstractService implements ServiceInterface
      */
     private function reset(): void
     {
-        $this->input = null;
-        $this->output = null;
+        $this->inputScope = null;
+        $this->outputScope = null;
     }
 
     /**
@@ -57,11 +63,28 @@ abstract class AbstractService implements ServiceInterface
     }
 
     /**
+     * @param \Exception $e
+     */
+    protected function onError(\Exception $e): void
+    {
+        throw $e;
+    }
+
+    /**
+     * @param mixed $result
+     * @return StrictValueInterface
+     */
+    protected function result($result): StrictValueInterface
+    {
+        return new StrictValue($this->output()->get());
+    }
+
+    /**
      * @return InputInterface
      */
     protected function input(): InputInterface
     {
-        return $this->input;
+        return $this->inputScope;
     }
 
     /**
@@ -69,23 +92,23 @@ abstract class AbstractService implements ServiceInterface
      */
     protected function output(): OutputInterface
     {
-        return $this->output;
+        return $this->outputScope;
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface $inputScope
      */
-    protected function setInput(InputInterface $input)
+    protected function setInput(InputInterface $inputScope)
     {
-        $this->input = $input;
+        $this->inputScope = $inputScope;
     }
 
     /**
-     * @param OutputInterface $output
+     * @param OutputInterface $outputScope
      */
-    protected function setOutput(OutputInterface $output)
+    protected function setOutput(OutputInterface $outputScope)
     {
-        $this->output = $output;
+        $this->outputScope = $outputScope;
     }
 
     /**
@@ -96,11 +119,6 @@ abstract class AbstractService implements ServiceInterface
     {
         return $condition->followRule()->isPassed();
     }
-
-    /**
-     * @return StrictValueInterface
-     */
-    abstract protected function result(): StrictValueInterface;
 
     /**
      * Execute service logic

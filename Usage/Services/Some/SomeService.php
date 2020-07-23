@@ -42,6 +42,6 @@ class SomeService extends AbstractService
             return Pikachu::strictValue(true);
         }
         
-        return Pikachu::strictValue($this->output()->get(false));
+        return Pikachu::strictValue($this->output()->get(null, false));
     }
 }

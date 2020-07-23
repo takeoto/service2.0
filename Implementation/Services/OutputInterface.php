@@ -5,7 +5,7 @@ namespace Implementation\Services;
 interface OutputInterface
 {
     /**
-     * @param $data
+     * @param mixed $data
      * @param string|null $key
      * @return self
      */
@@ -16,11 +16,11 @@ interface OutputInterface
      * @param mixed $default
      * @return mixed
      */
-    public function get($default = null, ?string $key = null);
+    public function get(?string $key = null, $default = null);
 
     /**
      * @param string|null $key
      * @return bool
      */
-    public function has(string $key = null): bool;
+    public function has(?string $key = null): bool;
 }
