@@ -40,8 +40,7 @@ class ServiceOutput implements OutputInterface
     }
 
     /**
-     * @param string|null $key
-     * @return bool
+     * @inheritDoc
      */
     public function has(?string $key = null): bool
     {
@@ -50,5 +49,17 @@ class ServiceOutput implements OutputInterface
         }
         
         return is_array($this->data) ? isset($this->data[$key]) : false; 
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function unset(?string $key = null): void
+    {
+        if ($key === null) {
+            $this->data = null;
+        } elseif (is_array($this->data)) {
+            unset($this->data[$key]);
+        }
     }
 }

@@ -55,12 +55,7 @@ abstract class AbstractService implements ServiceInterface
      * After execution
      * @param mixed $result
      */
-    protected function afterExecute($result): void
-    {
-        if ($result !== null) {
-            $this->output()->put($result);
-        }
-    }
+    protected function afterExecute($result): void {}
 
     /**
      * @param \Exception $e
@@ -76,7 +71,11 @@ abstract class AbstractService implements ServiceInterface
      */
     protected function result($result): StrictValueInterface
     {
-        return new StrictValue($this->output()->get());
+        return new StrictValue(
+            $result === null
+                ? $this->output()->get()
+                : $result
+        );
     }
 
     /**
@@ -122,7 +121,7 @@ abstract class AbstractService implements ServiceInterface
 
     /**
      * Execute service logic
-     * @return mixed
+     * @return mixed|void
      */
     abstract protected function execute();
 }

@@ -25,7 +25,7 @@ class ConditionsManager
      * @param array $values
      * @return ConditionsInterface
      */
-    public static function makeListByArray(ConditionsProviderInterface $provider, array $values): ConditionsInterface
+    public static function makeListByArray(array $values, ConditionsProviderInterface $provider): ConditionsInterface
     {
         $list = self::makeList();
         

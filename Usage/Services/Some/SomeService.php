@@ -23,6 +23,11 @@ class SomeService extends AbstractService
 
         // Required condition (throw exception if the item not exists)
         $firstValue = $this->input()->get(SomeConditionsProvider::FIRST_PARAM_NAME)->asString();
+        
+        if ($firstValue !== 'pikachu') {
+            // Force result
+            return 'pikachu';
+        }
 
         // Some logic ...
         $this->output()
@@ -33,15 +38,19 @@ class SomeService extends AbstractService
             ]);
     }
 
-    /**
-     * @inheritDoc
-     */
+    protected function onError(\Exception $e): void
+    {
+        $this->output()->unset();
+    }
+
     protected function result($result): StrictValueInterface
     {
-        if ($this->output()->has('key0')) {
-            return Pikachu::strictValue(true);
-        }
-        
-        return Pikachu::strictValue($this->output()->get(null, false));
+        return Pikachu::strictValue(
+            $this->output()->has()
+                ? $this->output()->get()
+                : $result
+        );
     }
+
+
 }

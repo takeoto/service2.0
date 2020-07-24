@@ -23,4 +23,10 @@ interface OutputInterface
      * @return bool
      */
     public function has(?string $key = null): bool;
+
+    /**
+     * @param string|null $key
+     * @return self
+     */
+    public function unset(?string $key = null): self;
 }

@@ -24,11 +24,11 @@ class Controller
         );
 
         /* Make conditions by array
-        $conditions = ConditionsManager::makeListByArray($manager, [
+        $conditions = ConditionsManager::makeListByArray([
             SomeConditionsProvider::FIRST_PARAM_NAME => 123,
             SomeConditionsProvider::SECOND_PARAM_NAME => 123,
             SomeConditionsProvider::THIRD_PARAM_NAME => 'qwe123',
-        ]);
+        ], $manager);
          */
 
         $dynamicParams = [1, 2, 3, 4, 5, 6];
