@@ -10,7 +10,7 @@ abstract class AbstractService implements ServiceInterface
 {
     private $inputScope;
     
-    private $outputScope;
+    private $defaultResult = null;
 
     /**
      * @param ConditionsInterface $conditions
@@ -19,13 +19,13 @@ abstract class AbstractService implements ServiceInterface
     public function handle(ConditionsInterface $conditions): StrictValueInterface
     {
         $this->reset();
-        $result = null;
+        $result = $this->defaultResult;
         
         try {
             $this->beforeExecute($conditions->filter(fn ($item) => $this->isConditionAcceptable($item), true));
             $result = $this->execute();
             $this->afterExecute($result);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->onError($e);
         }
         
@@ -38,7 +38,6 @@ abstract class AbstractService implements ServiceInterface
     private function reset(): void
     {
         $this->inputScope = null;
-        $this->outputScope = null;
     }
 
     /**
@@ -48,7 +47,6 @@ abstract class AbstractService implements ServiceInterface
     protected function beforeExecute(ConditionsInterface $conditions): void
     {
         $this->setInput(new ServiceInput($conditions));
-        $this->setOutput(new ServiceOutput());
     }
 
     /**
@@ -58,9 +56,9 @@ abstract class AbstractService implements ServiceInterface
     protected function afterExecute($result): void {}
 
     /**
-     * @param \Exception $e
+     * @param \Throwable $e
      */
-    protected function onError(\Exception $e): void
+    protected function onError(\Throwable $e): void
     {
         throw $e;
     }
@@ -71,11 +69,7 @@ abstract class AbstractService implements ServiceInterface
      */
     protected function result($result): StrictValueInterface
     {
-        return new StrictValue(
-            $result === null
-                ? $this->output()->get()
-                : $result
-        );
+        return new StrictValue($result);
     }
 
     /**
@@ -87,27 +81,11 @@ abstract class AbstractService implements ServiceInterface
     }
 
     /**
-     * @return OutputInterface
-     */
-    protected function output(): OutputInterface
-    {
-        return $this->outputScope;
-    }
-
-    /**
      * @param InputInterface $inputScope
      */
     protected function setInput(InputInterface $inputScope)
     {
         $this->inputScope = $inputScope;
-    }
-
-    /**
-     * @param OutputInterface $outputScope
-     */
-    protected function setOutput(OutputInterface $outputScope)
-    {
-        $this->outputScope = $outputScope;
     }
 
     /**
