@@ -22,7 +22,8 @@ abstract class AbstractService implements ServiceInterface
         $result = $this->defaultResult;
         
         try {
-            $this->beforeExecute($conditions->filter(fn ($item) => $this->isConditionAcceptable($item), true));
+            $conditions = $conditions->filter(function ($item) { return $this->isConditionAcceptable($item); }, true);
+            $this->beforeExecute($conditions);
             $result = $this->execute();
             $this->afterExecute($result);
         } catch (\Throwable $e) {
