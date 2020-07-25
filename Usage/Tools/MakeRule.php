@@ -29,16 +29,6 @@ class MakeRule
     }
 
     /**
-     * @param $entityManager
-     * @param string $className
-     * @return RuleInterface
-     */
-    public static function entityExists($entityManager, string $className): RuleInterface
-    {
-        return new EntityExistRule($entityManager, $className);
-    }
-
-    /**
      * @param array $values
      * @return RuleInterface
      */

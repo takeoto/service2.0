@@ -24,10 +24,7 @@ class SomeConditionsProvider extends AbstractConditionsProvider
         return ConditionsManager::makeOne(
             self::FIRST_PARAM_NAME,
             $value,
-            MakeRule::entityExists(
-                '{entityManager}',
-                '{className}'
-            )
+            MakeRule::int()
         );
     }
 
