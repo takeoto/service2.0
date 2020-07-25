@@ -1,0 +1,13 @@
+{
+  "name": "notb0t/service-layer",
+  "type": "library",
+  "description": "Pikachu description",
+  "keywords": ["service","layer","pikachu","hate facebook"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Pikachu",
+      "role": "Pikachu"
+    }
+  ]
+}
