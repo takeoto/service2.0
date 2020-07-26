@@ -1,5 +1,5 @@
 # Service layer for PHP application (concept)
- 
+## Custom condition provider
 ```php
 use Core\ConditionInterface;
 use Implementation\Conditions\Providers\AbstractConditionsProvider;
@@ -75,6 +75,9 @@ class SomeConditionsProvider extends AbstractConditionsProvider
         );
     }
 }
+```
+## Custom service
+```php
 use Implementation\Services\AbstractService;
 
 class SomeService extends AbstractService
@@ -96,7 +99,11 @@ class SomeService extends AbstractService
         return 'pikachu';
     }
 }
+```
 
+## Final usage
+
+```php
 ### USAGE
 
 use Implementation\Conditions\Providers\ConditionsProvider;
