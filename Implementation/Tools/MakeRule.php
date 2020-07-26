@@ -1,11 +1,10 @@
 <?php
 
-namespace Usage\Tools;
+namespace Implementation\Tools;
 
 use Core\RuleInterface;
 use Implementation\Rules\BoolRule;
 use Implementation\Rules\ChainRule;
-use Implementation\Rules\EntityExistRule;
 use Implementation\Rules\IntRule;
 use Implementation\Rules\MoreThenRule;
 use Implementation\Rules\OneOfRule;

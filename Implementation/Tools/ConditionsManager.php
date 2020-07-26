@@ -1,6 +1,6 @@
 <?php
 
-namespace Usage\Tools;
+namespace Implementation\Tools;
 
 use Core\ConditionInterface;
 use Core\ConditionsInterface;
