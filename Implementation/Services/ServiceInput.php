@@ -2,12 +2,6 @@
 namespace Implementation\Services;
 
 use Core\ConditionsInterface;
-use Implementation\Managers\ConditionsManager;
-
-namespace Implementation\Services;
-
-use Core\ConditionsInterface;
-use Usage\Tools\Pikachu;
 
 class ServiceInput implements InputInterface
 {
