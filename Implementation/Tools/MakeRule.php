@@ -1,11 +1,10 @@
 <?php
 
-namespace Implementation\Managers;
+namespace Implementation\Tools;
 
 use Core\RuleInterface;
 use Implementation\Rules\BoolRule;
 use Implementation\Rules\ChainRule;
-use Implementation\Rules\EntityExistRule;
 use Implementation\Rules\IntRule;
 use Implementation\Rules\MoreThenRule;
 use Implementation\Rules\OneOfRule;
@@ -26,16 +25,6 @@ class MakeRule
     public static function bool(): RuleInterface
     {
         return new BoolRule();
-    }
-
-    /**
-     * @param $entityManager
-     * @param string $className
-     * @return RuleInterface
-     */
-    public static function entityExists($entityManager, string $className): RuleInterface
-    {
-        return new EntityExistRule($entityManager, $className);
     }
 
     /**

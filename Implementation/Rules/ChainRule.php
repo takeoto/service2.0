@@ -3,8 +3,8 @@
 namespace Implementation\Rules;
 
 use Core\RuleInterface;
-use Core\RuleResultInterface;
-use Implementation\Rules\Results\SimpleRuleResult;
+use Core\RuleStateInterface;
+use Implementation\Rules\Results\SimpleRuleState;
 
 class ChainRule implements RuleInterface
 {
@@ -21,7 +21,7 @@ class ChainRule implements RuleInterface
     /**
      * @inheritDoc
      */
-    public function pass($value): RuleResultInterface
+    public function pass($value): RuleStateInterface
     {
         $isPassed = true;
         $errors = [];
@@ -38,6 +38,6 @@ class ChainRule implements RuleInterface
             break;
         }
 
-        return new SimpleRuleResult((bool)$isPassed, $errors);
+        return new SimpleRuleState((bool)$isPassed, $errors);
     }
 }

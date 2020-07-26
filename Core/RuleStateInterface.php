@@ -2,7 +2,7 @@
 
 namespace Core;
 
-interface RuleResultInterface
+interface RuleStateInterface
 {
     /**
      * @return bool

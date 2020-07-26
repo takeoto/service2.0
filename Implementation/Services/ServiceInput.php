@@ -4,7 +4,12 @@ namespace Implementation\Services;
 use Core\ConditionsInterface;
 use Implementation\Managers\ConditionsManager;
 
-class ServiceInput
+namespace Implementation\Services;
+
+use Core\ConditionsInterface;
+use Usage\Tools\Pikachu;
+
+class ServiceInput implements InputInterface
 {
     /**
      * @var ConditionsInterface
@@ -27,10 +32,10 @@ class ServiceInput
 
     /**
      * @param string $name
-     * @return StrictValue
+     * @return StrictValueInterface
      */
-    public function getValue(string $name): StrictValue
+    public function get(string $name): StrictValueInterface
     {
-        return ConditionsManager::strictValue($this->conditions->find($name)->getValue());
+        return new StrictValue($this->conditions->find($name)->getValue());
     }
 }

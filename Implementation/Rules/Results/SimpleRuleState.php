@@ -2,9 +2,9 @@
 
 namespace Implementation\Rules\Results;
 
-use Core\RuleResultInterface;
+use Core\RuleStateInterface;
 
-class SimpleRuleResult implements RuleResultInterface
+class SimpleRuleState implements RuleStateInterface
 {
     /**
      * @var array

@@ -1,10 +1,11 @@
 <?php
 
-namespace Implementation\Managers;
+namespace Implementation\Tools;
 
 use Core\ConditionInterface;
 use Core\ConditionsInterface;
 use Core\RuleInterface;
+use Implementation\Conditions\Providers\ConditionsProviderInterface;
 use Implementation\Conditions\SimpleCondition;
 use Implementation\Conditions\SimpleConditions;
 use Implementation\Services\StrictValue;
@@ -18,6 +19,22 @@ class ConditionsManager
     public static function makeList(ConditionInterface ...$conditions): ConditionsInterface
     {
         return new SimpleConditions(...$conditions);
+    }
+
+    /**
+     * @param ConditionsProviderInterface $provider
+     * @param array $values
+     * @return ConditionsInterface
+     */
+    public static function makeListByArray(array $values, ConditionsProviderInterface $provider): ConditionsInterface
+    {
+        $list = self::makeList();
+        
+        foreach ($values as $name => $value) {
+            $list->add($provider->make($name, $value));
+        }
+
+        return $list;
     }
 
     /**
@@ -35,13 +52,13 @@ class ConditionsManager
      * @param ConditionsInterface $conditions
      * @return bool
      */
-    public static function isListCanBeUsed(ConditionsInterface $conditions): bool
+    public static function isListCorrect(ConditionsInterface $conditions): bool
     {
         $result = true;
 
         $conditions->each(function ($item) use (&$result) {
             /** @var ConditionInterface $item */
-            $result &= ConditionsManager::isCanBeUsed($item);
+            $result &= ConditionsManager::isCorrect($item);
         });
 
         return (bool)$result;
@@ -51,7 +68,7 @@ class ConditionsManager
      * @param ConditionInterface $condition
      * @return bool
      */
-    public static function isCanBeUsed(ConditionInterface $condition): bool
+    public static function isCorrect(ConditionInterface $condition): bool
     {
         return $condition->followRule()->isPassed();
     }
@@ -79,14 +96,5 @@ class ConditionsManager
         });
 
         return $result;
-    }
-
-    /**
-     * @param $value
-     * @return StrictValue
-     */
-    public static function strictValue($value): StrictValue
-    {
-        return new StrictValue($value);
     }
 }

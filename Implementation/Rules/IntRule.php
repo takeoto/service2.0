@@ -3,17 +3,17 @@
 namespace Implementation\Rules;
 
 use Core\RuleInterface;
-use Core\RuleResultInterface;
-use Implementation\Rules\Results\TrueOrErrorRuleResult;
+use Core\RuleStateInterface;
+use Implementation\Rules\Results\TrueOrErrorRuleState;
 
 class IntRule implements RuleInterface
 {
     /**
      * @inheritDoc
      */
-    public function pass($value): RuleResultInterface
+    public function pass($value): RuleStateInterface
     {
-        return new TrueOrErrorRuleResult(
+        return new TrueOrErrorRuleState(
             is_int($value),
             'Value must be integer!'
         );

@@ -2,7 +2,7 @@
 
 namespace Implementation\Services;
 
-class StrictValue
+class StrictValue implements StrictValueInterface
 {
     private $value;
 
@@ -48,6 +48,14 @@ class StrictValue
     }
 
     /**
+     * @return mixed
+     */
+    public function original()
+    {
+        return $this->value;
+    }
+
+    /**
      * @param string $class
      * @return {$class}
      * @throws \Exception
@@ -59,5 +67,10 @@ class StrictValue
         }
 
         return $this->value;
+    }
+
+    public function asFloat(?int $precision = null): float
+    {
+        // TODO: Implement asFloat() method.
     }
 }

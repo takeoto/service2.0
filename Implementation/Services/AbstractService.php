@@ -2,58 +2,105 @@
 
 namespace Implementation\Services;
 
+use Core\ConditionInterface;
 use Core\ConditionsInterface;
 use Core\ServiceInterface;
-use Core\ServiceResultInterface;
 
 abstract class AbstractService implements ServiceInterface
 {
+    private $inputScope;
+    
+    private $defaultResult = null;
+
     /**
-     * @inheritDoc
+     * @param ConditionsInterface $conditions
+     * @return StrictValueInterface
      */
-    public function handle(ConditionsInterface $conditions): ServiceResultInterface
+    public function handle(ConditionsInterface $conditions): StrictValueInterface
     {
-        // Preparing service conditions
-        $conditions = $conditions
-            // Get only conditions for service
-            ->filter(function ($item) {
-                /** @var \Core\ConditionInterface $item */
-                return in_array($item->getName(), $this->acceptConditions());
-            }, true)
-            // Valid guarantee
-            ->each(function ($item) {
-                /** @var \Core\ConditionInterface $item */
-                $ruleResult = $item->followRule();
-
-                if (!$ruleResult->isPassed()) {
-                    throw new \Exception(
-                        'You can\'t use not correct values!'
-                        . PHP_EOL
-                        . 'Errors: ' . implode(',', $ruleResult->getErrors())
-                    );
-                }
-            });
-
-        // Executing service logic
-        $output = $this->exec(new ServiceInput($conditions));
-
-        return new SimpleServiceResult(
-            $conditions,
-            $output->getData(),
-            $output->getErrors()
-        );
+        $this->reset();
+        $result = $this->defaultResult;
+        
+        try {
+            $conditions = $conditions->filter(function ($item) { return $this->isConditionAcceptable($item); }, true);
+            $this->beforeExecute($conditions);
+            $result = $this->execute();
+            $this->afterExecute($result);
+        } catch (\Throwable $e) {
+            $this->onError($e);
+        }
+        
+        return $this->result($result);
     }
 
     /**
-     * Get array of accept conditions
-     * @return array
+     * Reset input and output data
      */
-    abstract protected function acceptConditions(): array;
+    private function reset(): void
+    {
+        $this->inputScope = null;
+    }
+
+    /**
+     * Before execution
+     * @param ConditionsInterface $conditions
+     */
+    protected function beforeExecute(ConditionsInterface $conditions): void
+    {
+        $this->setInput(new ServiceInput($conditions));
+    }
+
+    /**
+     * After execution
+     * @param mixed $result
+     */
+    protected function afterExecute($result): void {}
+
+    /**
+     * @param \Throwable $e
+     */
+    protected function onError(\Throwable $e): void
+    {
+        throw $e;
+    }
+
+    /**
+     * @param mixed $result
+     * @return StrictValueInterface
+     */
+    protected function result($result): StrictValueInterface
+    {
+        return new StrictValue($result);
+    }
+
+    /**
+     * @return InputInterface
+     */
+    protected function input(): InputInterface
+    {
+        return $this->inputScope;
+    }
+
+    /**
+     * @param InputInterface $inputScope
+     */
+    protected function setInput(InputInterface $inputScope)
+    {
+        $this->inputScope = $inputScope;
+    }
+
+    /**
+     * @param ConditionInterface $condition
+     * @return bool
+     */
+    protected function isConditionAcceptable(ConditionInterface $condition): bool
+    {
+        return $condition->followRule()->isPassed();
+    }
 
     /**
      * Execute service logic
-     * @param ServiceInput $conditions
-     * @return ServiceOutput
+     * @return mixed|void
      */
-    abstract protected function exec(ServiceInput $conditions): ServiceOutput;
+    abstract protected function execute();
 }
