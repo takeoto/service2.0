@@ -1,4 +1,11 @@
+# Service layer for PHP application (concept)
+ 
 ```php
+use Core\ConditionInterface;
+use Implementation\Conditions\Providers\AbstractConditionsProvider;
+use Implementation\Tools\ConditionsManager;
+use Implementation\Tools\MakeRule;
+
 class SomeConditionsProvider extends AbstractConditionsProvider
 {
     // Some condition names
@@ -68,6 +75,7 @@ class SomeConditionsProvider extends AbstractConditionsProvider
         );
     }
 }
+use Implementation\Services\AbstractService;
 
 class SomeService extends AbstractService
 {
@@ -91,11 +99,12 @@ class SomeService extends AbstractService
 
 ### USAGE
 
+use Implementation\Conditions\Providers\ConditionsProvider;
+
 $service = new SomeService();
 $manager = new ConditionsProvider(
     new SomeConditionsProvider(),
-    new SomeConditionsProvider(),
-    new SomeConditionsProvider(),
+    # {multiple provider}
 );
 
 // Making conditions list
