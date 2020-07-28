@@ -76,10 +76,6 @@ abstract class AbstractService implements ServiceInterface
      */
     protected function input(): InputInterface
     {
-        if ($this->inputScope === null) {
-            throw new \LogicException('You must set input object before use!');
-        }
-        
         return $this->inputScope;
     }
 
