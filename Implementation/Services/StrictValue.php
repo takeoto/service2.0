@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Implementation\Services;
 
@@ -71,6 +71,6 @@ class StrictValue implements StrictValueInterface
 
     public function asFloat(?int $precision = null): float
     {
-        // TODO: Implement asFloat() method.
+        return (float)number_format((float) $this->value, $precision, '.', '');
     }
 }

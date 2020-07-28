@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Implementation\Services;
 
@@ -18,8 +18,8 @@ abstract class AbstractService implements ServiceInterface
      */
     public function handle(ConditionsInterface $conditions): StrictValueInterface
     {
-        $this->reset();
         $conditions = $conditions->filter(function ($item) { return $this->isConditionAcceptable($item); }, true);
+        $this->reset($conditions);
         $result = $this->defaultResult;
         
         try {
@@ -35,20 +35,18 @@ abstract class AbstractService implements ServiceInterface
 
     /**
      * Reset input and output data
+     * @param ConditionsInterface $conditions
      */
-    private function reset(): void
+    private function reset(ConditionsInterface $conditions): void
     {
-        $this->inputScope = null;
+        $this->inputScope = new ServiceInput($conditions);
     }
 
     /**
      * Before execution
      * @param ConditionsInterface $conditions
      */
-    protected function beforeExecute(ConditionsInterface $conditions): void
-    {
-        $this->setInput(new ServiceInput($conditions));
-    }
+    protected function beforeExecute(ConditionsInterface $conditions): void {}
 
     /**
      * After execution
@@ -78,6 +76,10 @@ abstract class AbstractService implements ServiceInterface
      */
     protected function input(): InputInterface
     {
+        if ($this->inputScope === null) {
+            throw new \LogicException('You must set input object before use!');
+        }
+        
         return $this->inputScope;
     }
 
