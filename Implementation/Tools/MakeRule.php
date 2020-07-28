@@ -29,11 +29,12 @@ class MakeRule
 
     /**
      * @param array $values
+     * @param bool $strict
      * @return RuleInterface
      */
-    public static function oneOf(array $values): RuleInterface
+    public static function oneOf(array $values, bool $strict = false): RuleInterface
     {
-        return new OneOfRule($values);
+        return new OneOfRule($values, $strict);
     }
 
     /**
