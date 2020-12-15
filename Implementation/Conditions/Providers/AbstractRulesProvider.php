@@ -2,9 +2,9 @@
 
 namespace Implementation\Conditions\Providers;
 
-use Core\ConditionInterface;
+use Core\RuleInterface;
 
-abstract class AbstractConditionsProvider implements ConditionsProviderInterface
+abstract class AbstractRulesProvider implements RulesProviderInterface
 {
     /**
      * @var array[]
@@ -16,26 +16,26 @@ abstract class AbstractConditionsProvider implements ConditionsProviderInterface
     /**
      * @inheritDoc
      */
-    public function make(string $name, $value): ConditionInterface
+    public function make(string $fieldName): RuleInterface
     {
-        if (!$this->hasCondition($name)) {
-            throw new \Exception("Condition with \"$name\" name not exists!");
+        if (!$this->hasCondition($fieldName)) {
+            throw new \Exception("Condition with \"$fieldName\" name not exists!");
         }
 
-        $method = $this->makeMethodName($name);
+        $method = $this->makeMethodName($fieldName);
 
         if (!method_exists($this, $method)) {
-            throw new \Exception("Can't create condition \"$name\"!");
+            throw new \Exception("Can't create condition \"$fieldName\"!");
         }
 
         $result = $this->$method();
 
-        if (!is_subclass_of($result, ConditionInterface::class)) {
+        if (!is_subclass_of($result, RuleInterface::class)) {
             throw new \Exception(
                 sprintf(
                     'Method "%s" must return object instance of "%s"!',
                     $method,
-                    ConditionInterface::class,
+                    RuleInterface::class,
                 )
             );
         }

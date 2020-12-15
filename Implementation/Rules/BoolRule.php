@@ -3,17 +3,17 @@
 namespace Implementation\Rules;
 
 use Core\RuleInterface;
-use Core\RuleStateInterface;
-use Implementation\Rules\Results\TrueOrErrorRuleState;
+use Core\StateInterface;
+use Implementation\Rules\Results\TrueOrErrorState;
 
 class BoolRule implements RuleInterface
 {
     /**
      * @inheritDoc
      */
-    public function pass($value): RuleStateInterface
+    public function verify($value): StateInterface
     {
-        return new TrueOrErrorRuleState(
+        return new TrueOrErrorState(
             is_bool($value),
             'Value must be boolean!'
         );

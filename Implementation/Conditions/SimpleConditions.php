@@ -2,37 +2,30 @@
 
 namespace Implementation\Conditions;
 
-use Core\ConditionInterface;
 use Core\ConditionsInterface;
 
 class SimpleConditions implements ConditionsInterface
 {
     /**
-     * @var ConditionInterface[]
+     * @var array<string,mixed>[]
      */
-    private $conditions;
+    private array $conditions;
 
     /**
      * Conditions constructor.
-     * @param ConditionInterface ...$conditions
+     * @param array $conditions
      */
-    public function __construct(ConditionInterface ...$conditions)
+    public function __construct(array $conditions)
     {
-        foreach ($conditions as $condition) {
-            $this->conditions[$condition->getName()] = $condition;
-        }
+        $this->conditions = $conditions;
     }
 
     /**
      * @inheritDoc
      */
-    public function add(ConditionInterface $condition): ConditionsInterface
+    public function add(string $name, $value): ConditionsInterface
     {
-        if ($this->has($condition->getName())) {
-            throw new \Exception("Condition \"{$condition->getName()}\" already exists!");
-        }
-
-        $this->conditions[$condition->getName()] = $condition;
+        $this->conditions[$name] = $value;
 
         return $this;
     }
@@ -40,39 +33,29 @@ class SimpleConditions implements ConditionsInterface
     /**
      * @inheritDoc
      */
-    public function find(string $id): ConditionInterface
+    public function get(string $name)
     {
-        if (!$this->has($id)) {
-            throw new ReqConditionException("Condition \"$id\" not exists!");
+        if (!$this->has($name)) {
+            throw new ReqConditionException("Condition \"$name\" not exists!");
         }
 
-        return $this->conditions[$id];
+        return $this->conditions[$name];
     }
 
     /**
      * @inheritDoc
      */
-    public function remove(ConditionInterface $condition): void
+    public function remove(string $name): void
     {
-        unset($this->conditions[$condition->getName()]);
+        unset($this->conditions[$name]);
     }
 
     /**
      * @inheritDoc
      */
-    public function replace(ConditionInterface $condition): ConditionsInterface
+    public function has(string $name): bool
     {
-        $this->conditions[$condition->getName()] = $condition;
-
-        return $this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function has(string $id): bool
-    {
-        return isset($this->conditions[$id]);
+        return isset($this->conditions[$name]);
     }
 
     /**
@@ -88,8 +71,8 @@ class SimpleConditions implements ConditionsInterface
      */
     public function each(callable $fn): ConditionsInterface
     {
-        foreach ($this->conditions as $key => $item) {
-            if ($fn($item, $key) === false) {
+        foreach ($this->conditions as $key => $value) {
+            if ($fn($value, $key) === false) {
                 return $this;
             }
         }
@@ -104,14 +87,14 @@ class SimpleConditions implements ConditionsInterface
      */
     private function makeInstance(callable $fn): self
     {
-        $objects = [];
+        $data = [];
 
-        $this->each(function ($item) use ($fn, $objects) {
-            /** @var ConditionInterface $item */
-            $fn($item) && $objects[] = $item;
+        $this->each(function ($value, $key) use ($fn, $data) {
+            /** @var mixed $value */
+            $fn($value, $key) && $data[$key] = $value;
         });
 
-        return new self(...$objects);
+        return new self($data);
     }
 
     /**
@@ -121,9 +104,8 @@ class SimpleConditions implements ConditionsInterface
      */
     private function applyFilter(callable $fn): self
     {
-        $this->each(function ($item) use ($fn) {
-            /** @var ConditionInterface $item */
-            !$fn($item) && $this->remove($item);
+        $this->each(function ($value, $key) use ($fn) {
+            !$fn($value, $key) && $this->remove($key);
         });
 
         return $this;

@@ -3,11 +3,12 @@
 namespace Implementation\Conditions\Providers;
 
 use Core\ConditionInterface;
+use Core\RuleInterface;
 
-class ConditionsProvider implements ConditionsProviderInterface
+class RulesProvider implements RulesProviderInterface
 {
     /**
-     * @var ConditionsProviderInterface[]
+     * @var RulesProviderInterface[]
      */
     private array $providers;
 
@@ -18,9 +19,9 @@ class ConditionsProvider implements ConditionsProviderInterface
 
     /**
      * ConditionsProvider constructor.
-     * @param ConditionsProviderInterface ...$providers
+     * @param RulesProviderInterface ...$providers
      */
-    public function __construct(ConditionsProviderInterface ...$providers)
+    public function __construct(RulesProviderInterface ...$providers)
     {
         $prepared = [];
 
@@ -35,13 +36,13 @@ class ConditionsProvider implements ConditionsProviderInterface
     /**
      * @inheritDoc
      */
-    public function make(string $name, $value): ConditionInterface
+    public function make(string $fieldName): RuleInterface
     {
-        if (!isset($this->providers[$name])) {
-            throw new \Exception("Condition with \"$name\" name not exists!");
+        if (!isset($this->providers[$fieldName])) {
+            throw new \Exception("Condition with \"$fieldName\" name not exists!");
         }
 
-        return $this->providers[$name]->make($name, $value);
+        return $this->providers[$fieldName]->make($fieldName);
     }
 
     /**

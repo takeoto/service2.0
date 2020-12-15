@@ -55,20 +55,6 @@ class StrictValue implements StrictValueInterface
         return $this->value;
     }
 
-    /**
-     * @param string $class
-     * @return {$class}
-     * @throws \Exception
-     */
-    public function asInstanceOf(string $class)
-    {
-        if (!is_a($this->value, $class)) {
-            throw new \Exception("Value must be instance of \"$class\"!");
-        }
-
-        return $this->value;
-    }
-
     public function asFloat(?int $precision = null): float
     {
         return (float)number_format((float) $this->value, $precision, '.', '');

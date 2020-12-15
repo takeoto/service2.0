@@ -4,7 +4,7 @@
 namespace Implementation\Services;
 
 
-class LogicException extends \Exception
+class ServiceException extends \Exception
 {
 
 }

@@ -34,10 +34,4 @@ interface StrictValueInterface
      * @return mixed
      */
     public function original();
-
-    /**
-     * @param string $class
-     * @return mixed
-     */
-    public function asInstanceOf(string $class);
 }

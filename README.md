@@ -2,11 +2,11 @@
 ## Custom condition provider
 ```php
 use Core\ConditionInterface;
-use Implementation\Conditions\Providers\AbstractConditionsProvider;
+use Implementation\Conditions\Providers\AbstractRulesProvider;
 use Implementation\Tools\ConditionsManager;
 use Implementation\Tools\MakeRule;
 
-class SomeConditionsProvider extends AbstractConditionsProvider
+class SomeConditionsProvider extends AbstractRulesProvider
 {
     // Some condition names
     public const FIRST_PARAM_NAME = 'some.first';
@@ -106,10 +106,10 @@ class SomeService extends AbstractService
 ```php
 ### USAGE
 
-use Implementation\Conditions\Providers\ConditionsProvider;
+use Implementation\Conditions\Providers\RulesProvider;
 
 $service = new SomeService();
-$manager = new ConditionsProvider(
+$manager = new RulesProvider(
     new SomeConditionsProvider(),
     # {multiple provider}
 );

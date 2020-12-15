@@ -7,9 +7,9 @@ interface ConditionsInterface
     /**
      * Find in list of conditions
      * @param string $name
-     * @return ConditionInterface
+     * @return mixed
      */
-    public function find(string $name): ConditionInterface;
+    public function get(string $name);
 
     /**
      * A check has a condition named
@@ -20,23 +20,17 @@ interface ConditionsInterface
 
     /**
      * Add item in to list
-     * @param ConditionInterface $condition
+     * @param string $name
+     * @param mixed $value
      * @return $this
      */
-    public function add(ConditionInterface $condition): self;
+    public function add(string $name, $value): self;
 
     /**
      * Remove item from list
-     * @param ConditionInterface $condition
+     * @param string $name
      */
-    public function remove(ConditionInterface $condition): void;
-
-    /**
-     * Replace item with same name
-     * @param ConditionInterface $condition
-     * @return $this
-     */
-    public function replace(ConditionInterface $condition): self;
+    public function remove(string $name): void;
 
     /**
      * Filter by callable condition

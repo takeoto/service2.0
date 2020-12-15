@@ -2,44 +2,52 @@
 
 namespace Implementation\Services;
 
-use Core\ConditionInterface;
 use Core\ConditionsInterface;
 use Core\ServiceInterface;
 
 abstract class AbstractService implements ServiceInterface
 {
     private $inputScope;
-    
-    private $defaultResult = null;
 
     /**
      * @param ConditionsInterface $conditions
      * @return StrictValueInterface
+     * @throws ServiceException
      */
     public function handle(ConditionsInterface $conditions): StrictValueInterface
     {
-        $conditions = $conditions->filter(function ($item) { return $this->isConditionAcceptable($item); }, true);
+        $this->claimedConditions($conditions);
         $this->reset($conditions);
-        $result = $this->defaultResult;
-        
+        $this->beforeExecute($conditions);
+
         try {
-            $this->beforeExecute($conditions);
-            $result = $this->execute();
-            $this->afterExecute($result);
+            $execResult = $this->execute();
+            $this->afterExecute($execResult);
         } catch (\Throwable $e) {
-            $this->onError($e);
+            return $this->onError($e);
         }
         
-        return $this->result($result);
+        return $this->onSuccess($execResult);
     }
 
     /**
-     * Reset input and output data
      * @param ConditionsInterface $conditions
      */
     private function reset(ConditionsInterface $conditions): void
     {
-        $this->inputScope = new ServiceInput($conditions);
+        $this->setInput(new ServiceInput($conditions));
+    }
+
+    /**
+     * @param ConditionsInterface $conditions
+     */
+    protected function claimedConditions(ConditionsInterface $conditions): void
+    {
+        $conditionsState = $this->claims()->claimed($conditions);
+
+        if (!$conditionsState->isCorrect()) {
+            throw new ServiceException('Service input errors: ' . implode(',', $conditionsState->getErrors()));
+        }
     }
 
     /**
@@ -55,20 +63,31 @@ abstract class AbstractService implements ServiceInterface
     protected function afterExecute($result): void {}
 
     /**
-     * @param \Throwable $e
+     * @param $executionResult
+     * @return StrictValueInterface
      */
-    protected function onError(\Throwable $e): void
+    protected function prepareResult($executionResult): StrictValueInterface
+    {
+        return new StrictValue($executionResult);
+    }
+
+    /**
+     * @param \Throwable $e
+     * @return mixed
+     */
+    protected function onError(\Throwable $e): StrictValueInterface
     {
         throw $e;
     }
 
     /**
-     * @param mixed $result
+     * @param mixed $executionResult
+     * @param bool $afterError
      * @return StrictValueInterface
      */
-    protected function result($result): StrictValueInterface
+    protected function onSuccess($executionResult): StrictValueInterface
     {
-        return new StrictValue($result);
+        return $this->prepareResult($executionResult);
     }
 
     /**
@@ -82,19 +101,15 @@ abstract class AbstractService implements ServiceInterface
     /**
      * @param InputInterface $inputScope
      */
-    protected function setInput(InputInterface $inputScope)
+    final protected function setInput(InputInterface $inputScope)
     {
         $this->inputScope = $inputScope;
     }
 
     /**
-     * @param ConditionInterface $condition
-     * @return bool
+     * @return ClaimsInterface
      */
-    protected function isConditionAcceptable(ConditionInterface $condition): bool
-    {
-        return $condition->followRule()->isPassed();
-    }
+    abstract protected function claims(): ClaimsInterface;
 
     /**
      * Execute service logic

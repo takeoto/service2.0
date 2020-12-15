@@ -30,6 +30,6 @@ class ServiceInput implements InputInterface
      */
     public function get(string $name): StrictValueInterface
     {
-        return new StrictValue($this->conditions->find($name)->getValue());
+        return new StrictValue($this->conditions->get($name));
     }
 }
