@@ -2,28 +2,26 @@
 
 use Implementation\Rules\IntRule;
 
-class Service
+class Service extends \Implementation\Services\AbstractService
 {
-    public function claims()
+    protected function inputClaims(): \Implementation\Services\InputClaimsInterface
     {
-        return InputClaims::make()
-            ->must('PIKACHU_NAME', IntRule::class, [
-                IntRule::PIKA_PARAM => '123PIKA',
-            ])
-            ->must('PIKACHU_NAME', IntRule::class, [
-                IntRule::PIKA_PARAM => '123PIKA',
-            ])
-            ->can()
-            ->resolve();
+        // TODO: Implement inputClaims() method.
     }
 
-    public function beforeExecute($conditions)
+    protected function onFailedInputClaimsResult(\Implementation\Services\ClaimsStateInterface $claimsState): \Implementation\Services\StrictValueInterface
     {
-        $this->setInput();
+        
     }
-    
-    public function execute()
+
+    protected function beforeExecute(): void
     {
+        
+    }
+
+    protected function execute()
+    {
+        $this->input()->claims()->getErrors();
         // Not required condition
         if ($this->input()->has(SomeConditionsProvider::SECOND_PARAM_NAME)) {
             $secondValue = $this->input()->get(SomeConditionsProvider::SECOND_PARAM_NAME)->asInt();
@@ -36,17 +34,17 @@ class Service
         return 'pikachu';
     }
 
-    public function afterExecute($result)
+    protected function afterExecute($result): void
     {
         
     }
 
-    public function onErrorResult($exception)
+    protected function onErrorResult(\Throwable $e): \Implementation\Services\StrictValueInterface
     {
         
     }
 
-    public function onSuccessResult($result)
+    protected function onSuccessResult($executionResult): \Implementation\Services\StrictValueInterface
     {
         
     }

@@ -15,4 +15,9 @@ interface InputInterface
      * @return StrictValueInterface
      */
     public function get(string $name): StrictValueInterface;
+
+    /**
+     * @return ClaimsStateInterface
+     */
+    public function claims(): ClaimsStateInterface;
 }

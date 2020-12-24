@@ -4,57 +4,83 @@ namespace Implementation\Services;
 
 use Core\ConditionsInterface;
 use Core\ServiceInterface;
+use Core\RuleStateInterface;
 
 abstract class AbstractService implements ServiceInterface
 {
-    private $inputScope;
+    /**
+     * Stop execution on input claims fail 
+     */
+    protected const RETURN_ON_FAILED_INPUT_CLAIMS = true;
+    
+    /**
+     * @var InputInterface
+     */
+    private InputInterface $claimedInput;
 
     /**
      * @param ConditionsInterface $conditions
      * @return StrictValueInterface
-     * @throws ServiceException
+     * @throws \Throwable
      */
     public function handle(ConditionsInterface $conditions): StrictValueInterface
     {
-        $this->claimedConditions($conditions);
-        $this->reset($conditions);
-        $this->beforeExecute($conditions);
+        $this->presets($conditions);
+
+        if (static::RETURN_ON_FAILED_INPUT_CLAIMS && !$this->input()->claims()->isCorrect()) {
+            return $this->onFailedInputClaimsResult($this->input()->claims());
+        }
+        
+        $this->beforeExecute();
 
         try {
             $execResult = $this->execute();
             $this->afterExecute($execResult);
         } catch (\Throwable $e) {
-            return $this->onError($e);
+            return $this->onErrorResult($e);
         }
         
-        return $this->onSuccess($execResult);
+        return $this->onSuccessResult($execResult);
     }
 
     /**
      * @param ConditionsInterface $conditions
      */
-    private function reset(ConditionsInterface $conditions): void
+    protected function presets(ConditionsInterface $conditions): void
     {
-        $this->setInput(new ServiceInput($conditions));
+        $this->setInput($this->inputClaims()->claimed($conditions));
     }
 
     /**
-     * @param ConditionsInterface $conditions
+     * @param InputInterface $input
      */
-    protected function claimedConditions(ConditionsInterface $conditions): void
+    final protected function setInput(InputInterface $input): void
     {
-        $conditionsState = $this->claims()->claimed($conditions);
+        $this->claimedInput = $input;
+    }
 
-        if (!$conditionsState->isCorrect()) {
-            throw new ServiceException('Service input errors: ' . implode(',', $conditionsState->getErrors()));
-        }
+    /**
+     * @return InputInterface
+     */
+    final protected function input(): InputInterface
+    {
+        return $this->claimedInput;
+    }
+
+    /**
+     * @param ClaimsStateInterface $claimsState
+     * @return StrictValueInterface
+     *@throws ServiceException
+     */
+    protected function onFailedInputClaimsResult(ClaimsStateInterface $claimsState): StrictValueInterface
+    {
+        throw new ServiceException('Service input errors: ' . implode(',', $claimsState->getErrors()));
     }
 
     /**
      * Before execution
-     * @param ConditionsInterface $conditions
      */
-    protected function beforeExecute(ConditionsInterface $conditions): void {}
+    protected function beforeExecute(): void {}
 
     /**
      * After execution
@@ -63,53 +89,27 @@ abstract class AbstractService implements ServiceInterface
     protected function afterExecute($result): void {}
 
     /**
-     * @param $executionResult
-     * @return StrictValueInterface
-     */
-    protected function prepareResult($executionResult): StrictValueInterface
-    {
-        return new StrictValue($executionResult);
-    }
-
-    /**
      * @param \Throwable $e
      * @return mixed
      */
-    protected function onError(\Throwable $e): StrictValueInterface
+    protected function onErrorResult(\Throwable $e): StrictValueInterface
     {
         throw $e;
     }
 
     /**
      * @param mixed $executionResult
-     * @param bool $afterError
      * @return StrictValueInterface
      */
-    protected function onSuccess($executionResult): StrictValueInterface
+    protected function onSuccessResult($executionResult): StrictValueInterface
     {
-        return $this->prepareResult($executionResult);
+        return new StrictValue($executionResult);
     }
 
     /**
-     * @return InputInterface
+     * @return InputClaimsInterface
      */
-    protected function input(): InputInterface
-    {
-        return $this->inputScope;
-    }
-
-    /**
-     * @param InputInterface $inputScope
-     */
-    final protected function setInput(InputInterface $inputScope)
-    {
-        $this->inputScope = $inputScope;
-    }
-
-    /**
-     * @return ClaimsInterface
-     */
-    abstract protected function claims(): ClaimsInterface;
+    abstract protected function inputClaims(): InputClaimsInterface;
 
     /**
      * Execute service logic

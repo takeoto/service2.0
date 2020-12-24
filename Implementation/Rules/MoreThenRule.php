@@ -3,8 +3,8 @@
 namespace Implementation\Rules;
 
 use Core\RuleInterface;
-use Core\StateInterface;
-use Implementation\Rules\Results\TrueOrErrorState;
+use Core\RuleStateInterface;
+use Implementation\Rules\Results\TrueOrErrorRuleState;
 
 class MoreThenRule implements RuleInterface
 {
@@ -22,9 +22,9 @@ class MoreThenRule implements RuleInterface
     /**
      * @inheritDoc
      */
-    public function verify($value): StateInterface
+    public function verify($value): RuleStateInterface
     {
-        return new TrueOrErrorState(
+        return new TrueOrErrorRuleState(
             $this->moreThen < $value,
             "Value \"$value\" must be more then \"$this->moreThen\"!"
         );

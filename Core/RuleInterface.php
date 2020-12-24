@@ -7,7 +7,7 @@ interface RuleInterface
     /**
      * Check rule on passed
      * @param $value
-     * @return StateInterface
+     * @return RuleStateInterface
      */
-    public function verify($value): StateInterface;
+    public function verify($value): RuleStateInterface;
 }

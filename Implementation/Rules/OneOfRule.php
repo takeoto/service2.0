@@ -3,8 +3,8 @@
 namespace Implementation\Rules;
 
 use Core\RuleInterface;
-use Core\StateInterface;
-use Implementation\Rules\Results\TrueOrErrorState;
+use Core\RuleStateInterface;
+use Implementation\Rules\Results\TrueOrErrorRuleState;
 
 class OneOfRule implements RuleInterface
 {
@@ -26,9 +26,9 @@ class OneOfRule implements RuleInterface
     /**
      * @inheritDoc
      */
-    public function verify($value): StateInterface
+    public function verify($value): RuleStateInterface
     {
-        return new TrueOrErrorState(
+        return new TrueOrErrorRuleState(
             in_array(
                 $value,
                 $this->values,

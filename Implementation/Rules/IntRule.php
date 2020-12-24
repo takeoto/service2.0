@@ -3,8 +3,8 @@
 namespace Implementation\Rules;
 
 use Core\RuleInterface;
-use Core\StateInterface;
-use Implementation\Rules\Results\TrueOrErrorState;
+use Core\RuleStateInterface;
+use Implementation\Rules\Results\TrueOrErrorRuleState;
 
 class IntRule implements RuleInterface
 {
@@ -13,9 +13,9 @@ class IntRule implements RuleInterface
     /**
      * @inheritDoc
      */
-    public function verify($value): StateInterface
+    public function verify($value): RuleStateInterface
     {
-        return new TrueOrErrorState(
+        return new TrueOrErrorRuleState(
             is_int($value),
             'Value must be integer!'
         );

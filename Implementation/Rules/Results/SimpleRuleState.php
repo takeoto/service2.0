@@ -2,9 +2,9 @@
 
 namespace Implementation\Rules\Results;
 
-use Core\StateInterface;
+use Core\RuleStateInterface;
 
-class SimpleState implements StateInterface
+class SimpleRuleState implements RuleStateInterface
 {
     /**
      * @var array
@@ -25,7 +25,7 @@ class SimpleState implements StateInterface
     /**
      * @inheritDoc
      */
-    public function isCorrect(): bool
+    public function isPassed(): bool
     {
         return $this->isPassed;
     }

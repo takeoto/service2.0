@@ -32,4 +32,9 @@ class ServiceInput implements InputInterface
     {
         return new StrictValue($this->conditions->get($name));
     }
+
+    public function claims(): ClaimsStateInterface
+    {
+        
+    }
 }

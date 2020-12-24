@@ -2,12 +2,12 @@
 
 namespace Core;
 
-interface StateInterface
+interface RuleStateInterface
 {
     /**
      * @return bool
      */
-    public function isCorrect(): bool;
+    public function isPassed(): bool;
 
     /**
      * Get rule errors
