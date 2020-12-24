@@ -12,6 +12,13 @@ abstract class AbstractService implements ServiceInterface
      * Stop execution on input claims fail 
      */
     protected const RETURN_ON_FAILED_INPUT_CLAIMS = true;
+
+    /**
+     * Returns types
+     */
+    protected const RETURN_TYPE_ERROR = 'error';
+    protected const RETURN_TYPE_SUCCESS = 'success';
+    protected const RETURN_TYPE_FAILED_INPUT_CLIMES = 'failedIC';
     
     /**
      * @var InputInterface
@@ -28,7 +35,7 @@ abstract class AbstractService implements ServiceInterface
         $this->presets($conditions);
 
         if (static::RETURN_ON_FAILED_INPUT_CLAIMS && !$this->input()->claims()->isCorrect()) {
-            return $this->onFailedInputClaimsResult($this->input()->claims());
+            return $this->return(self::RETURN_TYPE_FAILED_INPUT_CLIMES, $this->input()->claims());
         }
         
         $this->beforeExecute();
@@ -37,10 +44,10 @@ abstract class AbstractService implements ServiceInterface
             $execResult = $this->execute();
             $this->afterExecute($execResult);
         } catch (\Throwable $e) {
-            return $this->onErrorResult($e);
+            return $this->return(self::RETURN_TYPE_ERROR, $e);
         }
         
-        return $this->onSuccessResult($execResult);
+        return $this->return(self::RETURN_TYPE_SUCCESS, $execResult);
     }
 
     /**
@@ -48,7 +55,7 @@ abstract class AbstractService implements ServiceInterface
      */
     protected function presets(ConditionsInterface $conditions): void
     {
-        $this->setInput($this->inputClaims()->claimed($conditions));
+        $this->setInput($this->describeInput()->claimed($conditions));
     }
 
     /**
@@ -72,7 +79,7 @@ abstract class AbstractService implements ServiceInterface
      * @return StrictValueInterface
      *@throws ServiceException
      */
-    protected function onFailedInputClaimsResult(ClaimsStateInterface $claimsState): StrictValueInterface
+    protected function returnOnFailedInputClaims(ClaimsStateInterface $claimsState): StrictValueInterface
     {
         throw new ServiceException('Service input errors: ' . implode(',', $claimsState->getErrors()));
     }
@@ -92,7 +99,7 @@ abstract class AbstractService implements ServiceInterface
      * @param \Throwable $e
      * @return mixed
      */
-    protected function onErrorResult(\Throwable $e): StrictValueInterface
+    protected function returnOnError(\Throwable $e): StrictValueInterface
     {
         throw $e;
     }
@@ -101,15 +108,35 @@ abstract class AbstractService implements ServiceInterface
      * @param mixed $executionResult
      * @return StrictValueInterface
      */
-    protected function onSuccessResult($executionResult): StrictValueInterface
+    protected function returnOnSuccess($executionResult): StrictValueInterface
     {
         return new StrictValue($executionResult);
     }
 
     /**
+     * @param string $type
+     * @param mixed $data
+     * @return StrictValueInterface
+     * @throws \Throwable
+     */
+    protected function return(string $type, $data): StrictValueInterface
+    {
+        switch ($type) {
+            case self::RETURN_TYPE_SUCCESS:
+                return $this->returnOnSuccess($data);
+            case self::RETURN_TYPE_ERROR:
+                return $this->returnOnError($data);
+            case self::RETURN_TYPE_FAILED_INPUT_CLIMES:
+                return $this->returnOnFailedInputClaims($data);
+            default:
+                throw new ServiceException("Wrong return type \"$type\"!");
+        }
+    }
+
+    /**
      * @return InputClaimsInterface
      */
-    abstract protected function inputClaims(): InputClaimsInterface;
+    abstract protected function describeInput(): InputClaimsInterface;
 
     /**
      * Execute service logic
