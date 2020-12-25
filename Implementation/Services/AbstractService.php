@@ -4,12 +4,13 @@ namespace Implementation\Services;
 
 use Core\ConditionsInterface;
 use Core\ServiceInterface;
-use Core\RuleStateInterface;
+use Implementation\Services\Exceptions\ServiceException;
+use Implementation\Services\Inputs\Claims\SimpleInputClaims;
 
 abstract class AbstractService implements ServiceInterface
 {
     /**
-     * Stop execution on input claims fail 
+     * Stop execution on input claims fail
      */
     protected const RETURN_ON_FAILED_INPUT_CLAIMS = true;
 
@@ -19,25 +20,25 @@ abstract class AbstractService implements ServiceInterface
     protected const RETURN_TYPE_ERROR = 'error';
     protected const RETURN_TYPE_SUCCESS = 'success';
     protected const RETURN_TYPE_FAILED_INPUT_CLIMES = 'failedIC';
-    
-    /**
-     * @var InputInterface
-     */
-    private InputInterface $claimedInput;
 
     /**
-     * @param ConditionsInterface $conditions
+     * @var InputInterface|null
+     */
+    private ?InputInterface $claimedInput = null;
+
+    /**
+     * @param ConditionsInterface|null $conditions
      * @return StrictValueInterface
      * @throws \Throwable
      */
-    public function handle(ConditionsInterface $conditions): StrictValueInterface
+    public function handle(?ConditionsInterface $conditions = null): StrictValueInterface
     {
         $this->presets($conditions);
-
-        if (static::RETURN_ON_FAILED_INPUT_CLAIMS && !$this->input()->claims()->isCorrect()) {
-            return $this->return(self::RETURN_TYPE_FAILED_INPUT_CLIMES, $this->input()->claims());
-        }
         
+        if (static::RETURN_ON_FAILED_INPUT_CLAIMS && !$this->input()->state()->isCanBeUsed()) {
+            return $this->return(self::RETURN_TYPE_FAILED_INPUT_CLIMES, $this->input()->state());
+        }
+
         $this->beforeExecute();
 
         try {
@@ -46,14 +47,14 @@ abstract class AbstractService implements ServiceInterface
         } catch (\Throwable $e) {
             return $this->return(self::RETURN_TYPE_ERROR, $e);
         }
-        
+
         return $this->return(self::RETURN_TYPE_SUCCESS, $execResult);
     }
 
     /**
-     * @param ConditionsInterface $conditions
+     * @param ConditionsInterface|null $conditions
      */
-    protected function presets(ConditionsInterface $conditions): void
+    protected function presets(?ConditionsInterface $conditions): void
     {
         $this->setInput($this->describeInput()->claimed($conditions));
     }
@@ -75,25 +76,29 @@ abstract class AbstractService implements ServiceInterface
     }
 
     /**
-     * @param ClaimsStateInterface $claimsState
+     * @param InputStateInterface $claimsState
      * @return StrictValueInterface
-     *@throws ServiceException
+     * @throws ServiceException
      */
-    protected function returnOnFailedInputClaims(ClaimsStateInterface $claimsState): StrictValueInterface
+    protected function returnOnFailedInputClaims(InputStateInterface $claimsState): StrictValueInterface
     {
-        throw new ServiceException('Service input errors: ' . implode(',', $claimsState->getErrors()));
+        throw new ServiceException('Service input errors: ' . implode(',', $claimsState->whyItsCantBeUsed()));
     }
 
     /**
      * Before execution
      */
-    protected function beforeExecute(): void {}
+    protected function beforeExecute(): void
+    {
+    }
 
     /**
      * After execution
      * @param mixed $result
      */
-    protected function afterExecute($result): void {}
+    protected function afterExecute($result): void
+    {
+    }
 
     /**
      * @param \Throwable $e
@@ -136,7 +141,10 @@ abstract class AbstractService implements ServiceInterface
     /**
      * @return InputClaimsInterface
      */
-    abstract protected function describeInput(): InputClaimsInterface;
+    protected function describeInput(): InputClaimsInterface
+    {
+        return new SimpleInputClaims();
+    }
 
     /**
      * Execute service logic
