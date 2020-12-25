@@ -22,9 +22,9 @@ abstract class AbstractService implements ServiceInterface
     protected const RETURN_TYPE_FAILED_INPUT_CLIMES = 'failedIC';
 
     /**
-     * @var InputInterface|null
+     * @var InputInterface
      */
-    private ?InputInterface $claimedInput = null;
+    private InputInterface $claimedInput;
 
     /**
      * @param ConditionsInterface|null $conditions
@@ -33,7 +33,7 @@ abstract class AbstractService implements ServiceInterface
      */
     public function handle(?ConditionsInterface $conditions = null): StrictValueInterface
     {
-        $this->presets($conditions);
+        $this->presets($conditions === null ? null : clone $conditions);
         
         if (static::RETURN_ON_FAILED_INPUT_CLAIMS && !$this->input()->state()->isCanBeUsed()) {
             return $this->return(self::RETURN_TYPE_FAILED_INPUT_CLIMES, $this->input()->state());
