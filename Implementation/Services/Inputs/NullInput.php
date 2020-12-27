@@ -5,24 +5,27 @@ namespace Implementation\Services\Inputs;
 use Implementation\Services\Claims\SimpleInputState;
 use Implementation\Services\InputInterface;
 use Implementation\Services\InputStateInterface;
-use Implementation\Services\StrictValue;
-use Implementation\Services\StrictValueInterface;
 
 class NullInput implements InputInterface
 {
-    private ?SimpleInputState $claimsState = null;
+    private ?SimpleInputState $claimsState;
+
+    public function __construct(InputStateInterface $state = null)
+    {
+        $this->claimsState = $state;
+    }
 
     public function has(string $name): bool
     {
-        return true;
+        return false;
     }
 
-    public function get(string $name): StrictValueInterface
+    public function get(string $name)
     {
-        return new StrictValue(null);
+        return null;
     }
 
-    public function state(): InputStateInterface
+    public function getState(): InputStateInterface
     {
         return $this->claimsState ?: $this->claimsState = new SimpleInputState();
     }

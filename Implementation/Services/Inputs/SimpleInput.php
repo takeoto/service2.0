@@ -37,17 +37,17 @@ class SimpleInput implements InputInterface
 
     /**
      * @param string $name
-     * @return StrictValueInterface
+     * @return mixed
      */
-    public function get(string $name): StrictValueInterface
+    public function get(string $name)
     {
-        return new StrictValue($this->conditions->get($name));
+        return $this->conditions->get($name);
     }
 
     /**
      * @return InputStateInterface
      */
-    public function state(): InputStateInterface
+    public function getState(): InputStateInterface
     {
         return $this->state;
     }

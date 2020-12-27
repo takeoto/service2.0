@@ -1,17 +1,16 @@
 <?php
 
-namespace Implementation\Services\Inputs\Claims;
+
+namespace Implementation\Services\Claims;
+
 
 use Core\ConditionsInterface;
 use Core\RuleInterface;
-use Implementation\Services\Claims\SimpleInputState;
-use Implementation\Services\InputClaimsInterface;
-use Implementation\Services\InputInterface;
-use Implementation\Services\Inputs\NullInput;
-use Implementation\Services\Inputs\SimpleInput;
+use Implementation\Services\DescribableInputInterface;
+use Implementation\Services\Inputs\Claims\SimpleInputDraft;
 use Implementation\Services\InputStateInterface;
 
-class SimpleInputClaims implements InputClaimsInterface
+class SimpleInputDescription extends SimpleInputDraft implements DescribableInputInterface
 {
     /**
      * @var array<string,RuleInterface>
@@ -19,35 +18,51 @@ class SimpleInputClaims implements InputClaimsInterface
     private array $claims = [];
     private array $required = [];
 
-    public function claimed(?ConditionsInterface $conditions): InputInterface
+    public function if(callable $fn): DescribableInputInterface
     {
-        return $conditions === null ? new NullInput() : new SimpleInput($conditions, $this->expose($conditions));
+        // TODO: Implement if() method.
     }
+
+    public function else(): DescribableInputInterface
+    {
+        // TODO: Implement else() method.
+    }
+
+    public function elseIf(callable $fn): DescribableInputInterface
+    {
+        // TODO: Implement elseIf() method.
+    }
+
+    public function endIf(): DescribableInputInterface
+    {
+        // TODO: Implement endIf() method.
+    }
+    
 
     public function can(string $name, RuleInterface $rule = null): self
     {
         $this->addClaim($name, false, $rule);
-        
+
         return $this;
     }
 
     public function must(string $name, RuleInterface $rule = null): self
     {
         $this->addClaim($name, true, $rule);
-        
+
         return $this;
     }
 
     protected function addClaim(string $name, bool $required, RuleInterface $rule = null): void
     {
         $this->claims[$name] = $rule;
-        
+
         if ($required) {
             $this->required[$name] = $name;
         }
     }
 
-    public function expose(?ConditionsInterface $conditions): InputStateInterface
+    protected function claimed(?ConditionsInterface $conditions): InputStateInterface
     {
         $errors = [];
         $required = $this->required;
@@ -70,7 +85,7 @@ class SimpleInputClaims implements InputClaimsInterface
                 $errors[$name] = $status->getErrors();
             });
         }
-        
+
         return new SimpleInputState($errors + array_fill_keys($required, 'Is required!'));
     }
 }
