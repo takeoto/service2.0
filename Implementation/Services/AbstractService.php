@@ -9,16 +9,11 @@ use Implementation\Services\Exceptions\ServiceException;
 abstract class AbstractService implements ServiceInterface
 {
     /**
-     * Stop execution on input claims fail
-     */
-    protected const RETURN_ON_INPUT_FAILED = true;
-
-    /**
      * Returns types
      */
-    protected const RETURN_TYPE_ERROR = 'error';
-    protected const RETURN_TYPE_SUCCESS = 'success';
-    protected const RETURN_TYPE_ACCESS_DENIED = 'failedIC';
+    protected const RETURN_TYPE_ERROR = 'RETURN_TYPE_ERROR';
+    protected const RETURN_TYPE_SUCCESS = 'RETURN_TYPE_SUCCESS';
+    protected const RETURN_TYPE_ACCESS_DENIED = 'RETURN_TYPE_ACCESS_DENIED';
 
     /**
      * @var InputInterface
@@ -63,7 +58,7 @@ abstract class AbstractService implements ServiceInterface
      */
     private function hasAccess(): bool
     {
-        return !static::RETURN_ON_INPUT_FAILED || !$this->getInput()->getState()->isCanBeUsed();
+        return $this->getInput()->getState()->isCanBeUsed();
     }
 
     /**
