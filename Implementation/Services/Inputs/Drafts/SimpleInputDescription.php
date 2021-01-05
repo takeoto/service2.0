@@ -1,17 +1,24 @@
 <?php
 
-
-namespace Implementation\Services\Claims;
-
+namespace Implementation\Services\Inputs\Drafts;
 
 use Core\ConditionsInterface;
 use Core\RuleInterface;
 use Implementation\Services\DescribableInputInterface;
-use Implementation\Services\Inputs\Claims\SimpleInputDraft;
-use Implementation\Services\InputStateInterface;
+use Implementation\Services\Inputs\States\InputStateInterface;
+use Implementation\Services\Inputs\States\SimpleInputState;
 
 class SimpleInputDescription extends SimpleInputDraft implements DescribableInputInterface
 {
+    private const DESCRIBE_IF = 'if';
+    private const DESCRIBE_IF_ELSE = 'ifElse';
+    private const DESCRIBE_ELSE = 'else';
+    private const DESCRIBE_END_IF = 'endIf';
+    private const DESCRIBE_CONDITION = 'condition';
+    
+    private array $pointer; 
+    private array $tree; 
+    
     /**
      * @var array<string,RuleInterface>
      */
@@ -53,13 +60,9 @@ class SimpleInputDescription extends SimpleInputDraft implements DescribableInpu
         return $this;
     }
 
-    protected function addClaim(string $name, bool $required, RuleInterface $rule = null): void
+    protected function addClaim(string $type, array $data = []): void
     {
-        $this->claims[$name] = $rule;
-
-        if ($required) {
-            $this->required[$name] = $name;
-        }
+        
     }
 
     protected function claimed(?ConditionsInterface $conditions): InputStateInterface

@@ -2,9 +2,10 @@
 
 namespace Implementation\Services\Inputs;
 
-use Implementation\Services\Claims\SimpleInputState;
-use Implementation\Services\InputInterface;
-use Implementation\Services\InputStateInterface;
+use Implementation\Services\Inputs\States\InputStateInterface;
+use Implementation\Services\Inputs\States\SimpleInputState;
+use Implementation\Services\StrictValue;
+use Implementation\Services\StrictValueInterface;
 
 class NullInput implements InputInterface
 {
@@ -20,9 +21,9 @@ class NullInput implements InputInterface
         return false;
     }
 
-    public function get(string $name)
+    public function get(string $name): StrictValueInterface
     {
-        return null;
+        return new StrictValue(null);
     }
 
     public function getState(): InputStateInterface

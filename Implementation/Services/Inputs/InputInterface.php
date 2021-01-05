@@ -1,6 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Implementation\Services;
+namespace Implementation\Services\Inputs;
+
+use Implementation\Services\Inputs\States\InputStateInterface;
+use Implementation\Services\StrictValueInterface;
 
 interface InputInterface
 {
@@ -14,7 +17,7 @@ interface InputInterface
      * @param string $name
      * @return mixed
      */
-    public function get(string $name);
+    public function get(string $name): StrictValueInterface;
 
     /**
      * @return InputStateInterface

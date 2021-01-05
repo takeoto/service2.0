@@ -1,8 +1,6 @@
 <?php
 
-namespace Implementation\Services\Claims;
-
-use Implementation\Services\InputStateInterface;
+namespace Implementation\Services\Inputs\States;
 
 class SimpleInputState implements InputStateInterface
 {

@@ -1,14 +1,14 @@
 <?php
 
-namespace Implementation\Services\Inputs\Claims;
+namespace Implementation\Services\Inputs\Drafts;
 
 use Core\ConditionsInterface;
-use Implementation\Services\Claims\SimpleInputState;
 use Implementation\Services\InputDraftInterface;
-use Implementation\Services\InputInterface;
+use Implementation\Services\Inputs\InputInterface;
 use Implementation\Services\Inputs\NullInput;
 use Implementation\Services\Inputs\SimpleInput;
-use Implementation\Services\InputStateInterface;
+use Implementation\Services\Inputs\States\InputStateInterface;
+use Implementation\Services\Inputs\States\SimpleInputState;
 
 class SimpleInputDraft implements InputDraftInterface
 {

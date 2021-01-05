@@ -16,18 +16,13 @@ abstract class AbstractService implements ServiceInterface
     protected const RETURN_TYPE_ACCESS_DENIED = 'RETURN_TYPE_ACCESS_DENIED';
 
     /**
-     * @var InputInterface
-     */
-    private InputInterface $input;
-
-    /**
      * @param ConditionsInterface|null $conditions
      * @return mixed
      * @throws \Throwable
      */
     public function handle(?ConditionsInterface $conditions = null)
     {
-        $this->presets($conditions === null ? null : clone $conditions);
+        $this->presets($conditions);
         
         if (!$this->hasAccess()) {
             return $this->return(self::RETURN_TYPE_ACCESS_DENIED);
@@ -50,31 +45,14 @@ abstract class AbstractService implements ServiceInterface
      */
     protected function presets(?ConditionsInterface $conditions): void
     {
-        $this->setInput($this->inputDraft()->expose($conditions));
     }
 
     /**
      * @return bool
      */
-    private function hasAccess(): bool
+    protected function hasAccess(): bool
     {
-        return $this->getInput()->getState()->isCanBeUsed();
-    }
-
-    /**
-     * @param InputInterface $input
-     */
-    final protected function setInput(InputInterface $input): void
-    {
-        $this->input = $input;
-    }
-
-    /**
-     * @return InputInterface
-     */
-    final protected function getInput(): InputInterface
-    {
-        return $this->input;
+        return true;
     }
 
     /**
@@ -83,10 +61,7 @@ abstract class AbstractService implements ServiceInterface
      */
     protected function returnOnAccessDenied()
     {
-        throw new ServiceException(
-            'Service input errors: ' .
-            implode(',', $this->getInput()->getState()->whyItsCantBeUsed())
-        );
+        throw new ServiceException('Access denied!');
     }
 
     /**
@@ -146,11 +121,6 @@ abstract class AbstractService implements ServiceInterface
         
         return $result;
     }
-
-    /**
-     * @return InputDraftInterface
-     */
-    abstract protected function inputDraft(): InputDraftInterface;
 
     /**
      * Execute service logic

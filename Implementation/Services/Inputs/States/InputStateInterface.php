@@ -1,6 +1,6 @@
 <?php
 
-namespace Implementation\Services;
+namespace Implementation\Services\Inputs\States;
 
 interface InputStateInterface
 {

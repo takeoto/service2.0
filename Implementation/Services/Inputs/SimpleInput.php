@@ -3,8 +3,7 @@
 namespace Implementation\Services\Inputs;
 
 use Core\ConditionsInterface;
-use Implementation\Services\InputInterface;
-use Implementation\Services\InputStateInterface;
+use Implementation\Services\Inputs\States\InputStateInterface;
 use Implementation\Services\StrictValue;
 use Implementation\Services\StrictValueInterface;
 
@@ -14,7 +13,7 @@ class SimpleInput implements InputInterface
      * @var ConditionsInterface
      */
     private $conditions;
-    
+
     /**
      * @var InputStateInterface
      */
@@ -39,9 +38,9 @@ class SimpleInput implements InputInterface
      * @param string $name
      * @return mixed
      */
-    public function get(string $name)
+    public function get(string $name): StrictValueInterface
     {
-        return $this->conditions->get($name);
+        return new StrictValue($this->conditions->get($name));
     }
 
     /**
