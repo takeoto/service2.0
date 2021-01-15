@@ -1,6 +1,9 @@
 <?php
 
 
+use Core\ConditionsInterface;
+use Implementation\Tools\ConditionsManager;
+
 class BimbaController
 {
     public function action()
@@ -36,5 +39,51 @@ class BimbaController
                 $object = $result->asInstanceOf('{className}');
             }
         }
+    }
+
+    public function secondAction()
+    {
+        $flow = new Flow();
+        $flow
+            ->do('data filter')
+                ->before()
+                ->after()
+                ->onError()
+                ->onSucces()
+            ->then()
+            ->do('interface restriction')
+            ->do('data transformer')
+            ->do('service0 logic')
+            ->do('service1 logic')
+            ->do('prepare result');
+        
+        return $flow->resolve($_POST);
+    }
+
+    public function thirdAction()
+    {
+        $data = $_POST;
+        
+        $flow = new Flow();
+
+        $inputFilter = function (array $data) {
+            return ConditionsManager::makeList($data)->filter(fn($v, $k) => in_array($k, [
+                'pikachu',
+                'pikachu0',
+                'pikachu1',
+            ]), true);
+        };
+        
+        $flow
+            ->do($inputFilter)
+                ->onError()
+                ->onSucces()
+            ->do('interface restriction')
+            ->do('data transformer')
+            ->do('service0 logic')
+            ->do('service1 logic')
+            ->do('prepare result');
+        
+        return $flow->resolve($_POST);
     }
 }

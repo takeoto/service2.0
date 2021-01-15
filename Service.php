@@ -2,50 +2,42 @@
 
 use Implementation\Rules\IntRule;
 
-class Service extends \Implementation\Services\AbstractService
+class Service extends \Implementation\Services\Advanced\AbstractAdvancedService
 {
-    protected function inputClaims(): \Implementation\Services\InputClaimsInterface
+    protected function inputDraft(): \Implementation\Services\InputDraftInterface
     {
-        // TODO: Implement inputClaims() method.
-    }
-
-    protected function onFailedInputClaimsResult(\Implementation\Services\ClaimsStateInterface $claimsState): \Implementation\Services\StrictValueInterface
-    {
-        
-    }
-
-    protected function beforeExecute(): void
-    {
-        
+        $describe = new \Implementation\Services\Inputs\Claims\SimpleInputDraft();
+        $describe
+            ->can('PIKACHU')
+            ->must('PIKACHU1')
+            ->if(fn ($c) => $c->has('ROCK'))
+                ->can('PIKACHU')
+                ->can('PIKACHU')
+                ->must('PIKACHU1')
+                ->must('PIKACHU1')
+            ->elseIf()
+                ->can('PIKACHU')
+                ->can('PIKACHU')
+                ->must('PIKACHU1')
+                ->must('PIKACHU1')
+            ->else()
+                ->can('PIKACHU')
+            ->endIf()
+        ;
     }
 
     protected function execute()
     {
-        $this->input()->claims()->getErrors();
+        $this->getInput()->getState()->whyItsCantBeUsed();
         // Not required condition
-        if ($this->input()->has(SomeConditionsProvider::SECOND_PARAM_NAME)) {
-            $secondValue = $this->input()->get(SomeConditionsProvider::SECOND_PARAM_NAME)->asInt();
+        if ($this->getInput()->has(SomeConditionsProvider::SECOND_PARAM_NAME)) {
+            $secondValue = $this->getInput()->get(SomeConditionsProvider::SECOND_PARAM_NAME)->asInt();
             // Some logic ...
         }
 
         // Required condition (throw exception if the item not exists)
-        $firstValue = $this->input()->get(SomeConditionsProvider::FIRST_PARAM_NAME)->asString();
+        $firstValue = $this->getInput()->get(SomeConditionsProvider::FIRST_PARAM_NAME)->asString();
 
         return 'pikachu';
-    }
-
-    protected function afterExecute($result): void
-    {
-        
-    }
-
-    protected function onErrorResult(\Throwable $e): \Implementation\Services\StrictValueInterface
-    {
-        
-    }
-
-    protected function onSuccessResult($executionResult): \Implementation\Services\StrictValueInterface
-    {
-        
     }
 }

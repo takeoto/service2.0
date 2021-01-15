@@ -4,7 +4,6 @@ namespace Implementation\Services;
 
 use Core\ConditionsInterface;
 use Implementation\Services\Exceptions\ServiceException;
-use Implementation\Services\Inputs\Drafts\SimpleInputDescription;
 use Implementation\Services\Inputs\InputInterface;
 
 /**
@@ -17,10 +16,6 @@ abstract class AbstractAdvancedService extends AbstractService
      * @var InputInterface
      */
     private InputInterface $input;
-    /**
-     * @var SimpleInputDescription|null
-     */
-    private ?SimpleInputDescription $inputDraft;
 
     /**
      * @param ConditionsInterface|null $conditions
@@ -71,7 +66,13 @@ abstract class AbstractAdvancedService extends AbstractService
      */
     protected function return(string $type, $data = null): StrictValueInterface
     {
-        return new StrictValue(parent::return($type, $data));
+        $value = parent::return($type, $data);
+        
+        if ($value instanceof StrictValueInterface) {
+            return $value;
+        }
+        
+        return new StrictValue($value);
     }
 
     /**
