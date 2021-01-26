@@ -10,7 +10,7 @@ interface RulesProviderInterface
      * @param string $fieldName
      * @return RuleInterface
      */
-    public function make(string $fieldName): RuleInterface;
+    public function getRule(string $fieldName): RuleInterface;
 
     /**
      * @return array

@@ -109,15 +109,14 @@ class SimpleInputDescription extends SimpleInputDraft implements DescribableInpu
          * @var bool $required 
          */
         foreach ($claims as ['name' => $name, 'rule' => $rule, 'req' => $required]) {
-            $names[$name] = $name;
-            $has = $conditions->has($name);
-            
-            if ($required && !$has) {
-                $errors[$name] = ['Is required!'];
+            if (!$conditions->has($name)) {
+                $required && $errors[$name] = ['Is required!'];
                 continue;
             }
+
+            $names[$name] = $name;
             
-            if (!$has) {
+            if ($rule === null) {
                 continue;
             }
             
@@ -129,10 +128,6 @@ class SimpleInputDescription extends SimpleInputDraft implements DescribableInpu
 
             $errors[$name] = $status->getErrors();
         }
-        
-        $conditions->each(function ($value, $name) use ($names) {
-            
-        });
 
         return new SimpleInputState($errors);
     }

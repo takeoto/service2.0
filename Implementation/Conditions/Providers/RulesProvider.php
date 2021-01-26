@@ -36,13 +36,13 @@ class RulesProvider implements RulesProviderInterface
     /**
      * @inheritDoc
      */
-    public function make(string $fieldName): RuleInterface
+    public function getRule(string $fieldName): RuleInterface
     {
         if (!isset($this->providers[$fieldName])) {
             throw new \Exception("Condition with \"$fieldName\" name not exists!");
         }
 
-        return $this->providers[$fieldName]->make($fieldName);
+        return $this->providers[$fieldName]->getRule($fieldName);
     }
 
     /**

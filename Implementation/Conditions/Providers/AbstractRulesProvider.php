@@ -16,9 +16,9 @@ abstract class AbstractRulesProvider implements RulesProviderInterface
     /**
      * @inheritDoc
      */
-    public function make(string $fieldName): RuleInterface
+    public function getRule(string $fieldName): RuleInterface
     {
-        if (!$this->hasCondition($fieldName)) {
+        if (!$this->hasRule($fieldName)) {
             throw new \Exception("Condition with \"$fieldName\" name not exists!");
         }
 
@@ -95,7 +95,7 @@ abstract class AbstractRulesProvider implements RulesProviderInterface
      * @param string $name
      * @return bool
      */
-    protected function hasCondition(string $name): bool
+    protected function hasRule(string $name): bool
     {
         return in_array($name, $this->getNames());
     }
