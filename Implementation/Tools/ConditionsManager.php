@@ -2,13 +2,8 @@
 
 namespace Implementation\Tools;
 
-use Core\ConditionInterface;
 use Core\ConditionsInterface;
-use Core\RuleInterface;
-use Implementation\Conditions\Providers\RulesProviderInterface;
-use Implementation\Conditions\SimpleCondition;
 use Implementation\Conditions\SimpleConditions;
-use Implementation\Services\StrictValue;
 
 class ConditionsManager
 {

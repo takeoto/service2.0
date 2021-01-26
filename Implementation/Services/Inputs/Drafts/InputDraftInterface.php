@@ -7,5 +7,5 @@ use Implementation\Services\Inputs\InputInterface;
 
 interface InputDraftInterface
 {
-    public function expose(?ConditionsInterface $conditions): InputInterface;
+    public function expose(ConditionsInterface $conditions): InputInterface;
 }

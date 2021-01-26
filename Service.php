@@ -2,8 +2,9 @@
 
 use Implementation\Rules\IntRule;
 
-class Service extends \Implementation\Services\Advanced\AbstractAdvancedService
+class Service extends \Implementation\Services\AbstractAdvancedService
 {
+    
     protected function inputDraft(): \Implementation\Services\InputDraftInterface
     {
         $describe = new \Implementation\Services\Inputs\Claims\SimpleInputDraft();

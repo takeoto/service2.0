@@ -8,8 +8,7 @@ class BimbaController
 {
     public function action()
     {
-        $service = new SomeService();
-        
+        $service = new Service();
 
         /* Make conditions by array
         $conditions = ConditionsManager::makeListByArray([
@@ -19,19 +18,12 @@ class BimbaController
         ], $manager);
          */
 
+        $conditions = ConditionsManager::makeList($_POST);
         $dynamicParams = [1, 2, 3, 4, 5, 6];
 
         foreach ($dynamicParams as $newParam) {
-            $conditions->replace($manager->make(SomeConditionsProvider::FOURTH_PARAM_NAME, $newParam));
-
-            // Or check single condition `ConditionsManager::isCanBeUsed({newCondition})`
-            if (!ConditionsManager::isListCorrect($conditions)) {
-                $errors = ConditionsManager::getListErrors($conditions);
-                // Some logic ...
-                continue;
-            }
-
-            $result = $service->handle($conditions);;
+            $conditions->add('PIKACHU', $newParam);
+            $result = $service->handle($conditions);
 
             // Result data
             if ($result->asBool()) {
@@ -85,5 +77,30 @@ class BimbaController
             ->do('prepare result');
         
         return $flow->resolve($_POST);
+    }
+
+    public function fourthAction()
+    {
+        $describe = new SimpleInputDraft();
+        $describe
+            ->can('PIKACHU')
+            ->must('PIKACHU1')
+            ->if(fn ($c) => $c->has('ROCK'))
+                ->can('PIKACHU')
+                ->can('PIKACHU')
+                ->must('PIKACHU1')
+                ->must('PIKACHU1')
+            ->elseIf()
+                ->can('PIKACHU')
+                ->can('PIKACHU')
+                ->must('PIKACHU1')
+                ->must('PIKACHU1')
+            ->else()
+                ->can('PIKACHU')
+            ->endIf()
+        ;
+        
+        $typeControl = new TypeControl();
+        $typeControl->cast('PIKACHU', )
     }
 }

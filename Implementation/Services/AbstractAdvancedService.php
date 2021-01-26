@@ -5,6 +5,7 @@ namespace Implementation\Services;
 use Core\ConditionsInterface;
 use Implementation\Services\Exceptions\ServiceException;
 use Implementation\Services\Inputs\InputInterface;
+use Implementation\Tools\ConditionsManager;
 
 /**
  * Class AbstractAdvancedService
@@ -32,8 +33,8 @@ abstract class AbstractAdvancedService extends AbstractService
      */
     protected function presets(?ConditionsInterface $conditions): void
     {
-        if ($conditions !== null) {
-            $conditions = $conditions->filter(fn() => true, true);
+        if ($conditions === null) {
+            $conditions = ConditionsManager::makeList();
         }
 
         $this->setInput($this->inputDraft()->expose($conditions));
