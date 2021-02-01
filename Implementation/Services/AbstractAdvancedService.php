@@ -3,8 +3,12 @@
 namespace Implementation\Services;
 
 use Core\ConditionsInterface;
+use Implementation\Claims\ClaimsInterface;
+use Implementation\Claims\DescribableClaimsInterface;
+use Implementation\Claims\SimpleClaimsDescription;
 use Implementation\Services\Exceptions\ServiceException;
 use Implementation\Services\Inputs\InputInterface;
+use Implementation\Services\Inputs\SimpleInput;
 use Implementation\Tools\ConditionsManager;
 
 /**
@@ -17,6 +21,8 @@ abstract class AbstractAdvancedService extends AbstractService
      * @var InputInterface
      */
     private InputInterface $input;
+    
+    private ?ClaimsInterface $inputClaims;
 
     /**
      * @param ConditionsInterface|null $conditions
@@ -28,6 +34,11 @@ abstract class AbstractAdvancedService extends AbstractService
         return parent::handle($conditions);
     }
 
+    public function getClaims(): ClaimsInterface
+    {
+        return $this->inputClaims ?: $this->inputClaims = $this->inputClaims();
+    }
+
     /**
      * @inheritdoc
      */
@@ -37,7 +48,7 @@ abstract class AbstractAdvancedService extends AbstractService
             $conditions = ConditionsManager::makeList();
         }
 
-        $this->setInput($this->inputDraft()->expose($conditions));
+        $this->setInput(new SimpleInput($conditions, $this->getClaims()));
     }
 
     /**
@@ -45,7 +56,7 @@ abstract class AbstractAdvancedService extends AbstractService
      */
     protected function hasAccess(): bool
     {
-        return $this->getInput()->getState()->isCanBeUsed();
+        return $this->getInput()->getState()->isCorrect();
     }
 
     /**
@@ -55,7 +66,7 @@ abstract class AbstractAdvancedService extends AbstractService
     {
         throw new ServiceException(
             'Service input errors: ' .
-            implode(',', $this->getInput()->getState()->whyItsCantBeUsed())
+            implode(',', $this->getInput()->getState()->whyItsNotCorrect())
         );
     }
 
@@ -79,7 +90,7 @@ abstract class AbstractAdvancedService extends AbstractService
     /**
      * @param InputInterface $input
      */
-    final protected function setInput(InputInterface $input): void
+    protected function setInput(InputInterface $input): void
     {
         $this->input = $input;
     }
@@ -87,10 +98,10 @@ abstract class AbstractAdvancedService extends AbstractService
     /**
      * @return InputInterface
      */
-    final protected function getInput(): InputInterface
+    protected function getInput(): InputInterface
     {
         return $this->input;
     }
 
-    abstract protected function inputDraft(): InputDraftInterface;
+    abstract protected function inputClaims(): ClaimsInterface;
 }

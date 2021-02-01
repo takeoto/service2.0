@@ -23,6 +23,9 @@ class BimbaController
 
         foreach ($dynamicParams as $newParam) {
             $conditions->add('PIKACHU', $newParam);
+
+            $status = $service->getClaims()->claim($conditions);
+            
             $result = $service->handle($conditions);
 
             // Result data
@@ -100,7 +103,9 @@ class BimbaController
             ->endIf()
         ;
         
+        $result = $describe->claime($_POST);
+        
         $typeControl = new TypeControl();
-        $typeControl->cast('PIKACHU', )
+        $typeControl->cast('PIKACHU', );
     }
 }

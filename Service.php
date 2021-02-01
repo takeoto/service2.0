@@ -1,14 +1,13 @@
 <?php
 
-use Implementation\Rules\IntRule;
+use Implementation\Claims\DescribableClaimsInterface;
+use Implementation\Services\AbstractAdvancedService;
 
-class Service extends \Implementation\Services\AbstractAdvancedService
+class Service extends AbstractAdvancedService
 {
-    
-    protected function inputDraft(): \Implementation\Services\InputDraftInterface
+    protected function inputClaims(): DescribableClaimsInterface
     {
-        $describe = new \Implementation\Services\Inputs\Claims\SimpleInputDraft();
-        $describe
+        return parent::inputClaims()
             ->can('PIKACHU')
             ->must('PIKACHU1')
             ->if(fn ($c) => $c->has('ROCK'))

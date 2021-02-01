@@ -3,7 +3,8 @@
 namespace Implementation\Services\Inputs;
 
 use Core\ConditionsInterface;
-use Implementation\Services\Inputs\States\InputStateInterface;
+use Implementation\Claims\ClaimedStatusInterface;
+use Implementation\Claims\ClaimsInterface;
 use Implementation\Services\StrictValue;
 use Implementation\Services\StrictValueInterface;
 
@@ -12,17 +13,17 @@ class SimpleInput implements InputInterface
     /**
      * @var ConditionsInterface
      */
-    private $conditions;
+    private ConditionsInterface $conditions;
 
     /**
-     * @var InputStateInterface
+     * @var ClaimedStatusInterface
      */
-    private InputStateInterface $state;
+    private ClaimedStatusInterface $state;
 
-    public function __construct(ConditionsInterface $conditions, InputStateInterface $state)
+    public function __construct(ConditionsInterface $conditions, ClaimsInterface $claims)
     {
         $this->conditions = $conditions;
-        $this->state = $state;
+        $this->state = $claims->claim($conditions);
     }
 
     /**
@@ -44,9 +45,9 @@ class SimpleInput implements InputInterface
     }
 
     /**
-     * @return InputStateInterface
+     * @return ClaimedStatusInterface
      */
-    public function getState(): InputStateInterface
+    public function getState(): ClaimedStatusInterface
     {
         return $this->state;
     }

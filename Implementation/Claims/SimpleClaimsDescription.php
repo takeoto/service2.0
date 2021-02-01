@@ -1,14 +1,11 @@
 <?php
 
-namespace Implementation\Services\Inputs\Drafts;
+namespace Implementation\Claims;
 
 use Core\ConditionsInterface;
 use Core\RuleInterface;
-use Implementation\Services\DescribableInputInterface;
-use Implementation\Services\Inputs\States\InputStateInterface;
-use Implementation\Services\Inputs\States\SimpleInputState;
 
-class SimpleInputDescription extends SimpleInputDraft implements DescribableInputInterface
+class SimpleClaimsDescription implements DescribableClaimsInterface
 {
     private const DESCRIBE_IF = 'if';
     private const DESCRIBE_ELSE_IF = 'elseIf';
@@ -16,54 +13,54 @@ class SimpleInputDescription extends SimpleInputDraft implements DescribableInpu
     private const DESCRIBE_END_IF = 'endIf';
     private const DESCRIBE_CONDITION = 'condition';
 
-    private $tree = [];
+    private $stack = [];
     private $pointers = [];
 
-    public function if(callable $fn): self
+    public function if($condition): self
     {
-        $this->put(self::DESCRIBE_IF, ['fn' => $fn])->down();
+        $this->putInStack(self::DESCRIBE_IF, ['condition' => $condition])->movePointerDown();
 
         return $this;
     }
 
     public function else(): self
     {
-        $this->up();
+        $this->movePointerUp();
         $item = $this->lastInStack();
 
         if (!in_array($item['type'] ?? null, [self::DESCRIBE_IF, self::DESCRIBE_ELSE_IF], true)) {
             throw new \Exception('');
         }
 
-        $this->put(self::DESCRIBE_ELSE)->down();
+        $this->putInStack(self::DESCRIBE_ELSE)->movePointerDown();
 
         return $this;
     }
 
-    public function elseIf(callable $fn): self
+    public function elseIf($condition): self
     {
-        $this->up();
+        $this->movePointerUp();
         $item = $this->lastInStack();
 
         if (!in_array($item['type'] ?? null, [self::DESCRIBE_IF, self::DESCRIBE_ELSE_IF], true)) {
             throw new \Exception('');
         }
 
-        $this->put(self::DESCRIBE_ELSE_IF, ['fn' => $fn])->down();
+        $this->putInStack(self::DESCRIBE_ELSE_IF, ['condition' => $condition])->movePointerDown();
 
         return $this;
     }
 
     public function endIf(): self
     {
-        $this->up();
+        $this->movePointerUp();
         $item = $this->lastInStack();
 
         if (!in_array($item['type'] ?? null, [self::DESCRIBE_IF, self::DESCRIBE_ELSE, self::DESCRIBE_ELSE_IF], true)) {
             throw new \Exception('');
         }
 
-        $this->put(self::DESCRIBE_END_IF);
+        $this->putInStack(self::DESCRIBE_END_IF);
 
         return $this;
     }
@@ -71,7 +68,7 @@ class SimpleInputDescription extends SimpleInputDraft implements DescribableInpu
 
     public function can(string $name, $rule = null): self
     {
-        $this->put(
+        $this->putInStack(
             self::DESCRIBE_CONDITION,
             [
                 'name' => $name,
@@ -85,7 +82,7 @@ class SimpleInputDescription extends SimpleInputDraft implements DescribableInpu
 
     public function must(string $name, $rule = null): self
     {
-        $this->put(
+        $this->putInStack(
             self::DESCRIBE_CONDITION,
             [
                 'name' => $name,
@@ -97,16 +94,15 @@ class SimpleInputDescription extends SimpleInputDraft implements DescribableInpu
         return $this;
     }
 
-    protected function claimed(ConditionsInterface $conditions): InputStateInterface
+    public function claim(ConditionsInterface $conditions): ClaimedStatusInterface
     {
         $errors = [];
-        $names = [];
-        $claims = $this->getClaims($this->tree, $conditions);
+        $claims = $this->getClaims($this->stack, $conditions);
 
         /**
          * @var string $name
          * @var RuleInterface|null $rule
-         * @var bool $required 
+         * @var bool $required
          */
         foreach ($claims as ['name' => $name, 'rule' => $rule, 'req' => $required]) {
             if (!$conditions->has($name)) {
@@ -114,25 +110,23 @@ class SimpleInputDescription extends SimpleInputDraft implements DescribableInpu
                 continue;
             }
 
-            $names[$name] = $name;
-            
             if ($rule === null) {
                 continue;
             }
-            
+
             $status = $rule->verify($conditions->get($name));
-            
+
             if ($status->isPassed()) {
                 continue;
             }
 
             $errors[$name] = $status->getErrors();
         }
-
-        return new SimpleInputState($errors);
+        
+        return new SimpleClaimedStatus($errors); 
     }
 
-    private function put(string $type, array $data = []): self
+    private function putInStack(string $type, array $data = []): self
     {
         array_push($this->stack(), [
             'type' => $type,
@@ -142,7 +136,7 @@ class SimpleInputDescription extends SimpleInputDraft implements DescribableInpu
         return $this;
     }
 
-    private function down(): self
+    private function movePointerDown(): self
     {
         $_ = &$this->lastInStack();
         $_['stack'] = [];
@@ -151,7 +145,7 @@ class SimpleInputDescription extends SimpleInputDraft implements DescribableInpu
         return $this;
     }
 
-    private function up(): self
+    private function movePointerUp(): self
     {
         array_pop($this->pointers);
 
@@ -163,7 +157,7 @@ class SimpleInputDescription extends SimpleInputDraft implements DescribableInpu
         $count = count($this->pointers);
 
         if ($count === 0) {
-            return $this->tree;
+            return $this->stack;
         }
 
         return $this->pointers[$count - 1];
@@ -222,10 +216,18 @@ class SimpleInputDescription extends SimpleInputDraft implements DescribableInpu
 
     private function processIf(array $claim, array &$claims, $conditions): array
     {
-        $fn = $claim['fn'];
+        $condition = $claim['condition'];
         $result = [];
+        
+        switch (true) {
+            case is_callable($condition):
+                $accept = $condition($conditions) === true;
+                break;
+            case is_string($condition):
+                
+        }
 
-        if ($fn($conditions) === true) {
+        if ($condition($conditions) === true) {
             $result = $this->getClaims($claim['stack'] ?? [], $conditions);
             $this->nextTo($claims, self::DESCRIBE_END_IF);
         }

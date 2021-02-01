@@ -2,7 +2,7 @@
 
 namespace Implementation\Services\Inputs;
 
-use Implementation\Services\Inputs\States\InputStateInterface;
+use Implementation\Claims\ClaimedStatusInterface;
 use Implementation\Services\StrictValueInterface;
 
 interface InputInterface
@@ -20,7 +20,7 @@ interface InputInterface
     public function get(string $name): StrictValueInterface;
 
     /**
-     * @return InputStateInterface
+     * @return ClaimedStatusInterface
      */
-    public function getState(): InputStateInterface;
+    public function getState(): ClaimedStatusInterface;
 }
