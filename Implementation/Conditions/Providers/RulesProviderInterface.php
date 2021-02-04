@@ -7,10 +7,10 @@ use Core\RuleInterface;
 interface RulesProviderInterface
 {
     /**
-     * @param string $fieldName
+     * @param string $ruleName
      * @return RuleInterface
      */
-    public function getRule(string $fieldName): RuleInterface;
+    public function getRule(string $ruleName): RuleInterface;
 
     /**
      * @return array

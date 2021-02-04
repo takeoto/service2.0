@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Implementation\Services;
+namespace Implementation\Values;
 
 interface StrictValueInterface
 {
@@ -29,6 +29,12 @@ interface StrictValueInterface
      * @return array
      */
     public function asArray(): array;
+
+    /**
+     * @param string $name
+     * @return object
+     */
+    public function asInstanceOf(string $name): object;
 
     /**
      * @return mixed

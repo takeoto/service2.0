@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Implementation\Services;
+namespace Implementation\Values;
 
 class StrictValue implements StrictValueInterface
 {
@@ -47,16 +47,25 @@ class StrictValue implements StrictValueInterface
         return (array)$this->value;
     }
 
+    public function asFloat(?int $precision = null): float
+    {
+        return (float)number_format((float) $this->value, $precision, '.', '');
+    }
+
+    public function asInstanceOf(string $name): object
+    {
+        if (!$this->value instanceof $name) {
+            throw new \Exception('');
+        }
+        
+        return $this->value;
+    }
+
     /**
      * @return mixed
      */
     public function original()
     {
         return $this->value;
-    }
-
-    public function asFloat(?int $precision = null): float
-    {
-        return (float)number_format((float) $this->value, $precision, '.', '');
     }
 }

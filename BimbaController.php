@@ -8,7 +8,7 @@ class BimbaController
 {
     public function action()
     {
-        $service = new Service();
+        $service = new ServiceAbstract();
 
         /* Make conditions by array
         $conditions = ConditionsManager::makeListByArray([
@@ -20,12 +20,11 @@ class BimbaController
 
         $conditions = ConditionsManager::makeList($_POST);
         $dynamicParams = [1, 2, 3, 4, 5, 6];
+        $claims = $service->getClaims();
 
         foreach ($dynamicParams as $newParam) {
             $conditions->add('PIKACHU', $newParam);
-
-            $status = $service->getClaims()->claim($conditions);
-            
+            $status = $claims->claim($conditions);
             $result = $service->handle($conditions);
 
             // Result data
@@ -107,5 +106,52 @@ class BimbaController
         
         $typeControl = new TypeControl();
         $typeControl->cast('PIKACHU', );
+    }
+
+    public function extendableRuleConcept()
+    {
+        $rule = new Rule0();
+        $rule2 = new Rule1();
+
+        $rule->extend($rule2);
+        $rule->verify($value);
+        
+        #########################
+        
+        $options = ['max' => '10', 'min' => 0];
+        $rule = new Rule0($options);
+
+        $options['max'] = '1';
+        $rule->extend($options);
+        $rule->verify($value);
+        
+        #########################
+//        
+//        $rule = new Rule0();
+//        $options = ['max' => '10', 'min' => 0];
+//        $rule->verify($value, $options);
+//        
+//        $options['max'] = '1';
+//        $rule->verify($value, $options);
+//        
+        ########################
+        
+        $rule = new Rule0();
+        $rule2 = new Rule1();
+
+        $extendedRule = $rule->extend($rule2);
+        $extendedRule->verify($value);
+
+        #########################
+        
+        ########################
+        
+        $rule = new Rule0();
+        $rule2 = new Rule1();
+
+        $extendedRule = $rule->extend($rule2);
+        $extendedRule->verify($value);
+
+        #########################
     }
 }

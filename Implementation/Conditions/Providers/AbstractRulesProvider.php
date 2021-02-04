@@ -16,19 +16,19 @@ abstract class AbstractRulesProvider implements RulesProviderInterface
     /**
      * @inheritDoc
      */
-    public function getRule(string $fieldName): RuleInterface
+    public function getRule(string $ruleName): RuleInterface
     {
-        if (!$this->hasRule($fieldName)) {
-            throw new \Exception("Condition with \"$fieldName\" name not exists!");
+        if (!$this->hasRule($ruleName)) {
+            throw new \Exception("Condition with \"$ruleName\" name not exists!");
         }
 
-        $method = $this->makeMethodName($fieldName);
+        $method = $this->makeMethodName($ruleName);
 
         if (!method_exists($this, $method)) {
-            throw new \Exception("Can't create condition \"$fieldName\"!");
+            throw new \Exception("Can't create condition \"$ruleName\"!");
         }
 
-        $result = $this->$method();
+        $result = $this->$method($ruleName);
 
         if (!is_subclass_of($result, RuleInterface::class)) {
             throw new \Exception(
@@ -48,12 +48,12 @@ abstract class AbstractRulesProvider implements RulesProviderInterface
      */
     public function getNames(): array
     {
-        if (isset(self::$cachedNames[self::class])) {
-            return self::$cachedNames[self::class];
+        if (isset(self::$cachedNames[static::class])) {
+            return self::$cachedNames[static::class];
         }
 
         $reflectionClass = new \ReflectionClass(static::class);
-        self::$cachedNames[self::class] = array_filter(
+        self::$cachedNames[static::class] = array_filter(
             $reflectionClass->getConstants(),
             function ($name, $value) {
                 return $this->isConditionNameConstant($name, $value);
@@ -61,24 +61,24 @@ abstract class AbstractRulesProvider implements RulesProviderInterface
             ARRAY_FILTER_USE_BOTH
         );
 
-        return self::$cachedNames[self::class];
+        return self::$cachedNames[static::class];
     }
 
     /**
-     * @param string $name
+     * @param string $ruleName
      * @return string
      */
-    protected function makeMethodName(string $name): string
+    protected function makeMethodName(string $ruleName): string
     {
-        $pos = strrpos($name, '.');
+        $pos = strrpos($ruleName, '.');
 
         if ($pos) {
-            $name = substr($name, $pos);
+            $ruleName = substr($ruleName, $pos);
         }
 
-        $name = str_replace(['-', '_'], ' ', $name);
+        $ruleName = str_replace(['-', '_'], ' ', $ruleName);
 
-        return $this->methodPrefix . str_replace(' ', '', ucwords($name));
+        return $this->methodPrefix . str_replace(' ', '', ucwords($ruleName));
     }
 
     /**
@@ -97,6 +97,6 @@ abstract class AbstractRulesProvider implements RulesProviderInterface
      */
     protected function hasRule(string $name): bool
     {
-        return in_array($name, $this->getNames());
+        return in_array($name, $this->getNames(), true);
     }
 }

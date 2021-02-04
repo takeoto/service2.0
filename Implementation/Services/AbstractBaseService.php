@@ -4,18 +4,18 @@ namespace Implementation\Services;
 
 use Core\ConditionsInterface;
 use Implementation\Claims\ClaimsInterface;
-use Implementation\Claims\DescribableClaimsInterface;
-use Implementation\Claims\SimpleClaimsDescription;
 use Implementation\Services\Exceptions\ServiceException;
 use Implementation\Services\Inputs\InputInterface;
 use Implementation\Services\Inputs\SimpleInput;
 use Implementation\Tools\ConditionsManager;
+use Implementation\Values\StrictValue;
+use Implementation\Values\StrictValueInterface;
 
 /**
  * Class AbstractAdvancedService
  * @package Implementation\Services
  */
-abstract class AbstractAdvancedService extends AbstractService
+abstract class AbstractBaseService extends AbstractService
 {
     /**
      * @var InputInterface

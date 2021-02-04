@@ -2,18 +2,18 @@
 
 namespace Implementation\Rules;
 
+use Core\ExtendableInterface;
 use Core\RuleInterface;
 use Core\RuleStateInterface;
 use Implementation\Rules\Results\TrueOrErrorRuleState;
 
-class MoreThenRule implements RuleInterface
+class MoreThenRule implements RuleInterface, ExtendableInterface
 {
     /**
      * @var float
      */
     private $moreThen;
-
-
+    
     public function __construct(float $moreThen)
     {
         $this->moreThen = $moreThen;
@@ -28,5 +28,17 @@ class MoreThenRule implements RuleInterface
             $this->moreThen < $value,
             "Value \"$value\" must be more then \"$this->moreThen\"!"
         );
+    }
+
+    public function extend(ExtendableInterface $extendable)
+    {
+        $this->moreThen = $extendable->getOptions()['moreThen'];
+    }
+
+    public function getOptions(): array
+    {
+        return [
+            'moreThen' => $this->moreThen,
+        ];
     }
 }

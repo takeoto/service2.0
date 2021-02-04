@@ -1,9 +1,9 @@
 <?php
 
 use Implementation\Claims\DescribableClaimsInterface;
-use Implementation\Services\AbstractAdvancedService;
+use Implementation\Services\AbstractBaseService;
 
-class Service extends AbstractAdvancedService
+class ServiceAbstract extends AbstractBaseService
 {
     protected function inputClaims(): DescribableClaimsInterface
     {
