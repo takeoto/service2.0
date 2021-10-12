@@ -110,8 +110,13 @@ class SimpleClaimsDescription implements DescribableClaimsInterface
                 continue;
             }
 
-            if ($rule === null) {
-                continue;
+            switch (true) {
+                case $rule === null:
+                    continue;
+                case is_callable($rule):
+                    break;
+                case $rule instanceof RuleInterface:
+                    
             }
 
             $status = $rule->verify($conditions->get($name));

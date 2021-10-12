@@ -22,21 +22,25 @@ abstract class AbstractService implements ServiceInterface
      */
     public function handle(?ConditionsInterface $conditions = null)
     {
+        $this->flushEvent('beforeHandle');
         $this->presets($conditions);
+        $permission = $this->getHandleAccess();
         
-        if (!$this->hasAccess()) {
-            return $this->return(self::RETURN_TYPE_ACCESS_DENIED);
+        if ($this->accessIsGiven($permission)) {
+            $this->flushEvent('onAccessDenied');
+            return $this->return(self::RETURN_TYPE_ACCESS_DENIED, $permission);
         }
 
-        $this->beforeExecute();
+        $this->flushEvent('beforeExec');
 
         try {
             $execResult = $this->execute();
-            $this->afterExecute($execResult);
+            $this->flushEvent('afterExec', $execResult);
         } catch (\Throwable $e) {
+            $this->flushEvent('error', $e);
             return $this->return(self::RETURN_TYPE_ERROR, $e);
         }
-
+        
         return $this->return(self::RETURN_TYPE_SUCCESS, $execResult);
     }
 
@@ -48,35 +52,35 @@ abstract class AbstractService implements ServiceInterface
     }
 
     /**
+     * @param mixed $permission
      * @return bool
      */
-    protected function hasAccess(): bool
+    protected function accessIsGiven($permission): bool
+    {
+        return $permission === true;
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function getHandleAccess()
     {
         return true;
     }
 
     /**
+     * @param mixed $data
      * @return mixed
      * @throws ServiceException
      */
-    protected function returnOnAccessDenied()
+    protected function returnOnAccessDenied($data)
     {
         throw new ServiceException('Access denied!');
     }
 
-    /**
-     * Before execution
-     */
-    protected function beforeExecute(): void
+    protected function flushEvent(string $name, ...$payload)
     {
-    }
-
-    /**
-     * After execution
-     * @param mixed $result
-     */
-    protected function afterExecute($result): void
-    {
+        
     }
 
     /**
@@ -113,7 +117,7 @@ abstract class AbstractService implements ServiceInterface
                 $result = $this->returnOnError($data);
                 break;
             case self::RETURN_TYPE_ACCESS_DENIED:
-                $result = $this->returnOnAccessDenied();
+                $result = $this->returnOnAccessDenied($data);
                 break;
             default:
                 throw new ServiceException("Wrong return type \"$type\"!");

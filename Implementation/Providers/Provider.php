@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace Implementation\Conditions\Providers;
+namespace Implementation\Providers;
 
 use Core\ConditionInterface;
 use Core\RuleInterface;
 
-class RulesProvider implements RulesProviderInterface
+class Provider implements ProviderInterface
 {
     /**
-     * @var RulesProviderInterface[]
+     * @var ProviderInterface[]
      */
     private array $providers;
 
@@ -19,9 +19,9 @@ class RulesProvider implements RulesProviderInterface
 
     /**
      * ConditionsProvider constructor.
-     * @param RulesProviderInterface ...$providers
+     * @param ProviderInterface ...$providers
      */
-    public function __construct(RulesProviderInterface ...$providers)
+    public function __construct(ProviderInterface ...$providers)
     {
         $prepared = [];
 
@@ -36,13 +36,13 @@ class RulesProvider implements RulesProviderInterface
     /**
      * @inheritDoc
      */
-    public function getRule(string $ruleName): RuleInterface
+    public function make(string $name, ...$params)
     {
-        if (!isset($this->providers[$ruleName])) {
-            throw new \Exception("Condition with \"$ruleName\" name not exists!");
+        if (!isset($this->providers[$name])) {
+            throw new \Exception("Condition with \"$name\" name not exists!");
         }
 
-        return $this->providers[$ruleName]->getRule($ruleName);
+        return $this->providers[$name]->make($name, ...$params);
     }
 
     /**

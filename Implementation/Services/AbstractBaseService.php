@@ -54,7 +54,7 @@ abstract class AbstractBaseService extends AbstractService
     /**
      * @inheritdoc
      */
-    protected function hasAccess(): bool
+    protected function getHandleAccess()
     {
         return $this->getInput()->getState()->isCorrect();
     }
@@ -62,7 +62,7 @@ abstract class AbstractBaseService extends AbstractService
     /**
      * @inheritdoc
      */
-    protected function returnOnAccessDenied()
+    protected function returnOnAccessDenied($data)
     {
         throw new ServiceException(
             'Service input errors: ' .

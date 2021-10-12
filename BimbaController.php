@@ -2,20 +2,25 @@
 
 
 use Core\ConditionsInterface;
+use Implementation\Conditions\RawCondition;
 use Implementation\Tools\ConditionsManager;
 
 class BimbaController
 {
     public function action()
     {
-        $service = new ServiceAbstract();
+        $service = new Service();
 
         /* Make conditions by array
+        
         $conditions = ConditionsManager::makeListByArray([
             SomeConditionsProvider::FIRST_PARAM_NAME => 123,
             SomeConditionsProvider::SECOND_PARAM_NAME => 123,
             SomeConditionsProvider::THIRD_PARAM_NAME => 'qwe123',
         ], $manager);
+        
+        $conditions->find(SomeConditionsProvider::FIRST_PARAM_NAME)->getValue()->asInt();
+        
          */
 
         $conditions = ConditionsManager::makeList($_POST);
@@ -153,5 +158,70 @@ class BimbaController
         $extendedRule->verify($value);
 
         #########################
+    }
+
+    public function conditionsConcept()
+    {
+        $rule = new Rule0();
+        $value = new Value();
+        $rawData = 'PIKACHU';
+        
+        $condition = new Condition($name, $rawData, $rule, $value);
+        ####
+        
+        $raw = new ConditionRaw();
+        $lazyStringRule = new LazyStringRule('{some params}');
+        
+        $raw
+            ->setCaster(
+                (new CaseterBuilder())
+                    ->cast(new IntCaster())
+                    ->cast([Value::STRING, fn($v) => (string)$v])
+            )
+                
+            ->rule()
+                ->bind(new IntRule())
+                ->bind(
+                    $lazyStringRule->with('some params')
+                )
+                ->extend($lazyStringRule->with('some params'))
+        ;
+        
+        # condition [rule, type]
+        
+        $raw = new RawCondition();
+        $raw->setName('PIKACHU')
+            ->setValue('value')
+            ->buildValue()
+                ->cast(new IntCaster())
+                ->cast([Value::STRING, fn($v) => (string)$v]);
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
     }
 }

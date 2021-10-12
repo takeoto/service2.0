@@ -7,7 +7,7 @@ use Core\ConditionsInterface;
 class SimpleConditions implements ConditionsInterface
 {
     /**
-     * @var array<string,mixed>[]
+     * @var array<string,mixed>
      */
     private array $conditions;
 
